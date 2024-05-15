@@ -3,10 +3,8 @@ package be.labofitness.labo_fitness.domain.entity;
 import be.labofitness.labo_fitness.domain.entity.base.BaseEntity;
 import be.labofitness.labo_fitness.domain.enums.AccreditationType;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 
 @NoArgsConstructor @AllArgsConstructor

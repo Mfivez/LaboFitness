@@ -8,10 +8,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity @Table(name = "location_places")
+
 public class LocationPlace extends BaseEntity<Long> {
 
     @Getter @Setter

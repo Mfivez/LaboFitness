@@ -6,6 +6,7 @@ import jakarta.persistence.Entity;
 import java.time.LocalDateTime;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @NoArgsConstructor @AllArgsConstructor
 @Entity @Table(name = "appointments")

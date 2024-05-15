@@ -3,6 +3,7 @@ package be.labofitness.labo_fitness.domain.entity.base;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.io.Serializable;

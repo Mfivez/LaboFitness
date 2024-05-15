@@ -1,4 +1,7 @@
 package be.labofitness.labo_fitness.il.config;
+/** en hauteur
+ * WOLA PAS COPIé DE CHEZ NOTRE SEIGNEUR DIEU ET MAITRE DU JAVA
+ */
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,6 +34,4 @@ public class PropertiesPlaceholderConfig {
     }
 }
 
-/**
- * WOLA PAS COPIé DE CHEZ NOTRE SEIGNEUR DIEU ET MAITRE DU JAVA
- */
+
