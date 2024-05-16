@@ -12,13 +12,12 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 @Table(name = "Coaches")
+@Getter @Setter @ToString
 public class Coach extends Professional{
 
-    @Getter @Setter
     @Column(name = "is_remote", nullable = false)
     private boolean is_remote;
 
-    @Getter @Setter
     @Column(name = "price_hour", nullable = false)
     private int price_hour;
 

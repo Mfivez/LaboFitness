@@ -10,7 +10,6 @@ import lombok.Builder;
 import org.springframework.stereotype.Component;
 
 @Component
-@Builder
 public class SportDataIni extends DataInitializer {
 
     private final SportRepository sportRepository;

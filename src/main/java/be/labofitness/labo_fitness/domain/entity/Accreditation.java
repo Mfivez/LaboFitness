@@ -9,21 +9,19 @@ import lombok.experimental.SuperBuilder;
 
 @NoArgsConstructor @AllArgsConstructor
 @Entity @Table(name = "accreditations")
+@Getter @Setter @ToString
 public class Accreditation extends BaseEntity<Long> {
 
-    @Getter @Setter
     @Column(name = "type", nullable = false)
     @Enumerated(EnumType.STRING)
     private AccreditationType type;
 
-    @Getter @Setter
     @Column(name = "description", nullable = false)
     private String description;
 
 
-
-    @Getter @Setter
     @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(nullable = false)
     private Professional professional;
 
 

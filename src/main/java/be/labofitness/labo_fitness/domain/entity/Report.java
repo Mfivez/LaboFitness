@@ -2,10 +2,7 @@ package be.labofitness.labo_fitness.domain.entity;
 
 import be.labofitness.labo_fitness.domain.entity.base.BaseEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
@@ -13,13 +10,12 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity @Table(name = "reports")
+@Getter @Setter @ToString
 public class Report extends BaseEntity<Long> {
 
-    @Getter @Setter
     @Column(name = "description", nullable = false)
     private String description;
 
-    @Getter @Setter
     @Column(name = "date", nullable = false)
     private LocalDateTime date;
 

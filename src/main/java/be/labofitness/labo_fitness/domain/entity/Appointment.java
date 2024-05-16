@@ -10,22 +10,21 @@ import lombok.experimental.SuperBuilder;
 
 @NoArgsConstructor @AllArgsConstructor
 @Entity @Table(name = "appointments")
+@Getter @Setter @ToString
 public class Appointment extends BaseEntity<Long> {
 
-    @Getter @Setter
     @Column(name = "price", nullable = false)
     private int price;
 
-    @Getter @Setter
     @Column(name = "date", nullable = false)
     private LocalDateTime date;
 
     @ManyToOne
-    @Getter @Setter
+    @JoinColumn(nullable = false)
     private Client client;
 
     @ManyToOne
-    @Getter @Setter
+    @JoinColumn(nullable = false)
     private Physiotherapist physiotherapist;
 
 }

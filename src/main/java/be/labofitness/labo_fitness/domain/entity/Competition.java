@@ -18,27 +18,24 @@ import java.util.Set;
 @AllArgsConstructor
 public class Competition extends BaseEntity<Long> {
 
-    @Getter @Setter
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Getter @Setter
     @Column(name = "start_date", nullable = false)
     private LocalDateTime startDate;
 
-    @Getter @Setter
     @Column(name = "end_date", nullable = false)
     private LocalDateTime endDate;
 
-    @Getter @Setter
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable( name = "sports_competitions",
-                joinColumns = @JoinColumn(name = "competition_id"),
-                inverseJoinColumns = @JoinColumn(name = "sport_id"))
+                joinColumns = @JoinColumn(name = "competition_id", nullable = false),
+                inverseJoinColumns = @JoinColumn(name = "sport_id", nullable = false))
     private Set<Sport> sports;
 
-    @Getter @Setter
+
     @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(nullable = false)
     private Coach coach;
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "competitions")

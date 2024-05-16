@@ -27,16 +27,15 @@ public class ReportDataIni extends DataInitializer {
 
 
         if (reportRepository.count() == 0) {
-            // Recherche de deux utilisateurs pour le reporting
             User reportedUser = userRepository.findById(1L).orElseThrow();
             User complainant = userRepository.findById(1L).orElseThrow();
 
-            // Création d'un rapport
             Report report = new Report();
             report.setDescription("John a fait quelque chose de mal");
             report.setDate(LocalDateTime.now());
+            report.setComplainant(complainant);
+            report.setReportedUser(reportedUser);
 
-            // Enregistrement du rapport
             reportRepository.save(report);
         }
     }

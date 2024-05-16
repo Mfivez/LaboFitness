@@ -1,17 +1,21 @@
 package be.labofitness.labo_fitness.il.utils.initializer;
 import be.labofitness.labo_fitness.dal.repository.ClientRepository;
 import be.labofitness.labo_fitness.dal.repository.RoleRepository;
+import be.labofitness.labo_fitness.dal.repository.TrainingSessionRepository;
 import be.labofitness.labo_fitness.dal.repository.UserRepository;
 import be.labofitness.labo_fitness.domain.entity.Client;
 import be.labofitness.labo_fitness.domain.entity.Role;
+import be.labofitness.labo_fitness.domain.entity.TrainingSession;
 import be.labofitness.labo_fitness.domain.entity.User;
 import be.labofitness.labo_fitness.domain.entity.base.Adress;
 import be.labofitness.labo_fitness.domain.enums.Goal;
 import be.labofitness.labo_fitness.il.utils.initializer.base.DataInitializer;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Set;
 
 
@@ -22,6 +26,7 @@ public class ClientDataIni extends DataInitializer {
 
     private final RoleRepository roleRepository;
     private final ClientRepository clientRepository;
+    private final TrainingSessionRepository trainingSessionRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -31,9 +36,8 @@ public class ClientDataIni extends DataInitializer {
             Role client = roleRepository.findById(2L).orElseThrow(RuntimeException::new);
             Role admin = roleRepository.findById(6L).orElseThrow(RuntimeException::new);
             Role moderator = roleRepository.findById(5L).orElseThrow(RuntimeException::new);
-            Set<Role> rolesclient = Set.of(client);
-            Set<Role> rolesmodo = Set.of(client, moderator);
-            Goal goalUser = Goal.COMPETITION;
+            //TrainingSession trainingSession = trainingSessionRepository.findById(1L).orElseThrow(RuntimeException::new);
+
 
             Client client1 = new Client();
             client1.setName("John");
@@ -46,6 +50,8 @@ public class ClientDataIni extends DataInitializer {
             client1.setGoal(Goal.LEISURE_SPORT);
             client1.setLifeStyle(1.5);
             client1.setAge(30);
+            client1.setRoles(Set.of(client));
+            //client1.setTrainingSessions(List.of(trainingSession));
 
             Client client2 = new Client();
             client2.setName("Jane");
@@ -58,8 +64,9 @@ public class ClientDataIni extends DataInitializer {
             client2.setGoal(Goal.LIFESTYLE_IMPROVEMENT);
             client2.setLifeStyle(1.6);
             client2.setAge(25);
+            client2.setRoles(Set.of(client, moderator));
+            //client2.setTrainingSessions(List.of(trainingSession));
 
-            // Ajoutez plus de clients si nécessaire
 
             clientRepository.save(client1);
             clientRepository.save(client2);

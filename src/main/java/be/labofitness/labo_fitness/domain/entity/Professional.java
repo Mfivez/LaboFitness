@@ -13,10 +13,9 @@ import java.util.Set;
 @AllArgsConstructor
 @Table(name = "professionals")
 @Inheritance(strategy = InheritanceType.JOINED)
-
+@Getter @Setter @ToString
 public class Professional extends User{
 
-    @Getter @Setter
     @Column(name = "specialization")
     private String specialization;
 
@@ -26,7 +25,7 @@ public class Professional extends User{
      */
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "professional_locations_places",
-                joinColumns = @JoinColumn(name="id_professional"),
+                joinColumns = @JoinColumn(name="id_professional", nullable = false),
                 inverseJoinColumns = @JoinColumn(name = "id_location_place"))
     private Set<LocationPlace> locationPlace;
 

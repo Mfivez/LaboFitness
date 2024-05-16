@@ -10,9 +10,9 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity @Table(name = "location_places")
+@Getter @Setter @ToString
 public class LocationPlace extends BaseEntity<Long> {
 
-    @Getter @Setter
     @Embedded
     @AttributeOverrides({
             @AttributeOverride(name = "city", column = @Column(name = "location_place_city")),

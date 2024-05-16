@@ -27,7 +27,6 @@ public class RoleDataIni extends DataInitializer {
 
         if (roleRepository.count() == 0) {
             Role user = new Role(
-                    //"user",
                     "testUser"
             );
 
