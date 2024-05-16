@@ -40,6 +40,7 @@ public class PhysiotherapistDataIni extends DataInitializer {
             physiotherapist1.setSpecialization("Kine");
             physiotherapist1.setInami_number(1234568888);
             physiotherapist1.setRoles(Set.of(role));
+            physiotherapist1.setWorkSchedule("Du Lundi au Vendredi 9h - 17h");
 
             Physiotherapist physiotherapist2 = new Physiotherapist();
             physiotherapist2.setName("Jane");
@@ -50,6 +51,7 @@ public class PhysiotherapistDataIni extends DataInitializer {
             physiotherapist2.setSpecialization("Kine");
             physiotherapist2.setInami_number(1234578888);
             physiotherapist2.setRoles(Set.of(role));
+            physiotherapist2.setWorkSchedule("Du Lundi au Vendredi 9h - 17h");
 
             physiotherapistRepository.save(physiotherapist1);
             physiotherapistRepository.save(physiotherapist2);

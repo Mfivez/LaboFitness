@@ -44,6 +44,7 @@ public class CoachDataIni extends DataInitializer {
             coach1.setPrice_hour(50);
             coach1.setRoles(Set.of(coachRole));
             coach1.setLocationPlace(Set.of(coachLocationPlace));
+            coach1.setWorkSchedule("Du Lundi au Vendredi 9h - 17h");
 
             Coach coach2 = new Coach();
             coach2.setName("Yanis");
@@ -56,6 +57,7 @@ public class CoachDataIni extends DataInitializer {
             coach2.setPrice_hour(60);
             coach2.setRoles(Set.of(coachRole));
             coach2.setLocationPlace(Set.of(coachLocationPlace));
+            coach2.setWorkSchedule("Du Lundi au Vendredi 9h - 17h");
 
 
             coachRepository.save(coach1);

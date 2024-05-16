@@ -20,7 +20,7 @@ public class Professional extends User{
     private String specialization;
 
 
-    @Column(name = "work_schedule")
+    @Column(name = "work_schedule", nullable = false)
     private String workSchedule;
 
 

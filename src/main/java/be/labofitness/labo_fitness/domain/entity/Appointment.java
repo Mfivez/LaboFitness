@@ -8,7 +8,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-@NoArgsConstructor @AllArgsConstructor
+@AllArgsConstructor
 @Entity @Table(name = "appointments")
 @Getter @Setter @ToString
 public class Appointment extends BaseEntity<Long> {
@@ -26,5 +26,13 @@ public class Appointment extends BaseEntity<Long> {
     @ManyToOne
     @JoinColumn(nullable = false)
     private Physiotherapist physiotherapist;
+
+    @Column(name = "is_cancellable")
+    private boolean isCancellable;
+
+    //**** CONSTRUCTOR ****
+    public Appointment() {
+        this.isCancellable = true;
+    }
 
 }
