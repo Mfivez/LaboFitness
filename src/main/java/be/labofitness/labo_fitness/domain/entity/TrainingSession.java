@@ -10,12 +10,12 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name ="training_session")
 @AllArgsConstructor
-@NoArgsConstructor
 public class TrainingSession extends BaseEntity<Long> {
 
     @Column(name = "name", nullable = false)
@@ -47,4 +47,9 @@ public class TrainingSession extends BaseEntity<Long> {
     private Coach coach;
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "trainingSessions")
     private List<Client> clientSubscriber;
+
+
+    public TrainingSession() {
+        this.clientSubscriber = new ArrayList<>();
+    }
 }

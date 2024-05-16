@@ -13,7 +13,7 @@ import java.util.Set;
 @Entity @Table(name = "users")
 @Inheritance(strategy = InheritanceType.JOINED)
 @Getter @Setter @ToString
-@AllArgsConstructor @NoArgsConstructor
+@AllArgsConstructor
 public abstract class User extends BaseEntity<Long> {
 
     @Column(name = "name", nullable = false)
@@ -55,14 +55,10 @@ public abstract class User extends BaseEntity<Long> {
 
 
 
-
-    public User(String name, String lastName, String email, String password, Adress adress, Set<Role> roles) {
-        this.name = name;
-        this.last_name = lastName;
-        this.email = email;
-        this.password = password;
-        this.adress = adress;
-        this.roles = roles;
+    //**** CONSTRUCTOR ****
+    public User() {
         this.isActive = true;
+        this.roles = new HashSet<>();
     }
+
 }

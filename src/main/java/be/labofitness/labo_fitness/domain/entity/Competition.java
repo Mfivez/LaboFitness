@@ -9,12 +9,12 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name ="competitions")
 @Getter @Setter
-@NoArgsConstructor
 @AllArgsConstructor
 public class Competition extends BaseEntity<Long> {
 
@@ -43,4 +43,8 @@ public class Competition extends BaseEntity<Long> {
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "competitions")
     private Set<Client> client;
+
+    public Competition() {
+        this.client = new HashSet<>();
+    }
 }

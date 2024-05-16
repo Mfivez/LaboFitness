@@ -11,13 +11,12 @@ import lombok.experimental.SuperBuilder;
 
 @Entity
 @AllArgsConstructor
-@NoArgsConstructor
 @Table (name = "roles")
 public class Role extends BaseEntity<Long> {
 
     @Getter @Setter
     @Column(name = "name")
-    private String name = "user";
+    private String name;
 
     @Getter @Setter
     @Column(name = "description")
@@ -27,5 +26,8 @@ public class Role extends BaseEntity<Long> {
         this.description = description;
     }
 
+    public Role() {
+        this.name = "user";
+    }
 
 }

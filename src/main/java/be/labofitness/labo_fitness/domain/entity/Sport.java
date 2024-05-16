@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
-@NoArgsConstructor @AllArgsConstructor
+@AllArgsConstructor
 @Entity @Table(name = "sports")
 public class Sport extends BaseEntity<Long> {
 
@@ -25,6 +25,10 @@ public class Sport extends BaseEntity<Long> {
     @Column(name = "type", nullable = true)
     @Enumerated(EnumType.STRING)
     @Getter @Setter
-    private TypeSport typeSport = TypeSport.INDEFINI;
+    private TypeSport typeSport;
+
+    public Sport() {
+        this.typeSport = TypeSport.INDEFINI;
+    }
 
 }

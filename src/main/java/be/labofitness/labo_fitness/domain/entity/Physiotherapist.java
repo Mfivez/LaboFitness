@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+import java.util.HashSet;
+
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,8 +22,6 @@ public class Physiotherapist extends Professional{
     @Column(name = "inami_number")
     @Getter @Setter
     private Integer inami_number;
-
-
 
 
 }

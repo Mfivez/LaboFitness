@@ -12,7 +12,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@NoArgsConstructor @AllArgsConstructor
+@AllArgsConstructor
 @Entity @Table(name = "clients")
 public class Client extends User {
 
@@ -50,17 +50,11 @@ public class Client extends User {
                 inverseJoinColumns = @JoinColumn(name = "id_training_sessions",nullable = true))
     private List<TrainingSession> trainingSessions;
 
-
-    @Builder
-    public Client(String name, String last_name, String email, String password, Adress adress, Set<Role> roles, int weight, int height, Goal goal, double lifeStyle, int age) {
-        super(name, last_name, email, password, adress, roles);
-        this.weight = weight;
-        this.height = height;
-        this.goal = goal;
-        this.lifeStyle = lifeStyle;
-        this.age = age;
+    //**** CONSTRUCTOR ****
+    public Client() {
         this.competitions = new ArrayList<>();
         this.trainingSessions = new ArrayList<>();
     }
+
 
 }

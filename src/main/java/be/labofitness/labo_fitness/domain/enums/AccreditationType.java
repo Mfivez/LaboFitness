@@ -1,8 +1,8 @@
 package be.labofitness.labo_fitness.domain.enums;
 
 public enum AccreditationType {
-    Licence,
-    Master,
+    LICENCE,
+    MASTER,
     PHD,
     BREVET
 }

@@ -6,10 +6,11 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@NoArgsConstructor @AllArgsConstructor
+@AllArgsConstructor
 @Table(name = "professionals")
 @Inheritance(strategy = InheritanceType.JOINED)
 
@@ -30,6 +31,9 @@ public class Professional extends User{
     private Set<LocationPlace> locationPlace;
 
 
+    public Professional() {
+        locationPlace = new HashSet<>();
+    }
 
 //    public Professional(String name, String last_name, String email, String password, Adress adress, boolean isActive, Set<Role> roles, String specialization, Set<LocationPlace> locationPlace) {
 //        super(name, last_name, email, password, adress, isActive, roles);
@@ -42,10 +46,4 @@ public class Professional extends User{
 //        super(name, lastName, email, password, adress, roles);
 //        this.specialization = specialization;
 //    }
-
-    public Professional(String name, String lastName, String email, String password, Adress adress, Set<Role> roles, String specialization, Set<LocationPlace> locationPlace) {
-        super(name, lastName, email, password, adress, roles);
-        this.specialization = specialization;
-        this.locationPlace = locationPlace;
-    }
 }
