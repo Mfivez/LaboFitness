@@ -33,8 +33,8 @@ public class AppointmentDataIni extends DataInitializer {
 
 
         if (appointmentRepository.count() == 0) {
-            Client client = clientRepository.findById(1L).orElseThrow();
-            Physiotherapist physiotherapist = physiotherapistRepository.findById(5L).orElseThrow();
+            Client client = clientRepository.findById(5L).orElseThrow();
+            Physiotherapist physiotherapist = physiotherapistRepository.findById(4L).orElseThrow();
 
             Appointment appointment1 = new Appointment();
             appointment1.setPrice(50);
@@ -51,6 +51,7 @@ public class AppointmentDataIni extends DataInitializer {
 
             appointmentRepository.save(appointment1);
             appointmentRepository.save(appointment2);
+
         }
     }
 }

@@ -34,7 +34,7 @@ public class CompetitionDataIni extends DataInitializer {
 
 
         if (competitionRepository.count() == 0) {
-            Coach coach = coachRepository.findById(4L).orElseThrow();
+            Coach coach = coachRepository.findById(1L).orElseThrow();
             Sport sport = sportRepository.findById(1L).orElseThrow();
             Sport sport2 = sportRepository.findById(2L).orElseThrow();
 
@@ -45,8 +45,8 @@ public class CompetitionDataIni extends DataInitializer {
             competition1.setCoach(coach);
             competition1.setSports(Set.of(sport, sport2));
 
-            competitionRepository.save(competition1);
 
+            competitionRepository.save(competition1);
         }
     }
 }

@@ -36,6 +36,7 @@ public class TrainingSessionDataIni extends DataInitializer {
 
 
         if (trainingSessionRepository.count() == 0) {
+            /**
             //Client client = clientRepository.findById(1L).orElseThrow();
             Coach coach = coachRepository.findById(4L).orElseThrow();
 
@@ -61,6 +62,7 @@ public class TrainingSessionDataIni extends DataInitializer {
 
             trainingSessionRepository.save(session1);
             trainingSessionRepository.save(session2);
+             */
         }
     }
 
