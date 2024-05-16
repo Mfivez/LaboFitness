@@ -20,6 +20,10 @@ public class Professional extends User{
     private String specialization;
 
 
+    @Column(name = "work_schedule")
+    private String workSchedule;
+
+
     /**
      * Pour cette relation, nous passons en unidirectionnelle, car on se moque de savoir depuis location place, à qui appartient le bâtiment.
      */
