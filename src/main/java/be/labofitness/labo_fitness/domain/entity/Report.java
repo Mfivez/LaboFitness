@@ -7,7 +7,6 @@ import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
 
-@NoArgsConstructor
 @AllArgsConstructor
 @Entity @Table(name = "reports")
 @Getter @Setter @ToString
@@ -26,4 +25,11 @@ public class Report extends BaseEntity<Long> {
     @ManyToOne
     @JoinColumn(name = "id_complainant_user",nullable = false)
     private User complainant;
+
+    @Column(name = "is_confirme", nullable = false)
+    private boolean isConfirmed;
+
+    public Report() {
+        this.isConfirmed = false;
+    }
 }
