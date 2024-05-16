@@ -13,8 +13,6 @@ import java.time.LocalDateTime;
 
 @Component
 public class ReportDataIni extends DataInitializer {
-
-
     private final ReportRepository reportRepository;
     private final UserRepository userRepository;
 

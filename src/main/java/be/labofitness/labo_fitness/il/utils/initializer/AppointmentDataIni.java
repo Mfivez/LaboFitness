@@ -7,6 +7,8 @@ import be.labofitness.labo_fitness.domain.entity.Appointment;
 import be.labofitness.labo_fitness.il.utils.initializer.base.DataInitializer;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+
 @Component
 public class AppointmentDataIni extends DataInitializer {
 
@@ -23,11 +25,16 @@ public class AppointmentDataIni extends DataInitializer {
 
 
         if (appointmentRepository.count() == 0) {
-            Appointment a = new Appointment(
-            );
+            Appointment appointment1 = new Appointment();
+            appointment1.setPrice(50);
+            appointment1.setDate(LocalDateTime.now());
 
-            //appointmentRepository.save(a);
+            Appointment appointment2 = new Appointment();
+            appointment2.setPrice(70);
+            appointment2.setDate(LocalDateTime.now().plusDays(1));
+
+            appointmentRepository.save(appointment1);
+            appointmentRepository.save(appointment2);
         }
     }
-
 }

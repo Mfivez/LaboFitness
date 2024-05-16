@@ -46,5 +46,6 @@ public class Competition extends BaseEntity<Long> {
 
     public Competition() {
         this.client = new HashSet<>();
+        this.sports = new HashSet<>();
     }
 }

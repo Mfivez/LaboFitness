@@ -35,45 +35,34 @@ public class ClientDataIni extends DataInitializer {
             Set<Role> rolesmodo = Set.of(client, moderator);
             Goal goalUser = Goal.COMPETITION;
 
-            Client client1 = Client.builder()
-                            .name("James")
-                            .last_name("Potter")
-                            .age(15)
-                            .adress(new Adress("rue", "ville","12","234"))
-                            .password("AAAAAAAAA")
-                            .email("James")
-                            .goal(goalUser)
-                            .roles(rolesclient)
-                            .height(145)
-                            .weight(77)
-                            .lifeStyle(2.2)
-                            .build();
+            Client client1 = new Client();
+            client1.setName("John");
+            client1.setLast_name("Doe");
+            client1.setEmail("john.doe@example.com");
+            client1.setPassword("password");
+            client1.setAdress(new Adress("123 Street",  "2", "City", "12345"));
+            client1.setWeight(70);
+            client1.setHeight(180);
+            client1.setGoal(Goal.LEISURE_SPORT);
+            client1.setLifeStyle(1.5);
+            client1.setAge(30);
 
-            Client client2 = Client.builder()
-                    .name("Henri")
-                    .last_name("Jacques")
-                    .age(15)
-                    .adress(new Adress("rue2", "ville2","122","11"))
-                    .password("BBBBBBB")
-                    .email("henri@gmail.com")
-                    .goal(goalUser)
-                    .roles(rolesmodo)
-                    .height(185)
-                    .weight(65)
-                    .lifeStyle(2.2)
-                    .build();
+            Client client2 = new Client();
+            client2.setName("Jane");
+            client2.setLast_name("Smith");
+            client2.setEmail("jane.smith@example.com");
+            client2.setPassword("password");
+            client2.setAdress(new Adress("456 Avenue", "2","Town", "67890"));
+            client2.setWeight(65);
+            client2.setHeight(170);
+            client2.setGoal(Goal.LIFESTYLE_IMPROVEMENT);
+            client2.setLifeStyle(1.6);
+            client2.setAge(25);
 
-            clientRepository.save(client2);
+            // Ajoutez plus de clients si nécessaire
+
             clientRepository.save(client1);
-
-
+            clientRepository.save(client2);
         }
-
-
-
-
-
     }
-
-
 }

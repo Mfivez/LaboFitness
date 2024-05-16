@@ -24,15 +24,16 @@ public class LocationPlaceDataIni extends DataInitializer {
     public void run(String... args) throws Exception {
         super.run(args);
 
-
         if (locationPlaceRepository.count() == 0) {
-            LocationPlace locationPlacetest = LocationPlace.builder()
-                    .adress(new Adress("RueLocationPlace1","12A", "LocationPlaceCity", "AAAEA"))
-                    .build();
+            Adress adress1 = new Adress("123 Street", "B", "City", "12345");
+            LocationPlace locationPlace1 = new LocationPlace(adress1);
 
-            locationPlaceRepository.save(locationPlacetest);
+            Adress adress2 = new Adress("456 Avenue", "B",  "Town", "67890");
+            LocationPlace locationPlace2 = new LocationPlace(adress2);
 
+
+            locationPlaceRepository.save(locationPlace1);
+            locationPlaceRepository.save(locationPlace2);
         }
     }
-
 }

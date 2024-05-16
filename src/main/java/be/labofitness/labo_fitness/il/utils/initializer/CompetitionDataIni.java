@@ -8,6 +8,8 @@ import be.labofitness.labo_fitness.il.utils.initializer.base.DataInitializer;
 import lombok.Builder;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+
 @Component
 public class CompetitionDataIni extends DataInitializer {
 
@@ -24,11 +26,12 @@ public class CompetitionDataIni extends DataInitializer {
 
 
         if (competitionRepository.count() == 0) {
-            Competition a = new Competition(
-            );
+            Competition competition1 = new Competition();
+            competition1.setName("Marathon");
+            competition1.setStartDate(LocalDateTime.now());
+            competition1.setEndDate(LocalDateTime.now().plusDays(7));
 
-            //competitionRepository.save(a);
+            competitionRepository.save(competition1);
         }
     }
-
 }

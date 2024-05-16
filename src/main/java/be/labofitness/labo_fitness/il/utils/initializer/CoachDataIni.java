@@ -35,41 +35,28 @@ public class CoachDataIni extends DataInitializer {
             Set<LocationPlace> locationPlaceCoach = Set.of(cachLocationPlace);
             Set<Role> roleCoach = Set.of(coachRole);
 
-            Coach coach1 = Coach.builder()
-                    .name("Rogue")
-                    .last_name("Severus")
-                    .email("lepasmechant@gmail.com")
-                    .password("vivevoldermort")
-                    .roles(roleCoach)
-                    .adress(new Adress("rue coach", "12","ville coach","zipcoach"))
-                    .is_remote(false)
-                    .price_hour(10)
-                    .specialization("Course")
-                    .build();
+            Coach coach1 = new Coach();
+            coach1.setName("John");
+            coach1.setLast_name("Doe");
+            coach1.setEmail("john.doe@example.com");
+            coach1.setPassword("password");
+            coach1.setAdress(new Adress("123 Street", "2", "City", "12345"));
+            coach1.setSpecialization("Fitness");
+            coach1.setPrice_hour(50);
 
-            Coach coach2 = Coach.builder()
-                    .name("Albus")
-                    .last_name("Dumbledore")
-                    .email("letresgentil@gmail.com")
-                    .password("mortavoldemort")
-                    .roles(roleCoach)
-                    .adress(new Adress("rue coach", "12","ville coach","zipcoach"))
-                    .is_remote(true)
-                    .price_hour(1000)
-                    .specialization("Tennis")
-                    .locationPlace(locationPlaceCoach)
-                    .build();
+            Coach coach2 = new Coach();
+            coach2.setName("Jane");
+            coach2.setLast_name("Smith");
+            coach2.setEmail("jane.smith@example.com");
+            coach2.setPassword("password");
+            coach2.setAdress(new Adress("456 Avenue", "2","Town", "67890"));
+            coach2.setSpecialization("Yoga");
+            coach2.set_remote(true);
+            coach2.setPrice_hour(60);
 
 
             coachRepository.save(coach1);
             coachRepository.save(coach2);
-
-
         }
-
-
-
-
     }
-
 }

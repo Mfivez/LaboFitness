@@ -21,22 +21,17 @@ public class AccreditationDataIni extends DataInitializer {
     @Override
     public void run(String... args) throws Exception {
         super.run(args);
-
-        /**
         if (accreditationRepository.count() == 0) {
+            Accreditation accreditation1 = new Accreditation();
+            accreditation1.setType(AccreditationType.LICENCE);
+            accreditation1.setDescription("Certification in fitness training");
 
+            Accreditation accreditation2 = new Accreditation();
+            accreditation2.setType(AccreditationType.MASTER);
+            accreditation2.setDescription("Diploma in nutrition");
 
-
-             *             Accreditation a = Accreditation.builder()
-             *                     .type(AccreditationType.Master)
-             *                     .description("Ceci est une description")
-             *                     .professional()
-             *                     .build();
-             *
-             *             //accreditationRepository.save(a);
-             *         }
-             */
-
+            accreditationRepository.save(accreditation1);
+            accreditationRepository.save(accreditation2);
+        }
     }
-
 }

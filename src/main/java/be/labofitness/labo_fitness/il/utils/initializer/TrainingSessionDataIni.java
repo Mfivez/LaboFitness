@@ -3,9 +3,13 @@ package be.labofitness.labo_fitness.il.utils.initializer;
 import be.labofitness.labo_fitness.dal.repository.SportRepository;
 import be.labofitness.labo_fitness.dal.repository.TrainingSessionRepository;
 import be.labofitness.labo_fitness.domain.entity.Sport;
+import be.labofitness.labo_fitness.domain.entity.TrainingSession;
+import be.labofitness.labo_fitness.domain.enums.RecommendedLevel;
 import be.labofitness.labo_fitness.il.utils.initializer.base.DataInitializer;
 
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDateTime;
 
 @Component
 public class TrainingSessionDataIni extends DataInitializer {
@@ -23,10 +27,24 @@ public class TrainingSessionDataIni extends DataInitializer {
 
 
         if (trainingSessionRepository.count() == 0) {
-            Sport a = new Sport(
-            );
+            TrainingSession session1 = new TrainingSession();
+            session1.setName("Session 1");
+            session1.setDuration(60);
+            session1.setStart_date(LocalDateTime.now());
+            session1.setEnd_date(LocalDateTime.now().plusHours(1));
+            session1.setDescription("This is session 1");
+            session1.setRecommended_level(RecommendedLevel.AMATEUR);
 
-            //locationPlaceRepository.save(a);
+            TrainingSession session2 = new TrainingSession();
+            session2.setName("Session 2");
+            session2.setDuration(90);
+            session2.setStart_date(LocalDateTime.now().plusDays(1));
+            session2.setEnd_date(LocalDateTime.now().plusDays(1).plusHours(1));
+            session2.setDescription("This is session 2");
+            session2.setRecommended_level(RecommendedLevel.GIGACHAD);
+
+            trainingSessionRepository.save(session1);
+            trainingSessionRepository.save(session2);
         }
     }
 
