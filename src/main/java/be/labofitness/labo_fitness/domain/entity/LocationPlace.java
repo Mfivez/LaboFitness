@@ -4,16 +4,13 @@ package be.labofitness.labo_fitness.domain.entity;
 import be.labofitness.labo_fitness.domain.entity.base.Adress;
 import be.labofitness.labo_fitness.domain.entity.base.BaseEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity @Table(name = "location_places")
-
+@Builder
 public class LocationPlace extends BaseEntity<Long> {
 
     @Getter @Setter

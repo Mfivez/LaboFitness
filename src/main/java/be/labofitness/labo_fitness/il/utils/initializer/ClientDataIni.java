@@ -28,9 +28,11 @@ public class ClientDataIni extends DataInitializer {
         super.run(args);
         if (clientRepository.count() == 0) {
 
-            Role client = roleRepository.findById(4L).orElseThrow(RuntimeException::new);
+            Role client = roleRepository.findById(2L).orElseThrow(RuntimeException::new);
             Role admin = roleRepository.findById(6L).orElseThrow(RuntimeException::new);
-            Set<Role> roles = Set.of(client);
+            Role moderator = roleRepository.findById(5L).orElseThrow(RuntimeException::new);
+            Set<Role> rolesclient = Set.of(client);
+            Set<Role> rolesmodo = Set.of(client, moderator);
             Goal goalUser = Goal.COMPETITION;
 
             Client client1 = Client.builder()
@@ -41,17 +43,29 @@ public class ClientDataIni extends DataInitializer {
                             .password("AAAAAAAAA")
                             .email("James")
                             .goal(goalUser)
-                            .roles(roles)
+                            .roles(rolesclient)
                             .height(145)
                             .weight(77)
                             .lifeStyle(2.2)
                             .build();
 
+            Client client2 = Client.builder()
+                    .name("Henri")
+                    .last_name("Jacques")
+                    .age(15)
+                    .adress(new Adress("rue2", "ville2","122","11"))
+                    .password("BBBBBBB")
+                    .email("henri@gmail.com")
+                    .goal(goalUser)
+                    .roles(rolesmodo)
+                    .height(185)
+                    .weight(65)
+                    .lifeStyle(2.2)
+                    .build();
 
-
+            clientRepository.save(client2);
             clientRepository.save(client1);
 
-            System.out.println(client1);
 
         }
 

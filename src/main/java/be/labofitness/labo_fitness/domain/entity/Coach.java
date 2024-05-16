@@ -12,7 +12,6 @@ import java.util.Set;
 @NoArgsConstructor @AllArgsConstructor
 @Entity
 @Table(name = "Coaches")
-
 public class Coach extends Professional{
 
     @Getter @Setter
@@ -30,7 +29,6 @@ public class Coach extends Professional{
      * @param email de l'user coach
      * @param password de l'user coach
      * @param adress de l'user coach
-     * @param isActive représente l'état du compte (actif, désactivé)
      * @param roles du coach ( modo admin ...)
      * @param specialization le domaine d'expertise
      * @param locationPlace le lieu de travail
@@ -38,9 +36,16 @@ public class Coach extends Professional{
      * @param is_remote donne cours en distanciel ou pas
      */
     @Builder
-    public Coach(String name, String last_name, String email, String password, Adress adress, boolean isActive, Set<Role> roles,String specialization, Set<LocationPlace> locationPlace, int price_hour, boolean is_remote) {
-        super(name, last_name, email, password, adress, isActive, roles, specialization, locationPlace);
+    public Coach(String name, String last_name, String email, String password, Adress adress, Set<Role> roles,String specialization, Set<LocationPlace> locationPlace, int price_hour, boolean is_remote) {
+        super(name, last_name, email, password, adress,roles, specialization, locationPlace);
         this.price_hour = price_hour;
         this.is_remote = is_remote;
     }
+
+//    @Builder //absolument pas nécessaire
+//    public Coach(String name, String lastName, String email, String password, Adress adress, Set<Role> roles, String specialization, boolean is_remote, int price_hour) {
+//        super(name, lastName, email, password, adress, roles, specialization);
+//        this.is_remote = is_remote;
+//        this.price_hour = price_hour;
+//    }
 }

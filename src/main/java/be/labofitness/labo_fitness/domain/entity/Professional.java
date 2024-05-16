@@ -3,10 +3,7 @@ package be.labofitness.labo_fitness.domain.entity;
 import be.labofitness.labo_fitness.domain.entity.base.Adress;
 import com.fasterxml.jackson.annotation.JsonKey;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.util.Set;
@@ -33,8 +30,21 @@ public class Professional extends User{
     private Set<LocationPlace> locationPlace;
 
 
-    public Professional(String name, String last_name, String email, String password, Adress adress, boolean isActive, Set<Role> roles, String specialization, Set<LocationPlace> locationPlace) {
-        super(name, last_name, email, password, adress, isActive, roles);
+
+//    public Professional(String name, String last_name, String email, String password, Adress adress, boolean isActive, Set<Role> roles, String specialization, Set<LocationPlace> locationPlace) {
+//        super(name, last_name, email, password, adress, isActive, roles);
+//        this.specialization = specialization;
+//        this.locationPlace = locationPlace;
+//    }
+
+
+//    public Professional(String name, String lastName, String email, String password, Adress adress, Set<Role> roles, String specialization) {
+//        super(name, lastName, email, password, adress, roles);
+//        this.specialization = specialization;
+//    }
+
+    public Professional(String name, String lastName, String email, String password, Adress adress, Set<Role> roles, String specialization, Set<LocationPlace> locationPlace) {
+        super(name, lastName, email, password, adress, roles);
         this.specialization = specialization;
         this.locationPlace = locationPlace;
     }

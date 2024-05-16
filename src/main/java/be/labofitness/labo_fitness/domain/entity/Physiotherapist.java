@@ -22,4 +22,6 @@ public class Physiotherapist extends Professional{
     private Integer inami_number;
 
 
+
+
 }
