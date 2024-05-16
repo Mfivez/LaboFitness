@@ -31,6 +31,7 @@ public abstract class User extends BaseEntity<Long> {
     private String password;
 
 
+
     @Embedded
     @AttributeOverrides({
             @AttributeOverride(name = "city", column = @Column(name = "user_city")),
@@ -43,6 +44,9 @@ public abstract class User extends BaseEntity<Long> {
 
     @Column(name = "is_active")
     private boolean isActive;
+
+    @Column(name = "is_mail_active")
+    private boolean isMailActive;
 
 
     @ManyToMany
@@ -58,6 +62,7 @@ public abstract class User extends BaseEntity<Long> {
     //**** CONSTRUCTOR ****
     public User() {
         this.isActive = true;
+        this.isMailActive = false;
         this.roles = new HashSet<>();
     }
 
