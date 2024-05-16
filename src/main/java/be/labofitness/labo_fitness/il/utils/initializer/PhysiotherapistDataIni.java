@@ -26,6 +26,7 @@ public class PhysiotherapistDataIni extends DataInitializer {
             );
 
             //physiotherapistRepository.save(a);
+            //TODO
         }
     }
 
