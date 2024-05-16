@@ -21,7 +21,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-@Order(11)
+@Order(7)
 public class TrainingSessionDataIni extends DataInitializer {
 
 
@@ -36,9 +36,8 @@ public class TrainingSessionDataIni extends DataInitializer {
 
 
         if (trainingSessionRepository.count() == 0) {
-            /**
-            //Client client = clientRepository.findById(1L).orElseThrow();
-            Coach coach = coachRepository.findById(4L).orElseThrow();
+
+            Coach coach = coachRepository.findById(1L).orElseThrow();
 
             TrainingSession session1 = new TrainingSession();
             session1.setName("Session 1");
@@ -47,7 +46,6 @@ public class TrainingSessionDataIni extends DataInitializer {
             session1.setEnd_date(LocalDateTime.now().plusHours(1));
             session1.setDescription("This is session 1");
             session1.setRecommended_level(RecommendedLevel.AMATEUR);
-            //session1.setClientSubscriber(List.of(client));
             session1.setCoach(coach);
 
             TrainingSession session2 = new TrainingSession();
@@ -57,12 +55,11 @@ public class TrainingSessionDataIni extends DataInitializer {
             session2.setEnd_date(LocalDateTime.now().plusDays(1).plusHours(1));
             session2.setDescription("This is session 2");
             session2.setRecommended_level(RecommendedLevel.GIGACHAD);
-            //session2.setClientSubscriber(List.of(client)); // NON
             session2.setCoach(coach); // NULLABLE AND CREATE AN ATTRIBUTE CREATE IF THE SESSION IS JUST A FILE
 
             trainingSessionRepository.save(session1);
             trainingSessionRepository.save(session2);
-             */
+
         }
     }
 

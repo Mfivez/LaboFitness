@@ -32,7 +32,7 @@ public class ClientDataIni extends DataInitializer {
             Role admin = roleRepository.findById(6L).orElseThrow(RuntimeException::new);
             Role moderator = roleRepository.findById(5L).orElseThrow(RuntimeException::new);
             Competition competition = competitionRepository.findById(1L).orElseThrow(RuntimeException::new);
-            //TrainingSession trainingSession = trainingSessionRepository.findById(1L).orElseThrow(RuntimeException::new);
+            TrainingSession trainingSession = trainingSessionRepository.findById(1L).orElseThrow(RuntimeException::new);
 
 
             Client client1 = new Client();
@@ -48,7 +48,7 @@ public class ClientDataIni extends DataInitializer {
             client1.setAge(30);
             client1.setRoles(Set.of(client));
             client1.setCompetitions(List.of(competition));
-            //client1.setTrainingSessions(List.of(trainingSession));
+            client1.setTrainingSessions(List.of(trainingSession));
 
             Client client2 = new Client();
             client2.setName("Jane");
@@ -62,7 +62,7 @@ public class ClientDataIni extends DataInitializer {
             client2.setLifeStyle(1.6);
             client2.setAge(25);
             client2.setRoles(Set.of(client, moderator));
-            //client2.setTrainingSessions(List.of(trainingSession));
+            client2.setTrainingSessions(List.of(trainingSession));
 
 
             clientRepository.save(client1);

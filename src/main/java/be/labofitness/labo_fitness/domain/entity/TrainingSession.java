@@ -39,11 +39,6 @@ public class TrainingSession extends BaseEntity<Long> {
     @JoinColumn(nullable = false)
     private Coach coach;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "trainingSessions")
-    private List<Client> clientSubscriber;
 
-
-    public TrainingSession() {
-        this.clientSubscriber = new ArrayList<>();
-    }
+    public TrainingSession() {}
 }
