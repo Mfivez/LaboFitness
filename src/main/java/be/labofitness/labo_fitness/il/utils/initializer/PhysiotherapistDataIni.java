@@ -8,14 +8,15 @@ import be.labofitness.labo_fitness.domain.entity.Role;
 import be.labofitness.labo_fitness.domain.entity.base.Adress;
 import be.labofitness.labo_fitness.il.utils.initializer.base.DataInitializer;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
 
 @Component
-@Order(4)
 @RequiredArgsConstructor
+@Order(5)
 public class PhysiotherapistDataIni extends DataInitializer {
 
 

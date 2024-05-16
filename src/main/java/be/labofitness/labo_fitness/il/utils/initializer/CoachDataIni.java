@@ -11,6 +11,7 @@ import be.labofitness.labo_fitness.domain.entity.User;
 import be.labofitness.labo_fitness.domain.entity.base.Adress;
 import be.labofitness.labo_fitness.il.utils.initializer.base.DataInitializer;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -18,7 +19,7 @@ import java.util.Set;
 
 @Component
 @RequiredArgsConstructor
-@Order(3)
+@Order(4)
 public class CoachDataIni extends DataInitializer {
 
     private final RoleRepository roleRepository;
@@ -29,7 +30,6 @@ public class CoachDataIni extends DataInitializer {
     public void run(String... args) throws Exception {
         super.run(args);
         if (coachRepository.count() == 0) {
-
             Role coachRole = roleRepository.findById(4L).orElseThrow(RuntimeException::new);
             LocationPlace coachLocationPlace = locationRepository.findById(1L).orElseThrow(RuntimeException::new);
 

@@ -1,12 +1,6 @@
 package be.labofitness.labo_fitness.il.utils.initializer;
-import be.labofitness.labo_fitness.dal.repository.ClientRepository;
-import be.labofitness.labo_fitness.dal.repository.RoleRepository;
-import be.labofitness.labo_fitness.dal.repository.TrainingSessionRepository;
-import be.labofitness.labo_fitness.dal.repository.UserRepository;
-import be.labofitness.labo_fitness.domain.entity.Client;
-import be.labofitness.labo_fitness.domain.entity.Role;
-import be.labofitness.labo_fitness.domain.entity.TrainingSession;
-import be.labofitness.labo_fitness.domain.entity.User;
+import be.labofitness.labo_fitness.dal.repository.*;
+import be.labofitness.labo_fitness.domain.entity.*;
 import be.labofitness.labo_fitness.domain.entity.base.Adress;
 import be.labofitness.labo_fitness.domain.enums.Goal;
 import be.labofitness.labo_fitness.il.utils.initializer.base.DataInitializer;
@@ -21,11 +15,12 @@ import java.util.Set;
 
 @Component
 @RequiredArgsConstructor
-@Order(2)
+@Order(8)
 public class ClientDataIni extends DataInitializer {
 
     private final RoleRepository roleRepository;
     private final ClientRepository clientRepository;
+    private final CompetitionRepository competitionRepository;
     private final TrainingSessionRepository trainingSessionRepository;
 
     @Override
@@ -36,6 +31,7 @@ public class ClientDataIni extends DataInitializer {
             Role client = roleRepository.findById(2L).orElseThrow(RuntimeException::new);
             Role admin = roleRepository.findById(6L).orElseThrow(RuntimeException::new);
             Role moderator = roleRepository.findById(5L).orElseThrow(RuntimeException::new);
+            Competition competition = competitionRepository.findById(1L).orElseThrow(RuntimeException::new);
             //TrainingSession trainingSession = trainingSessionRepository.findById(1L).orElseThrow(RuntimeException::new);
 
 
@@ -51,6 +47,7 @@ public class ClientDataIni extends DataInitializer {
             client1.setLifeStyle(1.5);
             client1.setAge(30);
             client1.setRoles(Set.of(client));
+            client1.setCompetitions(List.of(competition));
             //client1.setTrainingSessions(List.of(trainingSession));
 
             Client client2 = new Client();

@@ -7,12 +7,16 @@ import be.labofitness.labo_fitness.domain.entity.Professional;
 import be.labofitness.labo_fitness.domain.entity.Report;
 import be.labofitness.labo_fitness.domain.entity.User;
 import be.labofitness.labo_fitness.il.utils.initializer.base.DataInitializer;
+import org.springframework.context.annotation.DependsOn;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 
 @Component
+@Order(10)
 public class ReportDataIni extends DataInitializer {
+
     private final ReportRepository reportRepository;
     private final UserRepository userRepository;
 

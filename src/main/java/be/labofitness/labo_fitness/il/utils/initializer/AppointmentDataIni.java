@@ -10,6 +10,7 @@ import be.labofitness.labo_fitness.domain.entity.Client;
 import be.labofitness.labo_fitness.domain.entity.Physiotherapist;
 import be.labofitness.labo_fitness.il.utils.initializer.base.DataInitializer;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -17,7 +18,7 @@ import java.time.LocalDateTime;
 
 @Component
 @RequiredArgsConstructor
-@Order(6)
+@Order(9)
 public class AppointmentDataIni extends DataInitializer {
 
 

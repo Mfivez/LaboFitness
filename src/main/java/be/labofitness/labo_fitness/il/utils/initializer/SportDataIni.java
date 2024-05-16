@@ -7,9 +7,11 @@ import be.labofitness.labo_fitness.domain.entity.Sport;
 import be.labofitness.labo_fitness.domain.enums.TypeSport;
 import be.labofitness.labo_fitness.il.utils.initializer.base.DataInitializer;
 import lombok.Builder;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 @Component
+@Order(1)
 public class SportDataIni extends DataInitializer {
 
     private final SportRepository sportRepository;
