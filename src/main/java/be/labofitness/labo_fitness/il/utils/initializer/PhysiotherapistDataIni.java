@@ -12,6 +12,7 @@ import org.springframework.context.annotation.DependsOn;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Component
@@ -41,6 +42,7 @@ public class PhysiotherapistDataIni extends DataInitializer {
             physiotherapist1.setInami_number(1234568888);
             physiotherapist1.setRoles(Set.of(role));
             physiotherapist1.setWorkSchedule("Du Lundi au Vendredi 9h - 17h");
+            physiotherapist1.setBirthdate(LocalDateTime.now());
 
             Physiotherapist physiotherapist2 = new Physiotherapist();
             physiotherapist2.setName("Jane");
@@ -52,6 +54,7 @@ public class PhysiotherapistDataIni extends DataInitializer {
             physiotherapist2.setInami_number(1234578888);
             physiotherapist2.setRoles(Set.of(role));
             physiotherapist2.setWorkSchedule("Du Lundi au Vendredi 9h - 17h");
+            physiotherapist2.setBirthdate(LocalDateTime.now());
 
             physiotherapistRepository.save(physiotherapist1);
             physiotherapistRepository.save(physiotherapist2);
