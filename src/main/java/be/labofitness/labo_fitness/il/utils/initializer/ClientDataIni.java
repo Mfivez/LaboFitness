@@ -7,6 +7,7 @@ import be.labofitness.labo_fitness.il.utils.initializer.base.DataInitializer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -24,6 +25,8 @@ public class ClientDataIni extends DataInitializer {
     private final ClientRepository clientRepository;
     private final CompetitionRepository competitionRepository;
     private final TrainingSessionRepository trainingSessionRepository;
+    private final PasswordEncoder passwordEncoder;
+
 
     @Override
     public void run(String... args) throws Exception {
@@ -41,7 +44,7 @@ public class ClientDataIni extends DataInitializer {
             client1.setName("John");
             client1.setLast_name("Doe");
             client1.setEmail("john.doe@example.com");
-            client1.setPassword("password");
+            client1.setPassword(passwordEncoder.encode("password"));
             client1.setAdress(new Adress("123 Street",  "2", "City", "12345"));
             client1.setWeight(70);
             client1.setHeight(180);
