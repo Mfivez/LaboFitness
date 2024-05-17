@@ -14,7 +14,7 @@ import java.util.Set;
 @Table(name = "professionals")
 @Inheritance(strategy = InheritanceType.JOINED)
 @Getter @Setter @ToString
-public class Professional extends User{
+public abstract class Professional extends User{
 
     @Column(name = "specialization")
     private String specialization;
