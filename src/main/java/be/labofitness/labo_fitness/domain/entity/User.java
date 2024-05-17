@@ -2,6 +2,7 @@ package be.labofitness.labo_fitness.domain.entity;
 
 import be.labofitness.labo_fitness.domain.entity.base.Adress;
 import be.labofitness.labo_fitness.domain.entity.base.BaseEntity;
+import be.labofitness.labo_fitness.domain.enums.Gender;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -29,6 +30,13 @@ public abstract class User extends BaseEntity<Long> {
 
     @Column(name = "password", nullable = false)
     private String password;
+
+    @Column(name = "gender",nullable = true)
+    private Gender gender;
+
+    @Column(name ="birthdate",nullable = false)
+    private LocalDateTime birthdate;
+
 
 
 
@@ -64,6 +72,7 @@ public abstract class User extends BaseEntity<Long> {
         this.isActive = true;
         this.isMailActive = false;
         this.roles = new HashSet<>();
+        this.gender = Gender.UNDEFINED;
     }
 
 }

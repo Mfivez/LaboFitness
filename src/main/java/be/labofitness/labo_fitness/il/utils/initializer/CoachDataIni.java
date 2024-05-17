@@ -15,6 +15,8 @@ import org.springframework.context.annotation.DependsOn;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.Set;
 
 @Component
@@ -25,6 +27,7 @@ public class CoachDataIni extends DataInitializer {
     private final RoleRepository roleRepository;
     private final CoachRepository coachRepository;
     private final LocationRepository locationRepository;
+    private final int iniTime = 0;
 
     @Override
     public void run(String... args) throws Exception {
@@ -45,6 +48,7 @@ public class CoachDataIni extends DataInitializer {
             coach1.setRoles(Set.of(coachRole));
             coach1.setLocationPlace(Set.of(coachLocationPlace));
             coach1.setWorkSchedule("Du Lundi au Vendredi 9h - 17h");
+            coach1.setBirthdate(LocalDateTime.now());
 
             Coach coach2 = new Coach();
             coach2.setName("Yanis");
@@ -58,7 +62,7 @@ public class CoachDataIni extends DataInitializer {
             coach2.setRoles(Set.of(coachRole));
             coach2.setLocationPlace(Set.of(coachLocationPlace));
             coach2.setWorkSchedule("Du Lundi au Vendredi 9h - 17h");
-
+            coach2.setBirthdate(LocalDateTime.of(2000, Month.APRIL, 12,iniTime, iniTime,iniTime));
 
             coachRepository.save(coach1);
             coachRepository.save(coach2);

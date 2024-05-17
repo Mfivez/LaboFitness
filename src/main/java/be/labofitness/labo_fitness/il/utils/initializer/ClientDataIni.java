@@ -9,6 +9,8 @@ import org.springframework.context.annotation.DependsOn;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -49,6 +51,7 @@ public class ClientDataIni extends DataInitializer {
             client1.setRoles(Set.of(client));
             client1.setCompetitions(List.of(competition));
             client1.setTrainingSessions(List.of(trainingSession));
+            client1.setBirthdate(LocalDateTime.now());
 
             Client client2 = new Client();
             client2.setName("Jane");
@@ -63,6 +66,7 @@ public class ClientDataIni extends DataInitializer {
             client2.setAge(25);
             client2.setRoles(Set.of(client, moderator));
             client2.setTrainingSessions(List.of(trainingSession));
+            client2.setBirthdate(LocalDateTime.now());
 
 
             clientRepository.save(client1);
