@@ -4,11 +4,15 @@ import be.labofitness.labo_fitness.bll.models.request.user.getCoach.UserGetCoach
 import be.labofitness.labo_fitness.bll.models.request.user.getCoach.UserGetCoachesByRemoteRequest;
 import be.labofitness.labo_fitness.bll.models.request.user.getCoach.UserGetCoachesBySpecializationRequest;
 import be.labofitness.labo_fitness.bll.models.request.UserLoginRequest;
+import be.labofitness.labo_fitness.bll.models.request.user.getPhysiotherapist.UserGetPhysioByNameRequest;
+import be.labofitness.labo_fitness.bll.models.request.user.getPhysiotherapist.UserGetPhysioBySpecializationRequest;
 import be.labofitness.labo_fitness.bll.models.response.user.getCoach.UserGetCoachesResponse;
 import be.labofitness.labo_fitness.bll.models.response.UserLoginResponse;
+import be.labofitness.labo_fitness.bll.models.response.user.getPhysiotherapist.UserGetPhysioResponse;
 import be.labofitness.labo_fitness.bll.service.UserService;
 import be.labofitness.labo_fitness.dal.repository.UserRepository;
 import be.labofitness.labo_fitness.domain.entity.Coach;
+import be.labofitness.labo_fitness.domain.entity.Physiotherapist;
 import be.labofitness.labo_fitness.domain.entity.User;
 import be.labofitness.labo_fitness.il.utils.JwtUtil;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -51,6 +55,34 @@ public class UserServiceImpl implements UserService {
         return UserLoginResponse.fromEntity(user, token);
     }
 
+    // region GET PHYSIOTHERAPIST
+
+    @Override
+    public List<UserGetPhysioResponse> getAllPhysio() {
+        List<Physiotherapist> physio = userRepository.findAllPhysio();
+        return physioToUserGetCoachesResponse(physio);
+    }
+
+    @Override
+    public List<UserGetPhysioResponse> getPhysioBySpecialization(UserGetPhysioBySpecializationRequest request) {
+        List<Physiotherapist> physio = userRepository.findPhysioBySpecialization(request.specialization());
+        return physioToUserGetCoachesResponse(physio);
+    }
+
+    @Override
+    public List<UserGetPhysioResponse> getPhysioByName(UserGetPhysioByNameRequest request) {
+        List<Physiotherapist> physio = userRepository.findPhysioByName(request.name());
+        return physioToUserGetCoachesResponse(physio);
+    }
+
+    public List<UserGetPhysioResponse>  physioToUserGetCoachesResponse(List<Physiotherapist> physio) {
+        return physio.stream()
+                .map(UserGetPhysioResponse::fromEntity)
+                .collect(Collectors.toList());
+    }
+
+    //endregion
+
     // region GET COACHES
     @Override
     public List<UserGetCoachesResponse> getAllCoaches() {
@@ -82,8 +114,6 @@ public class UserServiceImpl implements UserService {
                 .map(UserGetCoachesResponse::fromEntity)
                 .collect(Collectors.toList());
     }
-
-
 
     //endregion
 
