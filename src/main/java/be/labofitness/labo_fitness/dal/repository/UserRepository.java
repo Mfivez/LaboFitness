@@ -1,6 +1,7 @@
 package be.labofitness.labo_fitness.dal.repository;
 
 import be.labofitness.labo_fitness.domain.entity.Coach;
+import be.labofitness.labo_fitness.domain.entity.Physiotherapist;
 import be.labofitness.labo_fitness.domain.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -17,7 +18,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "where u.email ilike :email")
     Optional<User> findByEmail(String email);
 
-
+    //region COACH
     @Query("SELECT c " +
             "FROM Coach c")
     List<Coach> findAllCoaches();
@@ -39,6 +40,28 @@ public interface UserRepository extends JpaRepository<User, Long> {
                     "FROM Coach c " +
                     "WHERE c.specialization = :specialization")
     List<Coach> findCoachesBySpecialization(String specialization);
+    // endregion
+
+    //region PHYSIOTHERAPIST
+
+    @Query("SELECT p " +
+            "FROM Physiotherapist p")
+    List<Physiotherapist> findAllPhysio();
+
+    @Query(
+            "SELECT p " +
+                    "FROM Physiotherapist p " +
+                    "WHERE p.name = :physiotherapist_name")
+    List<Physiotherapist> findPhysioByName(String physiotherapist_name);
+
+    @Query(
+            "SELECT p " +
+                    "FROM Physiotherapist p " +
+                    "WHERE p.specialization = :specialization")
+    List<Physiotherapist> findPhysioBySpecialization(String specialization);
+
+    //endregion
+
 }
 
 
