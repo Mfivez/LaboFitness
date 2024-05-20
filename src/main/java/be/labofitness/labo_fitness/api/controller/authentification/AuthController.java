@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin("*")
 public class AuthController {
 
+    //BUG GITHUB
     private final UserService userService;
     private final ClientService clientService;
     private final ProfessionalService professionalService;

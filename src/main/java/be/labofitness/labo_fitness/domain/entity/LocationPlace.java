@@ -21,5 +21,5 @@ public class LocationPlace extends BaseEntity<Long> {
             @AttributeOverride(name = "zipcode", column = @Column(name = "location_place_zipcode"))
     })
     private Adress adress;
-
+    //BUG GITHUB
 }

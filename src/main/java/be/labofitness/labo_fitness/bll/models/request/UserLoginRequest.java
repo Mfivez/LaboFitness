@@ -6,6 +6,7 @@ import be.labofitness.labo_fitness.domain.entity.User;
 import jakarta.validation.constraints.NotBlank;
 
 //TODO VALIDATORS
+//BUG GITHUB
 public record UserLoginRequest(
         @NotBlank(message = "email cannot be blank")
         String email,

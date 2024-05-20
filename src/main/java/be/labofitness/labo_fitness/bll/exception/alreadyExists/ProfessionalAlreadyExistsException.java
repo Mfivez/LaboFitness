@@ -2,8 +2,8 @@ package be.labofitness.labo_fitness.bll.exception.alreadyExists;
 
 import be.labofitness.labo_fitness.bll.exception.LaboFitnessException;
 
-public class ClientAlreadyExistsException extends LaboFitnessException {
-    public ClientAlreadyExistsException(String message) {
+public class ProfessionalAlreadyExistsException  extends LaboFitnessException {
+    public ProfessionalAlreadyExistsException(String message) {
         super(message);
     }
     //BUG GITHUB
