@@ -13,21 +13,10 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    //region REGISTER
-
-    @Query(
-            "SELECT COUNT(*) " +
-            "FROM User  " +
-            "WHERE email ILIKE :email" )
-    long existsByEmail(String email);
-    //endregion
-
-
     @Query( "Select u " +
             "from User u " +
             "where u.email ilike :email")
     Optional<User> findByEmail(String email);
-
 
     //region COACH
     @Query("SELECT c " +

@@ -7,7 +7,6 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -21,7 +20,7 @@ public abstract class Professional extends User{
     private String specialization;
 
 
-    @Column(name = "work_schedule", nullable = true)
+    @Column(name = "work_schedule", nullable = false)
     private String workSchedule;
 
 
@@ -30,7 +29,7 @@ public abstract class Professional extends User{
      */
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "professional_locations_places",
-                joinColumns = @JoinColumn(name="id_professional", nullable = true),
+                joinColumns = @JoinColumn(name="id_professional", nullable = false),
                 inverseJoinColumns = @JoinColumn(name = "id_location_place"))
     private Set<LocationPlace> locationPlace;
 
@@ -38,4 +37,16 @@ public abstract class Professional extends User{
     public Professional() {
         locationPlace = new HashSet<>();
     }
+
+//    public Professional(String name, String last_name, String email, String password, Adress adress, boolean isActive, Set<Role> roles, String specialization, Set<LocationPlace> locationPlace) {
+//        super(name, last_name, email, password, adress, isActive, roles);
+//        this.specialization = specialization;
+//        this.locationPlace = locationPlace;
+//    }
+
+
+//    public Professional(String name, String lastName, String email, String password, Adress adress, Set<Role> roles, String specialization) {
+//        super(name, lastName, email, password, adress, roles);
+//        this.specialization = specialization;
+//    }
 }

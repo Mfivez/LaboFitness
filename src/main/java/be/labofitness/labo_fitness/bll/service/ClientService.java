@@ -5,9 +5,7 @@ import be.labofitness.labo_fitness.bll.models.request.client.getTrainingSession.
 import be.labofitness.labo_fitness.bll.models.request.client.getTrainingSession.ClientGetTrainingSessionsByCoachNameRequest;
 import be.labofitness.labo_fitness.bll.models.request.client.getTrainingSession.ClientGetTrainingSessionsByDurationRequest;
 import be.labofitness.labo_fitness.bll.models.request.client.getTrainingSession.ClientGetTrainingSessionsByNameRequest;
-import be.labofitness.labo_fitness.bll.models.request.client.registerClient.ClientRegisterRequest;
 import be.labofitness.labo_fitness.bll.models.response.client.getTrainingSession.ClientGetTrainingSessionResponse;
-import be.labofitness.labo_fitness.bll.models.response.user.register.RegisterResponse;
 import be.labofitness.labo_fitness.bll.service.base.CrudService;
 import be.labofitness.labo_fitness.domain.entity.Client;
 
@@ -15,8 +13,6 @@ import be.labofitness.labo_fitness.domain.entity.Client;
 import java.util.List;
 
 public interface ClientService  extends CrudService<Client, Long> {
-
-    public RegisterResponse register(ClientRegisterRequest request);
 
     // region PERSONAL TRAINING SESSIONS
 

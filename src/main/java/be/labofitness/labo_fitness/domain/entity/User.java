@@ -38,7 +38,6 @@ public abstract class User extends BaseEntity<Long> implements UserDetails {
     private String password;
 
     @Column(name = "gender",nullable = true)
-    @Enumerated(EnumType.STRING)
     private Gender gender;
 
     @Column(name ="birthdate",nullable = false)

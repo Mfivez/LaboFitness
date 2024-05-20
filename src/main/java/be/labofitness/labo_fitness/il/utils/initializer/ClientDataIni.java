@@ -39,6 +39,7 @@ public class ClientDataIni extends DataInitializer {
             Competition competition = competitionRepository.findById(1L).orElseThrow(RuntimeException::new);
             TrainingSession trainingSession = trainingSessionRepository.findById(1L).orElseThrow(RuntimeException::new);
 
+
             Client client1 = new Client();
             client1.setName("John");
             client1.setLast_name("Doe");
@@ -49,6 +50,7 @@ public class ClientDataIni extends DataInitializer {
             client1.setHeight(180);
             client1.setGoal(Goal.LEISURE_SPORT);
             client1.setLifeStyle(1.5);
+            client1.setAge(30);
             client1.setRoles(Set.of(client));
             client1.setCompetitions(List.of(competition));
             client1.setTrainingSessions(List.of(trainingSession));
@@ -64,6 +66,7 @@ public class ClientDataIni extends DataInitializer {
             client2.setHeight(170);
             client2.setGoal(Goal.LIFESTYLE_IMPROVEMENT);
             client2.setLifeStyle(1.6);
+            client2.setAge(25);
             client2.setRoles(Set.of(client, moderator));
             client2.setTrainingSessions(List.of(trainingSession));
             client2.setBirthdate(LocalDateTime.now());

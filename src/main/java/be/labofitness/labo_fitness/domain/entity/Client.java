@@ -23,12 +23,15 @@ public class Client extends User {
     @Column(name = "height", nullable = false)
     private int height;
 
-    @Column(name = "goal", nullable = true)
+    @Column(name = "goal", nullable = false)
     @Enumerated(EnumType.STRING)
     private Goal goal;
 
-    @Column(name = "lifeStyle", nullable = true)
+    @Column(name = "lifeStyle", nullable = false)
     private double lifeStyle;
+
+    @Column(name = "age", nullable = false)
+    private int age;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable( name ="clients_competitions",
