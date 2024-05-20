@@ -18,6 +18,7 @@ import java.util.List;
 
 public interface UserService extends CrudService<User, Long> , UserDetailsService {
 
+    //BUG GITHUB
     UserLoginResponse login(UserLoginRequest loginRequest);
 
 

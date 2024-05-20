@@ -23,6 +23,7 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class ProfessionalServiceImpl implements ProfessionalService{
 
+    //BUG GITHUB
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final PhysiotherapistRepository physiotherapistRepository;

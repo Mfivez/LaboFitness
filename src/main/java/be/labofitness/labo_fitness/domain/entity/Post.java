@@ -31,6 +31,7 @@ public class Post extends BaseEntity<Long> {
     @JoinColumn(name = "sport",unique = true, nullable = false)
     private Sport sport;
 
+    //BUG GITHUB
     @ManyToOne
     @JoinColumn(name = "post_creator", nullable = false)
     private User creator;

@@ -30,6 +30,7 @@ public class LaboFitnessUtil {
                     case "ADMIN" -> roleRepository.findById(6L).orElseThrow(RuntimeException::new);
                     default -> throw new IllegalArgumentException("Invalid role: " + role);
                 }).collect(Collectors.toSet());
+        //BUG GITHUB
 
 //        v6.0
 //        return switch (role) {

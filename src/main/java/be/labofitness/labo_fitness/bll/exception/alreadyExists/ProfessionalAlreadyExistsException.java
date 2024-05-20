@@ -6,4 +6,5 @@ public class ProfessionalAlreadyExistsException  extends LaboFitnessException {
     public ProfessionalAlreadyExistsException(String message) {
         super(message);
     }
+    //BUG GITHUB
 }

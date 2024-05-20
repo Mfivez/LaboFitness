@@ -43,6 +43,7 @@ public abstract class User extends BaseEntity<Long> implements UserDetails {
 
     @Column(name ="birthdate",nullable = false)
     private LocalDateTime birthdate;
+    //BUG GITHUB
 
 
 

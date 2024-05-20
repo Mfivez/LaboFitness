@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ProfessionalService extends CrudService<Professional, Long> {
 
+    //BUG GITHUB
     public RegisterResponse register(ProfessionalRegisterRequest request);
 
 }

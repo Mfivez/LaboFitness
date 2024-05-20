@@ -35,4 +35,5 @@ public class Appointment extends BaseEntity<Long> {
         this.isCancellable = true;
     }
 
+    //BUG GITHUB
 }

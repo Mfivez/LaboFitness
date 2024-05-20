@@ -35,6 +35,7 @@ public abstract class Professional extends User{
     private Set<LocationPlace> locationPlace;
 
 
+    //BUG GITHUB
     public Professional() {
         locationPlace = new HashSet<>();
     }

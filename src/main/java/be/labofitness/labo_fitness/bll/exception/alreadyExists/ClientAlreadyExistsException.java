@@ -6,4 +6,5 @@ public class ClientAlreadyExistsException extends LaboFitnessException {
     public ClientAlreadyExistsException(String message) {
         super(message);
     }
+    //BUG GITHUB
 }
