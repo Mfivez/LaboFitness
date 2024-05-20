@@ -9,6 +9,7 @@ import be.labofitness.labo_fitness.domain.entity.LocationPlace;
 import be.labofitness.labo_fitness.domain.entity.Role;
 import be.labofitness.labo_fitness.domain.entity.User;
 import be.labofitness.labo_fitness.domain.entity.base.Adress;
+import be.labofitness.labo_fitness.il.utils.LaboFitnessUtil;
 import be.labofitness.labo_fitness.il.utils.initializer.base.DataInitializer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.DependsOn;
@@ -27,7 +28,6 @@ public class CoachDataIni extends DataInitializer {
     private final RoleRepository roleRepository;
     private final CoachRepository coachRepository;
     private final LocationRepository locationRepository;
-    private final int iniTime = 0;
 
     @Override
     public void run(String... args) throws Exception {
@@ -62,7 +62,7 @@ public class CoachDataIni extends DataInitializer {
             coach2.setRoles(Set.of(coachRole));
             coach2.setLocationPlace(Set.of(coachLocationPlace));
             coach2.setWorkSchedule("Du Lundi au Vendredi 9h - 17h");
-            coach2.setBirthdate(LocalDateTime.of(2000, Month.APRIL, 12,iniTime, iniTime,iniTime));
+            coach2.setBirthdate(LaboFitnessUtil.createNewDate(2000, Month.JANUARY, 12));
 
             coachRepository.save(coach1);
             coachRepository.save(coach2);

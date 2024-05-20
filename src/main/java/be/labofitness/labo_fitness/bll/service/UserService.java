@@ -11,6 +11,7 @@ import be.labofitness.labo_fitness.bll.models.response.UserLoginResponse;
 import be.labofitness.labo_fitness.bll.models.response.user.getPhysiotherapist.UserGetPhysioResponse;
 import be.labofitness.labo_fitness.bll.service.base.CrudService;
 import be.labofitness.labo_fitness.domain.entity.User;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.List;
 public interface UserService extends CrudService<User, Long> , UserDetailsService {
 
     UserLoginResponse login(UserLoginRequest loginRequest);
+
 
     //region COACH
     List<UserGetCoachesResponse> getAllCoaches();
