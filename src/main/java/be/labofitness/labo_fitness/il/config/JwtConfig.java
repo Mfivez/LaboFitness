@@ -1,6 +1,9 @@
 package be.labofitness.labo_fitness.il.config;
 
 
+import jakarta.annotation.PostConstruct;
+import nonapi.io.github.classgraph.json.JSONUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -11,7 +14,23 @@ import java.nio.charset.StandardCharsets;
 @Component
 @ConfigurationProperties(prefix = "jwt")
 public class JwtConfig {
-    private byte[] secret = "3R#V1LR6#^AmYh^vK8wAFGC56sU8$$qh#c6nyE^H".getBytes(StandardCharsets.UTF_8);
-    public int expireAt = 86400; // 1 day
-    public SecretKey secretKey = new SecretKeySpec(secret, "HmacSHA256");
+    @Value("${JWT_SECRET}")
+    private String secretFromEnv;
+
+    @Value("${JWT_EXPIRE_AT}")
+    private int expireAtFromEnv;
+
+    @Value("${JWT_ALGORITHM}")
+    private String algorithm;
+
+    private byte[] secret;
+    public int expireAt; // 1 day
+    public SecretKey secretKey;
+
+    @PostConstruct
+    public void init() {
+        secret = secretFromEnv.getBytes(StandardCharsets.UTF_8);
+        expireAt = expireAtFromEnv;
+        secretKey = new SecretKeySpec(secret, algorithm);
+    }
 }

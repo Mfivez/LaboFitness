@@ -43,9 +43,12 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException(email));
     }
 
+    // region LOGIN
+
     @Override
     public UserLoginResponse login(UserLoginRequest loginRequest) {
         User user = userRepository.findByEmail(loginRequest.email()).orElseThrow(() -> new UsernameNotFoundException(loginRequest.email()));
+
         if (!passwordEncoder.matches(loginRequest.password(), user.getPassword())) {
             throw new BadCredentialsException("Wrong password");
         }
@@ -54,6 +57,8 @@ public class UserServiceImpl implements UserService {
 
         return UserLoginResponse.fromEntity(user, token);
     }
+
+    // endregion
 
     // region GET PHYSIOTHERAPIST
 
@@ -117,6 +122,7 @@ public class UserServiceImpl implements UserService {
 
     //endregion
 
+    // region CLASSIC CRUD
     @Override
     public User getOne(Long aLong) {
         return null;
@@ -141,4 +147,7 @@ public class UserServiceImpl implements UserService {
     public User delete(Long aLong) {
         return null;
     }
+
+    // endregion
+
 }

@@ -20,8 +20,6 @@ import java.util.List;
 @RequestMapping("/api")
 @RequiredArgsConstructor
 public class UserController {
-
-
     private final UserService userService;
 
     //region GET COACHES
@@ -52,7 +50,7 @@ public class UserController {
 
     // endregion
 
-    //region GET COACHES
+    //region GET PHYSIOTHERAPIST
 
     @PreAuthorize("isAnonymous()")
     @GetMapping("/physio")
@@ -73,6 +71,5 @@ public class UserController {
     }
 
     // endregion
-
 
 }
