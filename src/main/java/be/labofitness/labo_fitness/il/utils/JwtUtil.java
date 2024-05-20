@@ -1,5 +1,6 @@
 package be.labofitness.labo_fitness.il.utils;
 
+import be.labofitness.labo_fitness.domain.entity.Role;
 import be.labofitness.labo_fitness.domain.entity.User;
 import be.labofitness.labo_fitness.il.config.JwtConfig;
 import io.jsonwebtoken.Claims;
@@ -9,6 +10,8 @@ import io.jsonwebtoken.Jwts;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 public class JwtUtil {
@@ -23,10 +26,11 @@ public class JwtUtil {
     }
 
     public String generateToken(User user) {
+
         return jwtBuilder
-                .setSubject(user.getEmail())
+                .setSubject(user.getUsername())
                 .claim("id", user.getId())
-                .claim("email", user.getEmail())
+                .claim("authorities", user.getAuthorities())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + jwtConfig.expireAt * 1000L))
                 .compact();
@@ -36,12 +40,7 @@ public class JwtUtil {
 
     public String getEmail(String token) { return getClaims(token).getSubject(); }
 
-    public Long getId(String token) { return getClaims(token).get("id", Long.class); }
-
-    public String getLogin(String token) { return getClaims(token).get("email", String.class); }
-
     public boolean validateToken(String token) {
-
         Claims claims = getClaims(token);
         Date now = new Date();
         return now.after(claims.getIssuedAt()) && now.before(claims.getExpiration());

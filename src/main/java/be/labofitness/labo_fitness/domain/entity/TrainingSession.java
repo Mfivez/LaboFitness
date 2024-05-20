@@ -35,7 +35,7 @@ public class TrainingSession extends BaseEntity<Long> {
     @Enumerated(EnumType.STRING)
     private RecommendedLevel recommended_level;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(nullable = false)
     private Coach coach;
 

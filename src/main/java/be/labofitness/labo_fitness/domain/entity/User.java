@@ -15,6 +15,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity @Table(name = "users")
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -43,9 +44,39 @@ public abstract class User extends BaseEntity<Long> implements UserDetails {
     private LocalDateTime birthdate;
 
 
+
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "city", column = @Column(name = "user_city")),
+            @AttributeOverride(name = "number", column = @Column(name = "user_number")),
+            @AttributeOverride(name = "street", column = @Column(name = "user_street")),
+            @AttributeOverride(name = "zipcode", column = @Column(name = "user_zipcode"))
+    })
+    private Adress adress;
+
+
+    @Column(name = "is_active")
+    private boolean isActive;
+
+    @Column(name = "is_mail_active")
+    private boolean isMailActive;
+
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<Role> roles;
+
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(this.roles.toString()));
+        System.out.println("Roles: " + roles);
+        return roles.stream()
+                .map(role -> new SimpleGrantedAuthority(role.getName()))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -74,31 +105,6 @@ public abstract class User extends BaseEntity<Long> implements UserDetails {
     }
 
 
-
-    @Embedded
-    @AttributeOverrides({
-            @AttributeOverride(name = "city", column = @Column(name = "user_city")),
-            @AttributeOverride(name = "number", column = @Column(name = "user_number")),
-            @AttributeOverride(name = "street", column = @Column(name = "user_street")),
-            @AttributeOverride(name = "zipcode", column = @Column(name = "user_zipcode"))
-    })
-    private Adress adress;
-
-
-    @Column(name = "is_active")
-    private boolean isActive;
-
-    @Column(name = "is_mail_active")
-    private boolean isMailActive;
-
-
-    @ManyToMany
-    @JoinTable(
-            name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
-    )
-    private Set<Role> roles;
 
 
 

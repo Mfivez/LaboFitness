@@ -31,27 +31,27 @@ public class RoleDataIni extends DataInitializer {
             );
 
             Role client = new Role(
-                    "client",
+                    "CLIENT",
                     "testClient"
             );
 
             Role physiotherapist = new Role(
-                    "physiotherapist",
+                    "PHYSIOTHERAPIST",
                     "testPhysiotherapist"
             );
 
             Role coach = new Role(
-                    "coach",
+                    "COACH",
                     "testCoach"
             );
 
             Role moderator = new Role(
-                    "moderator",
+                    "MODERATOR",
                     "testModerator"
             );
 
             Role admin = new Role(
-                    "admin",
+                    "ADMIN",
                     "testAdmin"
             );
 
