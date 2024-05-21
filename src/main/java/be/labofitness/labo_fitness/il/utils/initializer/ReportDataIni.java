@@ -31,7 +31,7 @@ public class ReportDataIni extends DataInitializer {
 
 
         if (reportRepository.count() == 0) {
-            User reportedUser = userRepository.findById(1L).orElseThrow();
+            User reportedUser = userRepository.findById(5L).orElseThrow();
             User complainant = userRepository.findById(1L).orElseThrow();
 
             Report report = new Report();
@@ -39,6 +39,7 @@ public class ReportDataIni extends DataInitializer {
             report.setDate(LocalDateTime.now());
             report.setComplainant(complainant);
             report.setReportedUser(reportedUser);
+            report.setConfirmed(true);
 
             reportRepository.save(report);
         }
