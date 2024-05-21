@@ -1,21 +1,17 @@
 package be.labofitness.labo_fitness.bll.service.impl;
 
-import be.labofitness.labo_fitness.bll.exception.alreadyExists.ClientAlreadyExistsException;
-import be.labofitness.labo_fitness.bll.exception.alreadyExists.ProfessionalAlreadyExistsException;
+import be.labofitness.labo_fitness.bll.exception.alreadyExists.EmailAlreadyExistsException;
 import be.labofitness.labo_fitness.bll.models.request.professionnel.ProfessionalRegisterRequest;
 import be.labofitness.labo_fitness.bll.models.response.user.register.RegisterResponse;
 import be.labofitness.labo_fitness.bll.service.AccreditationService;
 import be.labofitness.labo_fitness.bll.service.ProfessionalService;
 import be.labofitness.labo_fitness.dal.repository.*;
 import be.labofitness.labo_fitness.domain.entity.*;
-import be.labofitness.labo_fitness.domain.entity.base.Adress;
-import be.labofitness.labo_fitness.domain.enums.AccreditationType;
 import be.labofitness.labo_fitness.il.utils.LaboFitnessUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.Month;
 import java.util.List;
 import java.util.Set;
 
@@ -36,7 +32,7 @@ public class ProfessionalServiceImpl implements ProfessionalService{
     public RegisterResponse register(ProfessionalRegisterRequest request) {
 
         if(userRepository.existsByEmail(request.email())) {
-            throw new ProfessionalAlreadyExistsException("email already exists : " + request.email());
+            throw new EmailAlreadyExistsException("email already exists : " + request.email());
         }
 
 

@@ -1,17 +1,14 @@
 package be.labofitness.labo_fitness.api.controller.advisor;
 
 
-import be.labofitness.labo_fitness.bll.exception.alreadyExists.ClientAlreadyExistsException;
+import be.labofitness.labo_fitness.bll.exception.alreadyExists.EmailAlreadyExistsException;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -21,8 +18,8 @@ import java.util.stream.Collectors;
 
 public class ControllerAdvisor {
 
-    @ExceptionHandler(ClientAlreadyExistsException.class)
-    public ResponseEntity<String> handleRuntimeException(ClientAlreadyExistsException error){
+    @ExceptionHandler(EmailAlreadyExistsException.class)
+    public ResponseEntity<String> handleRuntimeException(EmailAlreadyExistsException error){
         log.error(error.toString());
         return ResponseEntity.status(406).body(error.getMessage());
     }

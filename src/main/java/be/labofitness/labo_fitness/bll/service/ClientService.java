@@ -1,5 +1,6 @@
 package be.labofitness.labo_fitness.bll.service;
 
+import be.labofitness.labo_fitness.bll.models.request.client.manageAccount.ClientManageAccountRequest;
 import be.labofitness.labo_fitness.bll.models.request.user.getCoach.GetCoachesByNameRequest;
 import be.labofitness.labo_fitness.bll.models.request.user.getCoach.GetCoachesByRemoteRequest;
 import be.labofitness.labo_fitness.bll.models.request.user.getCoach.GetCoachesBySpecializationRequest;
@@ -10,6 +11,7 @@ import be.labofitness.labo_fitness.bll.models.request.user.getTrainingSession.Ge
 import be.labofitness.labo_fitness.bll.models.request.user.getTrainingSession.GetTrainingSessionsByDurationRequest;
 import be.labofitness.labo_fitness.bll.models.request.user.getTrainingSession.GetTrainingSessionsByNameRequest;
 import be.labofitness.labo_fitness.bll.models.request.client.registerClient.ClientRegisterRequest;
+import be.labofitness.labo_fitness.bll.models.response.client.manageAccount.ClientManageAccountResponse;
 import be.labofitness.labo_fitness.bll.models.response.user.getCoach.GetCoachesResponse;
 import be.labofitness.labo_fitness.bll.models.response.user.getPhysiotherapist.GetPhysioResponse;
 import be.labofitness.labo_fitness.bll.models.response.user.getTrainingSession.GetTrainingSessionResponse;
@@ -25,6 +27,10 @@ public interface ClientService  extends CrudService<Client, Long> {
 
 
     public RegisterResponse register(ClientRegisterRequest request);
+
+    public ClientManageAccountResponse manageAccount(Authentication authentication, ClientManageAccountRequest request);
+
+    // endregion
 
     // region PERSONAL TRAINING SESSIONS
 

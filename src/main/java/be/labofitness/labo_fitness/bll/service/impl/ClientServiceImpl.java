@@ -1,6 +1,8 @@
 package be.labofitness.labo_fitness.bll.service.impl;
 
-import be.labofitness.labo_fitness.bll.exception.alreadyExists.ClientAlreadyExistsException;
+
+import be.labofitness.labo_fitness.bll.exception.alreadyExists.EmailAlreadyExistsException;
+import be.labofitness.labo_fitness.bll.models.request.client.manageAccount.ClientManageAccountRequest;
 import be.labofitness.labo_fitness.bll.models.request.user.getCoach.GetCoachesByNameRequest;
 import be.labofitness.labo_fitness.bll.models.request.user.getCoach.GetCoachesByRemoteRequest;
 import be.labofitness.labo_fitness.bll.models.request.user.getCoach.GetCoachesBySpecializationRequest;
@@ -11,6 +13,7 @@ import be.labofitness.labo_fitness.bll.models.request.user.getTrainingSession.Ge
 import be.labofitness.labo_fitness.bll.models.request.user.getTrainingSession.GetTrainingSessionsByDurationRequest;
 import be.labofitness.labo_fitness.bll.models.request.user.getTrainingSession.GetTrainingSessionsByNameRequest;
 import be.labofitness.labo_fitness.bll.models.request.client.registerClient.ClientRegisterRequest;
+import be.labofitness.labo_fitness.bll.models.response.client.manageAccount.ClientManageAccountResponse;
 import be.labofitness.labo_fitness.bll.models.response.user.getCoach.GetCoachesResponse;
 import be.labofitness.labo_fitness.bll.models.response.user.getPhysiotherapist.GetPhysioResponse;
 import be.labofitness.labo_fitness.bll.models.response.user.getTrainingSession.GetTrainingSessionResponse;
@@ -45,11 +48,11 @@ public class ClientServiceImpl  implements ClientService {
 
 
     // region AUTHENTICATE
-    @Transactional
+    @Transactional @Override
     public RegisterResponse register(ClientRegisterRequest request) {
 
         if(userRepository.existsByEmail(request.email())) {
-            throw new ClientAlreadyExistsException("email already exists : " + request.email());
+            throw new EmailAlreadyExistsException("email already exists : " + request.email());
         }
 
         Client client = new Client ();
@@ -66,6 +69,25 @@ public class ClientServiceImpl  implements ClientService {
         clientRepository.save(client);
 
         return new RegisterResponse("Account created with success");
+    }
+
+    @Override @Transactional
+    public ClientManageAccountResponse manageAccount(Authentication authentication, ClientManageAccountRequest request) {
+
+        if(userRepository.existsByEmail(request.email())){
+            throw  new EmailAlreadyExistsException("Email already exists :" + request.email()); }
+
+        Client client = (Client) authentication.getPrincipal();
+        client.setName(request.name());
+        client.setLast_name(request.lastName());
+        client.setEmail(request.email());
+        client.setGender(request.gender());
+        client.setAdress(new Adress(request.street(), request.number(), request.city(), request.zipCode()));
+        client.setWeight(request.weight());
+        client.setHeight(request.height());
+        clientRepository.save(client);
+
+        return new ClientManageAccountResponse("Account modified with success");
     }
 
     //endregion
