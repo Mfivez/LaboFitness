@@ -1,10 +1,10 @@
-package be.labofitness.labo_fitness.bll.models.request.client.getTrainingSession;
+package be.labofitness.labo_fitness.bll.models.request.user.getTrainingSession;
 
 import be.labofitness.labo_fitness.domain.enums.RecommendedLevel;
 import jakarta.validation.constraints.Pattern;
 
-public record ClientGetTrainingSessionByRecommendedLvlRequest(
-        @Pattern(regexp = "^(AMATEUR|DEBUTANT|CONFIRME|PROFESSIONNEL|GIGACHAD)$",
+public record GetTrainingSessionByRecommendedLvlRequest(
+        /*@Pattern(regexp = "^(AMATEUR|DEBUTANT|CONFIRME|PROFESSIONNEL|GIGACHAD)$",
                 message = "specialization must be " +
                         "'DEBUTANT' " +
                         "or 'AMATEUR'" +

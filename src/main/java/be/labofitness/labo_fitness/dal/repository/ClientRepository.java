@@ -2,6 +2,7 @@ package be.labofitness.labo_fitness.dal.repository;
 
 import be.labofitness.labo_fitness.domain.entity.Client;
 import be.labofitness.labo_fitness.domain.entity.Coach;
+import be.labofitness.labo_fitness.domain.entity.Physiotherapist;
 import be.labofitness.labo_fitness.domain.entity.TrainingSession;
 import be.labofitness.labo_fitness.domain.enums.RecommendedLevel;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -20,7 +21,7 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
             "SELECT c.trainingSessions " +
             "FROM Client c " +
             "WHERE c.id = :clientId")
-    List<TrainingSession> findPersonalTrainingSessionsByClientId(Long clientId);
+    List<TrainingSession> findPersonalTrainingSessions(Long clientId);
 
     @Query(
             "SELECT t " +
@@ -57,37 +58,60 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
 
     // endregion
 
-    // region TRAINING SESSION
+    //region PERSONAL COACH
+    @Query(
+            "SELECT t.coach " +
+            "FROM Client c " +
+            "JOIN c.trainingSessions t " +
+            "WHERE c.id = :clientId")
+    List<Coach> findAllPersonalCoaches(Long clientId);
 
     @Query(
-            "SELECT t " +
-            "FROM TrainingSession t ")
-    List<TrainingSession> findAllTrainingSessions();
+            "SELECT t.coach " +
+            "FROM Client c " +
+            "JOIN c.trainingSessions t " +
+            "WHERE t.coach.is_remote = :is_remote " +
+            "AND c.id = :clientId")
+    List<Coach> findPersonalCoachesByIsRemote(Long clientId, boolean is_remote);
 
     @Query(
-            "SELECT t " +
-            "FROM TrainingSession t " +
-            "WHERE t.recommended_level = :recommendedLevel ")
-    List<TrainingSession> findTrainingSessionsByRecommendedLevel(RecommendedLevel recommendedLevel);
+            "SELECT t.coach " +
+            "FROM Client c " +
+            "JOIN c.trainingSessions t " +
+            "WHERE t.coach.name = :coach_name " +
+            "AND c.id = :clientId")
+    List<Coach> findPersonalCoachesByName(Long clientId, String coach_name);
 
     @Query(
-            "SELECT t " +
-            "FROM TrainingSession t " +
-            "WHERE t.duration = :duration")
-    List<TrainingSession> findTrainingSessionsByDuration(int duration);
-
-    @Query(
-            "SELECT t " +
-            "FROM TrainingSession t " +
-            "WHERE t.name = :name")
-    List<TrainingSession> findTrainingSessionsByName(String name);
-
-    @Query(
-            "SELECT t " +
-                    "FROM TrainingSession t " +
-                    "WHERE t.coach.name = :coachName")
-    List<TrainingSession> findTrainingSessionsByCoachName(String coachName);
-
-
+            "SELECT t.coach " +
+            "FROM Client c " +
+            "JOIN c.trainingSessions t " +
+            "WHERE t.coach.specialization = :specialization " +
+            "AND c.id = :clientId")
+    List<Coach> findPersonalCoachesBySpecialization(Long clientId, String specialization);
     // endregion
+
+    //region PERSONAL PHYSIOTHERAPIST
+
+    @Query(
+            "SELECT a.physiotherapist " +
+            "FROM Appointment a " +
+            "WHERE a.client.id = :clientId")
+    List<Physiotherapist> findAllPersonalPhysio(Long clientId);
+
+    @Query(
+            "SELECT a.physiotherapist " +
+            "FROM Appointment a " +
+            "WHERE a.client.id = :clientId " +
+            "AND a.physiotherapist.name = :physiotherapist_name")
+    List<Physiotherapist> findPersonalPhysioByName(Long clientId, String physiotherapist_name);
+
+    @Query(
+            "SELECT a.physiotherapist " +
+                    "FROM Appointment a " +
+                    "WHERE a.client.id = :clientId " +
+                    "AND a.physiotherapist.specialization = :specialization")
+    List<Physiotherapist> findPersonalPhysioBySpecialization(Long clientId, String specialization);
+
+    //endregion
 }

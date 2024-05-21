@@ -1,18 +1,24 @@
 package be.labofitness.labo_fitness.bll.service.impl;
 
-import be.labofitness.labo_fitness.bll.models.request.user.getCoach.UserGetCoachesByNameRequest;
-import be.labofitness.labo_fitness.bll.models.request.user.getCoach.UserGetCoachesByRemoteRequest;
-import be.labofitness.labo_fitness.bll.models.request.user.getCoach.UserGetCoachesBySpecializationRequest;
+import be.labofitness.labo_fitness.bll.models.request.user.getCoach.GetCoachesByNameRequest;
+import be.labofitness.labo_fitness.bll.models.request.user.getCoach.GetCoachesByRemoteRequest;
+import be.labofitness.labo_fitness.bll.models.request.user.getCoach.GetCoachesBySpecializationRequest;
 import be.labofitness.labo_fitness.bll.models.request.UserLoginRequest;
-import be.labofitness.labo_fitness.bll.models.request.user.getPhysiotherapist.UserGetPhysioByNameRequest;
-import be.labofitness.labo_fitness.bll.models.request.user.getPhysiotherapist.UserGetPhysioBySpecializationRequest;
-import be.labofitness.labo_fitness.bll.models.response.user.getCoach.UserGetCoachesResponse;
+import be.labofitness.labo_fitness.bll.models.request.user.getPhysiotherapist.GetPhysioByNameRequest;
+import be.labofitness.labo_fitness.bll.models.request.user.getPhysiotherapist.GetPhysioBySpecializationRequest;
+import be.labofitness.labo_fitness.bll.models.request.user.getTrainingSession.GetTrainingSessionByRecommendedLvlRequest;
+import be.labofitness.labo_fitness.bll.models.request.user.getTrainingSession.GetTrainingSessionsByCoachNameRequest;
+import be.labofitness.labo_fitness.bll.models.request.user.getTrainingSession.GetTrainingSessionsByDurationRequest;
+import be.labofitness.labo_fitness.bll.models.request.user.getTrainingSession.GetTrainingSessionsByNameRequest;
+import be.labofitness.labo_fitness.bll.models.response.user.getTrainingSession.GetTrainingSessionResponse;
+import be.labofitness.labo_fitness.bll.models.response.user.getCoach.GetCoachesResponse;
 import be.labofitness.labo_fitness.bll.models.response.UserLoginResponse;
-import be.labofitness.labo_fitness.bll.models.response.user.getPhysiotherapist.UserGetPhysioResponse;
+import be.labofitness.labo_fitness.bll.models.response.user.getPhysiotherapist.GetPhysioResponse;
 import be.labofitness.labo_fitness.bll.service.UserService;
 import be.labofitness.labo_fitness.dal.repository.UserRepository;
 import be.labofitness.labo_fitness.domain.entity.Coach;
 import be.labofitness.labo_fitness.domain.entity.Physiotherapist;
+import be.labofitness.labo_fitness.domain.entity.TrainingSession;
 import be.labofitness.labo_fitness.domain.entity.User;
 import be.labofitness.labo_fitness.il.utils.JwtUtil;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -64,26 +70,26 @@ public class UserServiceImpl implements UserService {
     // region GET PHYSIOTHERAPIST
 
     @Override
-    public List<UserGetPhysioResponse> getAllPhysio() {
+    public List<GetPhysioResponse> getAllPhysio() {
         List<Physiotherapist> physio = userRepository.findAllPhysio();
         return physioToUserGetCoachesResponse(physio);
     }
 
     @Override
-    public List<UserGetPhysioResponse> getPhysioBySpecialization(UserGetPhysioBySpecializationRequest request) {
+    public List<GetPhysioResponse> getPhysioBySpecialization(GetPhysioBySpecializationRequest request) {
         List<Physiotherapist> physio = userRepository.findPhysioBySpecialization(request.specialization());
         return physioToUserGetCoachesResponse(physio);
     }
 
     @Override
-    public List<UserGetPhysioResponse> getPhysioByName(UserGetPhysioByNameRequest request) {
+    public List<GetPhysioResponse> getPhysioByName(GetPhysioByNameRequest request) {
         List<Physiotherapist> physio = userRepository.findPhysioByName(request.name());
         return physioToUserGetCoachesResponse(physio);
     }
 
-    public List<UserGetPhysioResponse>  physioToUserGetCoachesResponse(List<Physiotherapist> physio) {
+    public List<GetPhysioResponse>  physioToUserGetCoachesResponse(List<Physiotherapist> physio) {
         return physio.stream()
-                .map(UserGetPhysioResponse::fromEntity)
+                .map(GetPhysioResponse::fromEntity)
                 .collect(Collectors.toList());
     }
 
@@ -91,37 +97,76 @@ public class UserServiceImpl implements UserService {
 
     // region GET COACHES
     @Override
-    public List<UserGetCoachesResponse> getAllCoaches() {
+    public List<GetCoachesResponse> getAllCoaches() {
         List<Coach> coaches = userRepository.findAllCoaches();
         return coachesToUserGetCoachesResponse(coaches);
     }
 
     @Override
-    public List<UserGetCoachesResponse> getAllCoachesByIsRemote(UserGetCoachesByRemoteRequest request) {
+    public List<GetCoachesResponse> getAllCoachesByIsRemote(GetCoachesByRemoteRequest request) {
         List<Coach> coaches = userRepository.findCoachesByIsRemote(request.is_remote());
         return coachesToUserGetCoachesResponse(coaches);
 
     }
 
     @Override
-    public List<UserGetCoachesResponse> getAllCoachesBySpecialization(UserGetCoachesBySpecializationRequest request) {
+    public List<GetCoachesResponse> getAllCoachesBySpecialization(GetCoachesBySpecializationRequest request) {
         List<Coach> coaches = userRepository.findCoachesBySpecialization(request.specialization());
         return coachesToUserGetCoachesResponse(coaches);
     }
 
     @Override
-    public List<UserGetCoachesResponse> getAllCoachesByName(UserGetCoachesByNameRequest request) {
+    public List<GetCoachesResponse> getAllCoachesByName(GetCoachesByNameRequest request) {
         List<Coach> coaches = userRepository.findCoachesByName(request.name());
         return coachesToUserGetCoachesResponse(coaches);
     }
 
-    public List<UserGetCoachesResponse>  coachesToUserGetCoachesResponse(List<Coach> coaches) {
+    public List<GetCoachesResponse>  coachesToUserGetCoachesResponse(List<Coach> coaches) {
         return coaches.stream()
-                .map(UserGetCoachesResponse::fromEntity)
+                .map(GetCoachesResponse::fromEntity)
                 .collect(Collectors.toList());
     }
 
     //endregion
+
+    // region TRAINING SESSIONS
+
+    @Override
+    public List<GetTrainingSessionResponse> findAllTrainingSession() {
+        List<TrainingSession> trainingSessions = userRepository.findAllTrainingSessions();
+        return trainingSessionToClientGetTrainingSessionResponse(trainingSessions);
+    }
+
+    @Override
+    public List<GetTrainingSessionResponse> findTrainingSessionByRecommendedLvl(GetTrainingSessionByRecommendedLvlRequest request) {
+        List<TrainingSession> trainingSessions = userRepository.findTrainingSessionsByRecommendedLevel(request.recommendedLevel());
+        return trainingSessionToClientGetTrainingSessionResponse(trainingSessions);
+    }
+
+    @Override
+    public List<GetTrainingSessionResponse> findTrainingSessionByDuration(GetTrainingSessionsByDurationRequest request) {
+        List<TrainingSession> trainingSessions = userRepository.findTrainingSessionsByDuration(request.duration());
+        return trainingSessionToClientGetTrainingSessionResponse(trainingSessions);
+    }
+
+    @Override
+    public List<GetTrainingSessionResponse> findTrainingSessionByName(GetTrainingSessionsByNameRequest request) {
+        List<TrainingSession> trainingSessions = userRepository.findTrainingSessionsByName(request.name());
+        return trainingSessionToClientGetTrainingSessionResponse(trainingSessions);
+    }
+
+    @Override
+    public List<GetTrainingSessionResponse> findTrainingSessionByCoachName(GetTrainingSessionsByCoachNameRequest request) {
+        List<TrainingSession> trainingSessions = userRepository.findTrainingSessionsByCoachName(request.coach_name());
+        return trainingSessionToClientGetTrainingSessionResponse(trainingSessions);
+    }
+
+    public List<GetTrainingSessionResponse>  trainingSessionToClientGetTrainingSessionResponse(List<TrainingSession> trainings) {
+        return trainings.stream()
+                .map(GetTrainingSessionResponse::fromEntity)
+                .collect(Collectors.toList());
+    }
+    // endregion
 
     // region CLASSIC CRUD
     @Override
