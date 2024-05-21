@@ -1,6 +1,7 @@
 package be.labofitness.labo_fitness.api.controller;
 
 
+import be.labofitness.labo_fitness.bll.models.request.client.manageAccount.ClientManageAccountRequest;
 import be.labofitness.labo_fitness.bll.models.request.user.getCoach.GetCoachesByNameRequest;
 import be.labofitness.labo_fitness.bll.models.request.user.getCoach.GetCoachesByRemoteRequest;
 import be.labofitness.labo_fitness.bll.models.request.user.getCoach.GetCoachesBySpecializationRequest;
@@ -10,6 +11,7 @@ import be.labofitness.labo_fitness.bll.models.request.user.getTrainingSession.Ge
 import be.labofitness.labo_fitness.bll.models.request.user.getTrainingSession.GetTrainingSessionsByCoachNameRequest;
 import be.labofitness.labo_fitness.bll.models.request.user.getTrainingSession.GetTrainingSessionsByDurationRequest;
 import be.labofitness.labo_fitness.bll.models.request.user.getTrainingSession.GetTrainingSessionsByNameRequest;
+import be.labofitness.labo_fitness.bll.models.response.client.manageAccount.ClientManageAccountResponse;
 import be.labofitness.labo_fitness.bll.models.response.user.getCoach.GetCoachesResponse;
 import be.labofitness.labo_fitness.bll.models.response.user.getPhysiotherapist.GetPhysioResponse;
 import be.labofitness.labo_fitness.bll.models.response.user.getTrainingSession.GetTrainingSessionResponse;
@@ -19,10 +21,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -33,6 +32,16 @@ public class ClientController {
 
     private final ClientService clientService;
 
+    //region CLIENT MANAGE ACCOUNT
+
+    @PostMapping("/manage-account")
+    @PreAuthorize("hasAuthority('CLIENT') and isAuthenticated()")
+    public ResponseEntity<ClientManageAccountResponse> getAllPersonalTrainingSessions(Authentication authentication, ClientManageAccountRequest request) {
+        return ResponseEntity.ok(clientService.manageAccount(authentication, request));
+    }
+
+    //endregion
+    
     // region GET PERSONAL TRAINING SESSION
 
     @GetMapping("/personal-training-sessions")
