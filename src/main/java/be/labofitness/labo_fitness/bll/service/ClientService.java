@@ -26,6 +26,8 @@ import java.util.List;
 public interface ClientService  extends CrudService<Client, Long> {
 
 
+    // region ACCOUNT MANAGEMENT
+
     public RegisterResponse register(ClientRegisterRequest request);
 
     public ClientManageAccountResponse manageAccount(Authentication authentication, ClientManageAccountRequest request);
