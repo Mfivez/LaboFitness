@@ -14,6 +14,7 @@ import be.labofitness.labo_fitness.il.utils.initializer.base.DataInitializer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -28,6 +29,7 @@ public class CoachDataIni extends DataInitializer {
     private final RoleRepository roleRepository;
     private final CoachRepository coachRepository;
     private final LocationRepository locationRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public void run(String... args) throws Exception {
@@ -40,10 +42,10 @@ public class CoachDataIni extends DataInitializer {
             coach1.setName("Jeremy");
             coach1.setLast_name("Doe");
             coach1.setEmail("jerem.doe@example.com");
-            coach1.setPassword("password");
+            coach1.setPassword(passwordEncoder.encode("password"));
             coach1.setAdress(new Adress("123 Street", "2", "City", "12345"));
             coach1.setSpecialization("Fitness");
-            coach1.setPrice_hour(50);
+            coach1.setPriceHour(50);
             coach1.setRoles((LaboFitnessUtil.setRole(Set.of("USER", "COACH"), roleRepository)));
             coach1.setLocationPlace(Set.of(coachLocationPlace));
             coach1.setWorkSchedule("Du Lundi au Vendredi 9h - 17h");
@@ -53,11 +55,11 @@ public class CoachDataIni extends DataInitializer {
             coach2.setName("Yanis");
             coach2.setLast_name("Smith");
             coach2.setEmail("Yanis.smith@example.com");
-            coach2.setPassword("password");
+            coach2.setPassword(passwordEncoder.encode("password"));
             coach2.setAdress(new Adress("456 Avenue", "2","Town", "67890"));
             coach2.setSpecialization("Yoga");
-            coach2.set_remote(true);
-            coach2.setPrice_hour(60);
+            coach2.setRemote(true);
+            coach2.setPriceHour(60);
             coach2.setRoles((LaboFitnessUtil.setRole(Set.of("USER", "COACH"), roleRepository)));
             coach2.setLocationPlace(Set.of(coachLocationPlace));
             coach2.setWorkSchedule("Du Lundi au Vendredi 9h - 17h");

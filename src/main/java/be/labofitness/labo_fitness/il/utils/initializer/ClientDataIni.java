@@ -55,7 +55,7 @@ public class ClientDataIni extends DataInitializer {
             client2.setName("Jane");
             client2.setLast_name("Smith");
             client2.setEmail("jane.smith@example.com");
-            client2.setPassword("password");
+            client2.setPassword(passwordEncoder.encode("password"));
             client2.setAdress(new Adress("456 Avenue", "2","Town", "67890"));
             client2.setWeight(65);
             client2.setHeight(170);

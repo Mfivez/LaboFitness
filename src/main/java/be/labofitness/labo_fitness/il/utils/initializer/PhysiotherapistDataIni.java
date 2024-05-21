@@ -11,6 +11,7 @@ import be.labofitness.labo_fitness.il.utils.initializer.base.DataInitializer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -24,6 +25,7 @@ public class PhysiotherapistDataIni extends DataInitializer {
 
     private final PhysiotherapistRepository physiotherapistRepository;
     private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public void run(String... args) throws Exception {
@@ -36,7 +38,7 @@ public class PhysiotherapistDataIni extends DataInitializer {
             physiotherapist1.setName("John");
             physiotherapist1.setLast_name("Doe");
             physiotherapist1.setEmail("john@example.com");
-            physiotherapist1.setPassword("password");
+            physiotherapist1.setPassword(passwordEncoder.encode("password"));
             physiotherapist1.setAdress(new Adress("123 Street", "2", "City", "12345"));
             physiotherapist1.setSpecialization("Kine");
             physiotherapist1.setInami_number(1234568888);
@@ -48,7 +50,7 @@ public class PhysiotherapistDataIni extends DataInitializer {
             physiotherapist2.setName("Jane");
             physiotherapist2.setLast_name("Smith");
             physiotherapist2.setEmail("jane@example.com");
-            physiotherapist2.setPassword("password");
+            physiotherapist2.setPassword(passwordEncoder.encode("password"));
             physiotherapist2.setAdress(new Adress("123 Street", "2", "City", "12345"));
             physiotherapist2.setSpecialization("Kine");
             physiotherapist2.setInami_number(1234578888);

@@ -69,7 +69,7 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
             "SELECT t.coach " +
             "FROM Client c " +
             "JOIN c.trainingSessions t " +
-            "WHERE t.coach.is_remote = :is_remote " +
+            "WHERE t.coach.isRemote = :is_remote " +
             "AND c.id = :clientId")
     List<Coach> findPersonalCoachesByIsRemote(Long clientId, boolean is_remote);
 

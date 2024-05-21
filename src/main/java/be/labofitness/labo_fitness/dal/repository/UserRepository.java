@@ -36,7 +36,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query(
             "SELECT c " +
             "FROM Coach c " +
-            "WHERE c.is_remote = :is_remote")
+            "WHERE c.isRemote = :is_remote")
     List<Coach> findCoachesByIsRemote(boolean is_remote);
 
     @Query(
