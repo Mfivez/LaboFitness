@@ -1,9 +1,6 @@
 package be.labofitness.labo_fitness.dal.repository;
 
-import be.labofitness.labo_fitness.domain.entity.Coach;
-import be.labofitness.labo_fitness.domain.entity.Physiotherapist;
-import be.labofitness.labo_fitness.domain.entity.TrainingSession;
-import be.labofitness.labo_fitness.domain.entity.User;
+import be.labofitness.labo_fitness.domain.entity.*;
 import be.labofitness.labo_fitness.domain.enums.RecommendedLevel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -15,6 +12,13 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
+    // region UTILS METHODS
+    @Query( "Select u " +
+            "from User u " +
+            "where u.email ilike :email")
+    Optional<User> findByEmail(String email);
+    //endregion
+
     //region REGISTER
 
     @Query(
@@ -23,13 +27,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "WHERE email ILIKE :email" )
     boolean existsByEmail(String email);
     //endregion
-
-
-    @Query( "Select u " +
-            "from User u " +
-            "where u.email ilike :email")
-    Optional<User> findByEmail(String email);
-
 
     //region COACH
     @Query("SELECT c " +

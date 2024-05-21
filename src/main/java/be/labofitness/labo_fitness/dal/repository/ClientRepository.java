@@ -14,7 +14,6 @@ import java.util.List;
 @Repository
 public interface ClientRepository extends JpaRepository<Client, Long> {
 
-
     // region PERSONAL TRAINING SESSION
 
     @Query(

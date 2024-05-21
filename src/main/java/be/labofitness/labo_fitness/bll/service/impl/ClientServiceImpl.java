@@ -66,7 +66,7 @@ ClientServiceImpl  implements ClientService {
                 client.setPassword(passwordEncoder.encode(request.password()));
                 client.setGender(request.gender());
                 client.setAdress(new Adress(request.street(), request.number(), request.city(), request.zipCode()));
-                client.setRoles(LaboFitnessUtil.setRole(Set.of("CLIENT","ADMIN"), roleRepository));
+                client.setRoles(LaboFitnessUtil.setRole(Set.of("USER", "CLIENT"), roleRepository));
         clientRepository.save(client);
 
         return new RegisterResponse("Account created with success");

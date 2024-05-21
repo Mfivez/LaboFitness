@@ -43,7 +43,7 @@ public class ProfessionalServiceImpl implements ProfessionalService{
             physiotherapist.setBirthdate(LaboFitnessUtil.createNewDate(request.year(), request.month(), request.day()));
             physiotherapist.setEmail(request.email());
             physiotherapist.setPassword(passwordEncoder.encode(request.password()));
-            physiotherapist.setRoles(LaboFitnessUtil.setRole(Set.of("PHYSIOTHERAPIST"),roleRepository));
+            physiotherapist.setRoles(LaboFitnessUtil.setRole(Set.of("USER", "PHYSIOTHERAPIST"),roleRepository));
             physiotherapistRepository.save(physiotherapist);
             accreditationService.createWithParam(request.accreditation(), request.accreditationDescription(), physiotherapist);
             }
@@ -54,7 +54,7 @@ public class ProfessionalServiceImpl implements ProfessionalService{
             coach.setBirthdate(LaboFitnessUtil.createNewDate(request.year(), request.month(), request.day()));
             coach.setEmail(request.email());
             coach.setPassword(passwordEncoder.encode(request.password()));
-            coach.setRoles(LaboFitnessUtil.setRole(Set.of("COACH"),roleRepository));
+            coach.setRoles(LaboFitnessUtil.setRole(Set.of("USER", "COACH"),roleRepository));
             coachRepository.save(coach);
             accreditationService.createWithParam(request.accreditation(), request.accreditationDescription(), coach);
         }

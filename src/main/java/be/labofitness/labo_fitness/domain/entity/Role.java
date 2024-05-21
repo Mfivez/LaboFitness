@@ -26,7 +26,6 @@ public class Role extends BaseEntity<Long> implements GrantedAuthority {
         this.description = description;
     }
 
-
     @Override
     public String getAuthority() {
         return name;

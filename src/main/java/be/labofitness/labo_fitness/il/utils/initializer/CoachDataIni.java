@@ -33,7 +33,6 @@ public class CoachDataIni extends DataInitializer {
     public void run(String... args) throws Exception {
         super.run(args);
         if (coachRepository.count() == 0) {
-            Role coachRole = roleRepository.findById(4L).orElseThrow(RuntimeException::new);
             LocationPlace coachLocationPlace = locationRepository.findById(1L).orElseThrow(RuntimeException::new);
 
 
@@ -45,7 +44,7 @@ public class CoachDataIni extends DataInitializer {
             coach1.setAdress(new Adress("123 Street", "2", "City", "12345"));
             coach1.setSpecialization("Fitness");
             coach1.setPrice_hour(50);
-            coach1.setRoles(Set.of(coachRole));
+            coach1.setRoles((LaboFitnessUtil.setRole(Set.of("USER", "COACH"), roleRepository)));
             coach1.setLocationPlace(Set.of(coachLocationPlace));
             coach1.setWorkSchedule("Du Lundi au Vendredi 9h - 17h");
             coach1.setBirthdate(LocalDateTime.now());
@@ -59,7 +58,7 @@ public class CoachDataIni extends DataInitializer {
             coach2.setSpecialization("Yoga");
             coach2.set_remote(true);
             coach2.setPrice_hour(60);
-            coach2.setRoles(Set.of(coachRole));
+            coach2.setRoles((LaboFitnessUtil.setRole(Set.of("USER", "COACH"), roleRepository)));
             coach2.setLocationPlace(Set.of(coachLocationPlace));
             coach2.setWorkSchedule("Du Lundi au Vendredi 9h - 17h");
             coach2.setBirthdate(LaboFitnessUtil.createNewDate(2000, Month.JANUARY, 12));

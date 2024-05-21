@@ -3,6 +3,7 @@ import be.labofitness.labo_fitness.dal.repository.*;
 import be.labofitness.labo_fitness.domain.entity.*;
 import be.labofitness.labo_fitness.domain.entity.base.Adress;
 import be.labofitness.labo_fitness.domain.enums.Goal;
+import be.labofitness.labo_fitness.il.utils.LaboFitnessUtil;
 import be.labofitness.labo_fitness.il.utils.initializer.base.DataInitializer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.DependsOn;
@@ -32,10 +33,6 @@ public class ClientDataIni extends DataInitializer {
     public void run(String... args) throws Exception {
         super.run(args);
         if (clientRepository.count() == 0) {
-
-            Role client = roleRepository.findById(2L).orElseThrow(RuntimeException::new);
-            Role admin = roleRepository.findById(6L).orElseThrow(RuntimeException::new);
-            Role moderator = roleRepository.findById(5L).orElseThrow(RuntimeException::new);
             Competition competition = competitionRepository.findById(1L).orElseThrow(RuntimeException::new);
             TrainingSession trainingSession = trainingSessionRepository.findById(1L).orElseThrow(RuntimeException::new);
 
@@ -49,7 +46,7 @@ public class ClientDataIni extends DataInitializer {
             client1.setHeight(180);
             client1.setGoal(Goal.LEISURE_SPORT);
             client1.setLifeStyle(1.5);
-            client1.setRoles(Set.of(client));
+            client1.setRoles(LaboFitnessUtil.setRole(Set.of("USER", "CLIENT"), roleRepository));
             client1.setCompetitions(List.of(competition));
             client1.setTrainingSessions(List.of(trainingSession));
             client1.setBirthdate(LocalDateTime.now());
@@ -64,7 +61,7 @@ public class ClientDataIni extends DataInitializer {
             client2.setHeight(170);
             client2.setGoal(Goal.LIFESTYLE_IMPROVEMENT);
             client2.setLifeStyle(1.6);
-            client2.setRoles(Set.of(client, moderator));
+            client2.setRoles(LaboFitnessUtil.setRole(Set.of("USER", "CLIENT"), roleRepository));
             client2.setTrainingSessions(List.of(trainingSession));
             client2.setBirthdate(LocalDateTime.now());
 
