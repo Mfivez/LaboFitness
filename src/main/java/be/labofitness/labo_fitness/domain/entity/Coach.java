@@ -16,14 +16,14 @@ import java.util.Set;
 public class Coach extends Professional{
 
     @Column(name = "is_remote", nullable = false)
-    private boolean is_remote;
+    private boolean isRemote;
 
     @Column(name = "price_hour", nullable = false)
-    private int price_hour;
+    private int priceHour;
 
 
     public Coach() {
-        this.is_remote = false;
+        this.isRemote = false;
     }
 
 //    @Builder //absolument pas nécessaire

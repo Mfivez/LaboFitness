@@ -26,8 +26,8 @@ public class GetCoachesResponse {
 
     public static GetCoachesResponse fromEntity(Coach coach) {
         return new GetCoachesResponse(
-                coach.is_remote(),
-                coach.getPrice_hour(),
+                coach.isRemote(),
+                coach.getPriceHour(),
                 coach.getEmail(),
                 coach.getWorkSchedule(),
                 coach.getLocationPlace(),

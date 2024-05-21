@@ -36,7 +36,7 @@ public class ClientController {
 
     @PostMapping("/manage-account")
     @PreAuthorize("hasAuthority('CLIENT') and isAuthenticated()")
-    public ResponseEntity<ClientManageAccountResponse> getAllPersonalTrainingSessions(Authentication authentication, ClientManageAccountRequest request) {
+    public ResponseEntity<ClientManageAccountResponse> clientManageAccount(Authentication authentication, @Valid @ModelAttribute ClientManageAccountRequest request) {
         return ResponseEntity.ok(clientService.manageAccount(authentication, request));
     }
 
