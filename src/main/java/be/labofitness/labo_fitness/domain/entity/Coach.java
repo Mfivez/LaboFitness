@@ -33,5 +33,5 @@ public class Coach extends Professional{
 //        this.price_hour = price_hour;
 //    }
 
-    //BUG GITHUB
+
 }

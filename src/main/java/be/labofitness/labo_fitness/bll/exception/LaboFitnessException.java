@@ -18,5 +18,5 @@ public class LaboFitnessException extends RuntimeException {
                 + " with message" + this.getMessage();
 
     }
-    //BUG GITHUB
+
 }

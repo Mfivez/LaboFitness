@@ -16,7 +16,7 @@ import java.util.List;
 
 public interface ClientService  extends CrudService<Client, Long> {
 
-    //BUG GITHUB
+
     public RegisterResponse register(ClientRegisterRequest request);
 
     // region PERSONAL TRAINING SESSIONS

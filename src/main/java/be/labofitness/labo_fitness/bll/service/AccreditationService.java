@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface AccreditationService extends CrudService<Accreditation, Long> {
 
-    //BUG GITHUB
+
     Accreditation createWithParam(AccreditationType accreditationType, String description, Professional pro);
 
 }

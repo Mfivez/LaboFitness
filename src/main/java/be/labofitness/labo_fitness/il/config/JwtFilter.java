@@ -41,18 +41,11 @@ public class JwtFilter extends OncePerRequestFilter {
     )
             throws ServletException, IOException
     {
-        if (SecurityContextHolder.getContext().getAuthentication() == null) {
             String authHeader = request.getHeader("Authorization");
             if (authHeader != null && authHeader.startsWith("Bearer ")) {
                 String token = authHeader.substring(7);
                 if (!token.isEmpty()) {
                     if (jwtUtil.validateToken(token)) {
-                        /**
-                        Claims claims = jwtUtil.getClaims(token);
-                        List<GrantedAuthority> authorities = Arrays.stream(claims.get("roles").toString().split(","))
-                                .map(SimpleGrantedAuthority::new)
-                                .collect(Collectors.toList());
-                         **/
 
                         String email = jwtUtil.getEmail(token);
                         UserDetails user = userService.loadUserByUsername(email);
@@ -66,7 +59,6 @@ public class JwtFilter extends OncePerRequestFilter {
                     }
                 }
             }
-        }
         filterChain.doFilter(request, response);
     }
 }

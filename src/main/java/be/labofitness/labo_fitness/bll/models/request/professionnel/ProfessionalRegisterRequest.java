@@ -5,7 +5,7 @@ import be.labofitness.labo_fitness.domain.enums.AccreditationType;
 
 
 import java.time.Month;
-//BUG GITHUB
+
 public record ProfessionalRegisterRequest(
         String name,
         String lastName,

@@ -39,7 +39,7 @@ public class TrainingSession extends BaseEntity<Long> {
     @JoinColumn(nullable = false)
     private Coach coach;
 
-    //BUG GITHUB
+
 
     public TrainingSession() {}
 }

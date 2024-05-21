@@ -29,7 +29,7 @@ public class Report extends BaseEntity<Long> {
     @Column(name = "is_confirme", nullable = false)
     private boolean isConfirmed;
 
-    //BUG GITHUB
+
     public Report() {
         this.isConfirmed = false;
     }

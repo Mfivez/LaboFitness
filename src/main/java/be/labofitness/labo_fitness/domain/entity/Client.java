@@ -47,7 +47,7 @@ public class Client extends User {
         this.competitions = new ArrayList<>();
         this.trainingSessions = new ArrayList<>();
     }
-    //BUG GITHUB
+
 
 
 

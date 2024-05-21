@@ -32,6 +32,7 @@ public class JwtUtil {
                 .claim("id", user.getId())
                 .claim("authorities", user.getAuthorities())
                 .setIssuedAt(new Date())
+                //TODO modified x1000
                 .setExpiration(new Date(System.currentTimeMillis() + jwtConfig.expireAt * 1000L))
                 .compact();
     }

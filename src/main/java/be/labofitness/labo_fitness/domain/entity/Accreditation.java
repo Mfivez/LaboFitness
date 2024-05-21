@@ -23,6 +23,6 @@ public class Accreditation extends BaseEntity<Long> {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(nullable = false)
     private Professional professional;
-    //BUG GITHUB
+
 
 }

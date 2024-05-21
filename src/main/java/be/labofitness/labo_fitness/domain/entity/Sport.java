@@ -22,7 +22,7 @@ public class Sport extends BaseEntity<Long> {
     @Enumerated(EnumType.STRING)
     private TypeSport typeSport;
 
-    //BUG GITHUB
+
     public Sport() {
         this.typeSport = TypeSport.INDEFINI;
     }

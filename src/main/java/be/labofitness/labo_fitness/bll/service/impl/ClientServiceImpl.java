@@ -38,13 +38,10 @@ public class ClientServiceImpl  implements ClientService {
     @Transactional
     public RegisterResponse register(ClientRegisterRequest request) {
 
-        //TODO POURQUOI PAS BOOLEAN !!
-        //TODO questions pour seb : pourquoi le boolean / pourquoi le authenticate ne fonctionne pas
-        if(userRepository.existsByEmail(request.email()) > 0) {
+        if(userRepository.existsByEmail(request.email())) {
             throw new ClientAlreadyExistsException("email already exists : " + request.email());
         }
 
-        //todo change that
         Client client = new Client ();
                 client.setWeight(request.weight());
                 client.setHeight(request.height());

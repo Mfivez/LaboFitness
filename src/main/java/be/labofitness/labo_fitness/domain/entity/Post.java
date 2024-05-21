@@ -15,7 +15,6 @@ import java.time.LocalDateTime;
 @Getter @Setter
 @AllArgsConstructor @NoArgsConstructor
 public class Post extends BaseEntity<Long> {
-    //TODO (in progress)
 
     @Column(name = "name", nullable = false)
     private String name;
@@ -31,7 +30,7 @@ public class Post extends BaseEntity<Long> {
     @JoinColumn(name = "sport",unique = true, nullable = false)
     private Sport sport;
 
-    //BUG GITHUB
+
     @ManyToOne
     @JoinColumn(name = "post_creator", nullable = false)
     private User creator;

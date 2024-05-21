@@ -23,7 +23,7 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class ProfessionalServiceImpl implements ProfessionalService{
 
-    //BUG GITHUB
+
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final PhysiotherapistRepository physiotherapistRepository;
@@ -34,9 +34,8 @@ public class ProfessionalServiceImpl implements ProfessionalService{
 
     @Override
     public RegisterResponse register(ProfessionalRegisterRequest request) {
-        //TODO POURQUOI PAS BOOLEAN !!
-        //TODO questions pour seb : pourquoi le boolean / pourquoi le authenticate ne fonctionne pas
-        if(userRepository.existsByEmail(request.email()) > 0) {
+
+        if(userRepository.existsByEmail(request.email())) {
             throw new ProfessionalAlreadyExistsException("email already exists : " + request.email());
         }
 

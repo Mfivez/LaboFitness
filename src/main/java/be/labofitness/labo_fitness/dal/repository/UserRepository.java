@@ -13,14 +13,14 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    //BUG GITHUB
+
     //region REGISTER
 
     @Query(
-            "SELECT COUNT(*) " +
+            "SELECT COUNT(*)>0 " +
             "FROM User  " +
             "WHERE email ILIKE :email" )
-    long existsByEmail(String email);
+    boolean existsByEmail(String email);
     //endregion
 
 

@@ -19,5 +19,5 @@ public class Physiotherapist extends Professional{
     @Column(name = "inami_number", nullable = false)
     private Integer inami_number;
 
-    //BUG GITHUB
+
 }

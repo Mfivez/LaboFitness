@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @ControllerAdvice
-//BUG GITHUB
+
 public class ControllerAdvisor {
 
     @ExceptionHandler(ClientAlreadyExistsException.class)

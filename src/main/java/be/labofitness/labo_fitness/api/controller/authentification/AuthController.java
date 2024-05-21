@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin("*")
 public class AuthController {
 
-    //BUG GITHUB
+
     private final UserService userService;
     private final ClientService clientService;
     private final ProfessionalService professionalService;
@@ -33,7 +33,6 @@ public class AuthController {
         return ResponseEntity.ok(userService.login(request));
     }
 
-    //TODO demander pourquoi passer le JWT dans register
     @PreAuthorize("isAnonymous()")
     @PostMapping("/register/client")
     public ResponseEntity<RegisterResponse> registerClient(@Valid @ModelAttribute ClientRegisterRequest request){
