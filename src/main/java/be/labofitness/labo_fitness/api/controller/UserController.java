@@ -9,14 +9,17 @@ import be.labofitness.labo_fitness.bll.models.request.user.getTrainingSession.Ge
 import be.labofitness.labo_fitness.bll.models.request.user.getTrainingSession.GetTrainingSessionsByCoachNameRequest;
 import be.labofitness.labo_fitness.bll.models.request.user.getTrainingSession.GetTrainingSessionsByDurationRequest;
 import be.labofitness.labo_fitness.bll.models.request.user.getTrainingSession.GetTrainingSessionsByNameRequest;
+import be.labofitness.labo_fitness.bll.models.request.user.makeReport.MakeReportRequest;
 import be.labofitness.labo_fitness.bll.models.response.user.getTrainingSession.GetTrainingSessionResponse;
 import be.labofitness.labo_fitness.bll.models.response.user.getCoach.GetCoachesResponse;
 import be.labofitness.labo_fitness.bll.models.response.user.getPhysiotherapist.GetPhysioResponse;
+import be.labofitness.labo_fitness.bll.models.response.user.makeReport.ReportResponse;
 import be.labofitness.labo_fitness.bll.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,7 +28,18 @@ import java.util.List;
 @RequestMapping("/api/user")
 @RequiredArgsConstructor
 public class UserController {
+
     private final UserService userService;
+
+    //region MAKE REPORT
+
+    @PreAuthorize("isAuthenticated() AND hasAnyAuthority('USER')")
+    @PostMapping("/make-report")
+    public ResponseEntity<ReportResponse> makeReport(Authentication authentication, @Valid @ModelAttribute MakeReportRequest request) {
+        return ResponseEntity.ok(userService.makeReport(authentication, request));
+    }
+
+    //endregion
 
     //region GET COACHES
 

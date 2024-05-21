@@ -29,7 +29,6 @@ public abstract class User extends BaseEntity<Long> implements UserDetails {
     @Column(name = "last_name", nullable = false)
     private String last_name;
 
-
     @Column(name = "email", unique = true, nullable = false)
     private String email;
 

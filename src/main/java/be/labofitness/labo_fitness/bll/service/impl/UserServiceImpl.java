@@ -1,5 +1,6 @@
 package be.labofitness.labo_fitness.bll.service.impl;
 
+import be.labofitness.labo_fitness.bll.exception.doesntExists.EmailDoesntExistException;
 import be.labofitness.labo_fitness.bll.models.request.user.getCoach.GetCoachesByNameRequest;
 import be.labofitness.labo_fitness.bll.models.request.user.getCoach.GetCoachesByRemoteRequest;
 import be.labofitness.labo_fitness.bll.models.request.user.getCoach.GetCoachesBySpecializationRequest;
@@ -10,18 +11,22 @@ import be.labofitness.labo_fitness.bll.models.request.user.getTrainingSession.Ge
 import be.labofitness.labo_fitness.bll.models.request.user.getTrainingSession.GetTrainingSessionsByCoachNameRequest;
 import be.labofitness.labo_fitness.bll.models.request.user.getTrainingSession.GetTrainingSessionsByDurationRequest;
 import be.labofitness.labo_fitness.bll.models.request.user.getTrainingSession.GetTrainingSessionsByNameRequest;
+import be.labofitness.labo_fitness.bll.models.request.user.makeReport.MakeReportRequest;
 import be.labofitness.labo_fitness.bll.models.response.user.getTrainingSession.GetTrainingSessionResponse;
 import be.labofitness.labo_fitness.bll.models.response.user.getCoach.GetCoachesResponse;
 import be.labofitness.labo_fitness.bll.models.response.UserLoginResponse;
 import be.labofitness.labo_fitness.bll.models.response.user.getPhysiotherapist.GetPhysioResponse;
+import be.labofitness.labo_fitness.bll.models.response.user.makeReport.ReportResponse;
+import be.labofitness.labo_fitness.bll.service.ReportService;
 import be.labofitness.labo_fitness.bll.service.UserService;
+import be.labofitness.labo_fitness.dal.repository.ReportRepository;
 import be.labofitness.labo_fitness.dal.repository.UserRepository;
-import be.labofitness.labo_fitness.domain.entity.Coach;
-import be.labofitness.labo_fitness.domain.entity.Physiotherapist;
-import be.labofitness.labo_fitness.domain.entity.TrainingSession;
-import be.labofitness.labo_fitness.domain.entity.User;
+import be.labofitness.labo_fitness.domain.entity.*;
 import be.labofitness.labo_fitness.il.utils.JwtUtil;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -31,18 +36,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
+    private final ReportService reportService;
 
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.jwtUtil = jwtUtil;
-    }
 
 
     @Override
@@ -63,6 +64,26 @@ public class UserServiceImpl implements UserService {
         String token = jwtUtil.generateToken(user);
 
         return UserLoginResponse.fromEntity(user, token);
+    }
+
+    // endregion
+
+    // region MAKE REPORT
+
+    @Override @Transactional
+    public ReportResponse makeReport(Authentication authentication, MakeReportRequest request) {
+        User complainant = (User) authentication.getPrincipal();
+
+        User reportedUser =  userRepository.findByEmail(request.reportedUserEmail())
+                .orElseThrow(() -> new EmailDoesntExistException(
+                        "L'email " + request.reportedUserEmail() + " n'existe pas"));
+
+        reportService.makeReportWithParams(complainant, reportedUser, request.report());
+
+
+        return new ReportResponse("Vous avez bien reporté l'utilisateur " +
+                reportedUser.getName() + " " + reportedUser.getLast_name() +
+                " pour le motif suivant : " + request.report());
     }
 
     // endregion

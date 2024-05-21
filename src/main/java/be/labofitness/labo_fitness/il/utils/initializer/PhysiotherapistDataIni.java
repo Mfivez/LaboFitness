@@ -6,6 +6,7 @@ import be.labofitness.labo_fitness.domain.entity.Competition;
 import be.labofitness.labo_fitness.domain.entity.Physiotherapist;
 import be.labofitness.labo_fitness.domain.entity.Role;
 import be.labofitness.labo_fitness.domain.entity.base.Adress;
+import be.labofitness.labo_fitness.il.utils.LaboFitnessUtil;
 import be.labofitness.labo_fitness.il.utils.initializer.base.DataInitializer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.DependsOn;
@@ -30,7 +31,6 @@ public class PhysiotherapistDataIni extends DataInitializer {
 
 
         if (physiotherapistRepository.count() == 0) {
-            Role role = roleRepository.findById(3L).orElseThrow();
 
             Physiotherapist physiotherapist1 = new Physiotherapist();
             physiotherapist1.setName("John");
@@ -40,7 +40,7 @@ public class PhysiotherapistDataIni extends DataInitializer {
             physiotherapist1.setAdress(new Adress("123 Street", "2", "City", "12345"));
             physiotherapist1.setSpecialization("Kine");
             physiotherapist1.setInami_number(1234568888);
-            physiotherapist1.setRoles(Set.of(role));
+            physiotherapist1.setRoles((LaboFitnessUtil.setRole(Set.of("USER", "PHYSIOTHERAPIST"), roleRepository)));
             physiotherapist1.setWorkSchedule("Du Lundi au Vendredi 9h - 17h");
             physiotherapist1.setBirthdate(LocalDateTime.now());
 
@@ -52,7 +52,7 @@ public class PhysiotherapistDataIni extends DataInitializer {
             physiotherapist2.setAdress(new Adress("123 Street", "2", "City", "12345"));
             physiotherapist2.setSpecialization("Kine");
             physiotherapist2.setInami_number(1234578888);
-            physiotherapist2.setRoles(Set.of(role));
+            physiotherapist2.setRoles((LaboFitnessUtil.setRole(Set.of("USER", "PHYSIOTHERAPIST"), roleRepository)));
             physiotherapist2.setWorkSchedule("Du Lundi au Vendredi 9h - 17h");
             physiotherapist2.setBirthdate(LocalDateTime.now());
 
