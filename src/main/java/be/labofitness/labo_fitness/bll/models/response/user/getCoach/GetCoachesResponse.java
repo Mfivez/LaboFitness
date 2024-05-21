@@ -7,7 +7,7 @@ import lombok.Data;
 import java.util.Set;
 
 @Data
-public class UserGetCoachesResponse {
+public class GetCoachesResponse {
     private boolean is_remote;
     private int price_hour;
     private String email;
@@ -15,7 +15,7 @@ public class UserGetCoachesResponse {
     private String specialization;
     Set<LocationPlace> locationPlace;
 
-    public UserGetCoachesResponse(boolean isRemote, int priceHour, String email, String workSchedule, Set<LocationPlace> locationPlace, String specialization) {
+    public GetCoachesResponse(boolean isRemote, int priceHour, String email, String workSchedule, Set<LocationPlace> locationPlace, String specialization) {
         this.is_remote = isRemote;
         this.price_hour = priceHour;
         this.email = email;
@@ -24,8 +24,8 @@ public class UserGetCoachesResponse {
         this.specialization = specialization;
     }
 
-    public static UserGetCoachesResponse fromEntity(Coach coach) {
-        return new UserGetCoachesResponse(
+    public static GetCoachesResponse fromEntity(Coach coach) {
+        return new GetCoachesResponse(
                 coach.is_remote(),
                 coach.getPrice_hour(),
                 coach.getEmail(),

@@ -1,24 +1,33 @@
 package be.labofitness.labo_fitness.bll.service.impl;
 
 import be.labofitness.labo_fitness.bll.exception.alreadyExists.ClientAlreadyExistsException;
-import be.labofitness.labo_fitness.bll.models.request.client.getPersonalTrainingSession.*;
-import be.labofitness.labo_fitness.bll.models.request.client.getTrainingSession.ClientGetTrainingSessionByRecommendedLvlRequest;
-import be.labofitness.labo_fitness.bll.models.request.client.getTrainingSession.ClientGetTrainingSessionsByCoachNameRequest;
-import be.labofitness.labo_fitness.bll.models.request.client.getTrainingSession.ClientGetTrainingSessionsByDurationRequest;
-import be.labofitness.labo_fitness.bll.models.request.client.getTrainingSession.ClientGetTrainingSessionsByNameRequest;
+import be.labofitness.labo_fitness.bll.models.request.user.getCoach.GetCoachesByNameRequest;
+import be.labofitness.labo_fitness.bll.models.request.user.getCoach.GetCoachesByRemoteRequest;
+import be.labofitness.labo_fitness.bll.models.request.user.getCoach.GetCoachesBySpecializationRequest;
+import be.labofitness.labo_fitness.bll.models.request.user.getPhysiotherapist.GetPhysioByNameRequest;
+import be.labofitness.labo_fitness.bll.models.request.user.getPhysiotherapist.GetPhysioBySpecializationRequest;
+import be.labofitness.labo_fitness.bll.models.request.user.getTrainingSession.GetTrainingSessionByRecommendedLvlRequest;
+import be.labofitness.labo_fitness.bll.models.request.user.getTrainingSession.GetTrainingSessionsByCoachNameRequest;
+import be.labofitness.labo_fitness.bll.models.request.user.getTrainingSession.GetTrainingSessionsByDurationRequest;
+import be.labofitness.labo_fitness.bll.models.request.user.getTrainingSession.GetTrainingSessionsByNameRequest;
 import be.labofitness.labo_fitness.bll.models.request.client.registerClient.ClientRegisterRequest;
-import be.labofitness.labo_fitness.bll.models.response.client.getTrainingSession.ClientGetTrainingSessionResponse;
+import be.labofitness.labo_fitness.bll.models.response.user.getCoach.GetCoachesResponse;
+import be.labofitness.labo_fitness.bll.models.response.user.getPhysiotherapist.GetPhysioResponse;
+import be.labofitness.labo_fitness.bll.models.response.user.getTrainingSession.GetTrainingSessionResponse;
 import be.labofitness.labo_fitness.bll.models.response.user.register.RegisterResponse;
 import be.labofitness.labo_fitness.bll.service.ClientService;
 import be.labofitness.labo_fitness.dal.repository.ClientRepository;
 import be.labofitness.labo_fitness.dal.repository.RoleRepository;
 import be.labofitness.labo_fitness.dal.repository.UserRepository;
 import be.labofitness.labo_fitness.domain.entity.Client;
+import be.labofitness.labo_fitness.domain.entity.Coach;
+import be.labofitness.labo_fitness.domain.entity.Physiotherapist;
 import be.labofitness.labo_fitness.domain.entity.TrainingSession;
 import be.labofitness.labo_fitness.domain.entity.base.Adress;
 import be.labofitness.labo_fitness.il.utils.LaboFitnessUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -35,6 +44,7 @@ public class ClientServiceImpl  implements ClientService {
     private final RoleRepository roleRepository;
 
 
+    // region AUTHENTICATE
     @Transactional
     public RegisterResponse register(ClientRegisterRequest request) {
 
@@ -57,6 +67,8 @@ public class ClientServiceImpl  implements ClientService {
 
         return new RegisterResponse("Account created with success");
     }
+
+    //endregion
 
     // region CLASSIC CRUD
 
@@ -91,73 +103,116 @@ public class ClientServiceImpl  implements ClientService {
 
     // region PERSONAL TRAINING SESSIONS
     @Override
-    public List<ClientGetTrainingSessionResponse> findPersonalClientTrainingSessionByClientId(ClientGetPersonalTrainingSessionByClientIdRequest request) {
-        List<TrainingSession> trainingSessions = clientRepository.findPersonalTrainingSessionsByClientId(request.Id());
+    public List<GetTrainingSessionResponse> findPersonalClientTrainingSession(Authentication authentication) {
+        Client client = (Client) authentication.getPrincipal();
+        List<TrainingSession> trainingSessions = clientRepository.findPersonalTrainingSessions(client.getId());
         return trainingSessionToClientGetTrainingSessionResponse(trainingSessions);
     }
 
     @Override
-    public List<ClientGetTrainingSessionResponse> findPersonalClientTrainingSessionByRecommendedLvl(ClientGetPersonalTrainingSessionByRecommendedLvlRequest request) {
-        List<TrainingSession> trainingSessions = clientRepository.findPersonalTrainingSessionsByRecommendedLevel(request.Id(), request.recommendedLevel());
+    public List<GetTrainingSessionResponse> findPersonalClientTrainingSessionByRecommendedLvl(Authentication authentication, GetTrainingSessionByRecommendedLvlRequest request) {
+        Client client = (Client) authentication.getPrincipal();
+        List<TrainingSession> trainingSessions = clientRepository.findPersonalTrainingSessionsByRecommendedLevel(client.getId(), request.recommendedLevel());
         return trainingSessionToClientGetTrainingSessionResponse(trainingSessions);
     }
 
     @Override
-    public List<ClientGetTrainingSessionResponse> findPersonalClientTrainingSessionByDuration(ClientGetPersonalTrainingSessionsByDurationRequest request) {
-        List<TrainingSession> trainingSessions = clientRepository.findPersonalTrainingSessionsByDuration(request.Id(), request.duration());
+    public List<GetTrainingSessionResponse> findPersonalClientTrainingSessionByDuration(Authentication authentication, GetTrainingSessionsByDurationRequest request) {
+        Client client = (Client) authentication.getPrincipal();
+        List<TrainingSession> trainingSessions = clientRepository.findPersonalTrainingSessionsByDuration(client.getId(), request.duration());
         return trainingSessionToClientGetTrainingSessionResponse(trainingSessions);
     }
 
     @Override
-    public List<ClientGetTrainingSessionResponse> findPersonalClientTrainingSessionByName(ClientGetPersonalTrainingSessionsByNameRequest request) {
-        List<TrainingSession> trainingSessions = clientRepository.findPersonalTrainingSessionsByName(request.Id(), request.name());
+    public List<GetTrainingSessionResponse> findPersonalClientTrainingSessionByName(Authentication authentication, GetTrainingSessionsByNameRequest request) {
+        Client client = (Client) authentication.getPrincipal();
+        List<TrainingSession> trainingSessions = clientRepository.findPersonalTrainingSessionsByName(client.getId(), request.name());
         return trainingSessionToClientGetTrainingSessionResponse(trainingSessions);
     }
 
     @Override
-    public List<ClientGetTrainingSessionResponse> findPersonalClientTrainingSessionByCoachName(ClientGetPersonalTrainingSessionsByCoachNameRequest request) {
-        List<TrainingSession> trainingSessions = clientRepository.findPersonalTrainingSessionsByCoachName(request.Id(), request.coach_name());
+    public List<GetTrainingSessionResponse> findPersonalClientTrainingSessionByCoachName(Authentication authentication, GetTrainingSessionsByCoachNameRequest request) {
+        Client client = (Client) authentication.getPrincipal();
+        List<TrainingSession> trainingSessions = clientRepository.findPersonalTrainingSessionsByCoachName(client.getId(), request.coach_name());
         return trainingSessionToClientGetTrainingSessionResponse(trainingSessions);
+    }
+
+    public List<GetTrainingSessionResponse>  trainingSessionToClientGetTrainingSessionResponse(List<TrainingSession> trainings) {
+        return trainings.stream()
+                .map(GetTrainingSessionResponse::fromEntity)
+                .collect(Collectors.toList());
     }
 
     // endregion
 
-    // region TRAINING SESSIONS
+    // region GET PERSONAL PHYSIOTHERAPIST
 
     @Override
-    public List<ClientGetTrainingSessionResponse> findAllTrainingSession() {
-        List<TrainingSession> trainingSessions = clientRepository.findAllTrainingSessions();
-        return trainingSessionToClientGetTrainingSessionResponse(trainingSessions);
+    public List<GetPhysioResponse> getAllPersonalPhysio(Authentication authentication) {
+        Client client = (Client) authentication.getPrincipal();
+        List<Physiotherapist> physio = clientRepository.findAllPersonalPhysio(client.getId());
+        return physioToUserGetCoachesResponse(physio);
     }
 
     @Override
-    public List<ClientGetTrainingSessionResponse> findTrainingSessionByRecommendedLvl(ClientGetTrainingSessionByRecommendedLvlRequest request) {
-        List<TrainingSession> trainingSessions = clientRepository.findTrainingSessionsByRecommendedLevel(request.recommendedLevel());
-        return trainingSessionToClientGetTrainingSessionResponse(trainingSessions);
+    public List<GetPhysioResponse> getPersonalPhysioBySpecialization(Authentication authentication, GetPhysioBySpecializationRequest request) {
+        Client client = (Client) authentication.getPrincipal();
+        List<Physiotherapist> physio = clientRepository.findPersonalPhysioBySpecialization(client.getId(), request.specialization());
+        return physioToUserGetCoachesResponse(physio);
     }
 
     @Override
-    public List<ClientGetTrainingSessionResponse> findTrainingSessionByDuration(ClientGetTrainingSessionsByDurationRequest request) {
-        List<TrainingSession> trainingSessions = clientRepository.findTrainingSessionsByDuration(request.duration());
-        return trainingSessionToClientGetTrainingSessionResponse(trainingSessions);
+    public List<GetPhysioResponse> getPersonalPhysioByName(Authentication authentication, GetPhysioByNameRequest request) {
+        Client client = (Client) authentication.getPrincipal();
+        List<Physiotherapist> physio = clientRepository.findPersonalPhysioByName(client.getId(), request.name());
+        return physioToUserGetCoachesResponse(physio);
     }
 
-    @Override
-    public List<ClientGetTrainingSessionResponse> findTrainingSessionByName(ClientGetTrainingSessionsByNameRequest request) {
-        List<TrainingSession> trainingSessions = clientRepository.findTrainingSessionsByName(request.name());
-        return trainingSessionToClientGetTrainingSessionResponse(trainingSessions);
-    }
-
-    @Override
-    public List<ClientGetTrainingSessionResponse> findTrainingSessionByCoachName(ClientGetTrainingSessionsByCoachNameRequest request) {
-        List<TrainingSession> trainingSessions = clientRepository.findTrainingSessionsByCoachName(request.coach_name());
-        return trainingSessionToClientGetTrainingSessionResponse(trainingSessions);
-    }
-
-    public List<ClientGetTrainingSessionResponse>  trainingSessionToClientGetTrainingSessionResponse(List<TrainingSession> trainings) {
-        return trainings.stream()
-                .map(ClientGetTrainingSessionResponse::fromEntity)
+    public List<GetPhysioResponse>  physioToUserGetCoachesResponse(List<Physiotherapist> physio) {
+        return physio.stream()
+                .map(GetPhysioResponse::fromEntity)
                 .collect(Collectors.toList());
     }
+
     //endregion
+
+    // region GET COACHES
+
+    @Override
+    public List<GetCoachesResponse> getAllPersonalCoaches(Authentication authentication) {
+        Client client = (Client) authentication.getPrincipal();
+        List<Coach> coaches = clientRepository.findAllPersonalCoaches(client.getId());
+        return coachesToUserGetCoachesResponse(coaches);
+    }
+
+    @Override
+    public List<GetCoachesResponse> getAllPersonalCoachesByIsRemote(Authentication authentication, GetCoachesByRemoteRequest request) {
+        Client client = (Client) authentication.getPrincipal();
+        List<Coach> coaches = clientRepository.findPersonalCoachesByIsRemote(client.getId(), request.is_remote());
+        return coachesToUserGetCoachesResponse(coaches);
+
+    }
+
+    @Override
+    public List<GetCoachesResponse> getAllPersonalCoachesBySpecialization(Authentication authentication, GetCoachesBySpecializationRequest request) {
+        Client client = (Client) authentication.getPrincipal();
+        List<Coach> coaches = clientRepository.findPersonalCoachesBySpecialization(client.getId(), request.specialization());
+        return coachesToUserGetCoachesResponse(coaches);
+    }
+
+    @Override
+    public List<GetCoachesResponse> getAllPersonalCoachesByName(Authentication authentication, GetCoachesByNameRequest request) {
+        Client client = (Client) authentication.getPrincipal();
+        List<Coach> coaches = clientRepository.findPersonalCoachesByName(client.getId(), request.name());
+        return coachesToUserGetCoachesResponse(coaches);
+    }
+
+    public List<GetCoachesResponse>  coachesToUserGetCoachesResponse(List<Coach> coaches) {
+        return coaches.stream()
+                .map(GetCoachesResponse::fromEntity)
+                .collect(Collectors.toList());
+    }
+
+    //endregion
+
 }

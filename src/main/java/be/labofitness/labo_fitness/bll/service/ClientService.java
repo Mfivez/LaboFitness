@@ -1,15 +1,22 @@
 package be.labofitness.labo_fitness.bll.service;
 
-import be.labofitness.labo_fitness.bll.models.request.client.getPersonalTrainingSession.*;
-import be.labofitness.labo_fitness.bll.models.request.client.getTrainingSession.ClientGetTrainingSessionByRecommendedLvlRequest;
-import be.labofitness.labo_fitness.bll.models.request.client.getTrainingSession.ClientGetTrainingSessionsByCoachNameRequest;
-import be.labofitness.labo_fitness.bll.models.request.client.getTrainingSession.ClientGetTrainingSessionsByDurationRequest;
-import be.labofitness.labo_fitness.bll.models.request.client.getTrainingSession.ClientGetTrainingSessionsByNameRequest;
+import be.labofitness.labo_fitness.bll.models.request.user.getCoach.GetCoachesByNameRequest;
+import be.labofitness.labo_fitness.bll.models.request.user.getCoach.GetCoachesByRemoteRequest;
+import be.labofitness.labo_fitness.bll.models.request.user.getCoach.GetCoachesBySpecializationRequest;
+import be.labofitness.labo_fitness.bll.models.request.user.getPhysiotherapist.GetPhysioByNameRequest;
+import be.labofitness.labo_fitness.bll.models.request.user.getPhysiotherapist.GetPhysioBySpecializationRequest;
+import be.labofitness.labo_fitness.bll.models.request.user.getTrainingSession.GetTrainingSessionByRecommendedLvlRequest;
+import be.labofitness.labo_fitness.bll.models.request.user.getTrainingSession.GetTrainingSessionsByCoachNameRequest;
+import be.labofitness.labo_fitness.bll.models.request.user.getTrainingSession.GetTrainingSessionsByDurationRequest;
+import be.labofitness.labo_fitness.bll.models.request.user.getTrainingSession.GetTrainingSessionsByNameRequest;
 import be.labofitness.labo_fitness.bll.models.request.client.registerClient.ClientRegisterRequest;
-import be.labofitness.labo_fitness.bll.models.response.client.getTrainingSession.ClientGetTrainingSessionResponse;
+import be.labofitness.labo_fitness.bll.models.response.user.getCoach.GetCoachesResponse;
+import be.labofitness.labo_fitness.bll.models.response.user.getPhysiotherapist.GetPhysioResponse;
+import be.labofitness.labo_fitness.bll.models.response.user.getTrainingSession.GetTrainingSessionResponse;
 import be.labofitness.labo_fitness.bll.models.response.user.register.RegisterResponse;
 import be.labofitness.labo_fitness.bll.service.base.CrudService;
 import be.labofitness.labo_fitness.domain.entity.Client;
+import org.springframework.security.core.Authentication;
 
 
 import java.util.List;
@@ -21,29 +28,34 @@ public interface ClientService  extends CrudService<Client, Long> {
 
     // region PERSONAL TRAINING SESSIONS
 
-    public List<ClientGetTrainingSessionResponse> findPersonalClientTrainingSessionByClientId(ClientGetPersonalTrainingSessionByClientIdRequest request);
+    public List<GetTrainingSessionResponse> findPersonalClientTrainingSession(Authentication authentication);
 
-    public List<ClientGetTrainingSessionResponse> findPersonalClientTrainingSessionByRecommendedLvl(ClientGetPersonalTrainingSessionByRecommendedLvlRequest request);
+    public List<GetTrainingSessionResponse> findPersonalClientTrainingSessionByRecommendedLvl(Authentication authentication, GetTrainingSessionByRecommendedLvlRequest request );
 
-    public List<ClientGetTrainingSessionResponse> findPersonalClientTrainingSessionByDuration(ClientGetPersonalTrainingSessionsByDurationRequest request);
+    public List<GetTrainingSessionResponse> findPersonalClientTrainingSessionByDuration(Authentication authentication, GetTrainingSessionsByDurationRequest request);
 
-    public List<ClientGetTrainingSessionResponse> findPersonalClientTrainingSessionByName(ClientGetPersonalTrainingSessionsByNameRequest request);
+    public List<GetTrainingSessionResponse> findPersonalClientTrainingSessionByName(Authentication authentication, GetTrainingSessionsByNameRequest request);
 
-    public List<ClientGetTrainingSessionResponse> findPersonalClientTrainingSessionByCoachName(ClientGetPersonalTrainingSessionsByCoachNameRequest request);
+    public List<GetTrainingSessionResponse> findPersonalClientTrainingSessionByCoachName(Authentication authentication, GetTrainingSessionsByCoachNameRequest request);
 
     // endregion
 
-    // region TRAINING SESSIONS
+    //region PERSONAL PHYSIOTHERAPIST
+    List<GetPhysioResponse> getAllPersonalPhysio(Authentication authentication);
 
-    public List<ClientGetTrainingSessionResponse> findAllTrainingSession();
+    List<GetPhysioResponse> getPersonalPhysioBySpecialization(Authentication authentication, GetPhysioBySpecializationRequest request);
 
-    public List<ClientGetTrainingSessionResponse> findTrainingSessionByRecommendedLvl(ClientGetTrainingSessionByRecommendedLvlRequest request);
+    List<GetPhysioResponse> getPersonalPhysioByName(Authentication authentication, GetPhysioByNameRequest request);
+    //endregion
 
-    public List<ClientGetTrainingSessionResponse> findTrainingSessionByDuration(ClientGetTrainingSessionsByDurationRequest request);
+    //region COACH
+    List<GetCoachesResponse> getAllPersonalCoaches(Authentication authentication);
 
-    public List<ClientGetTrainingSessionResponse> findTrainingSessionByName(ClientGetTrainingSessionsByNameRequest request);
+    List<GetCoachesResponse> getAllPersonalCoachesByIsRemote(Authentication authentication, GetCoachesByRemoteRequest request);
 
-    public List<ClientGetTrainingSessionResponse> findTrainingSessionByCoachName(ClientGetTrainingSessionsByCoachNameRequest request);
+    List<GetCoachesResponse> getAllPersonalCoachesBySpecialization(Authentication authentication, GetCoachesBySpecializationRequest request);
+
+    List<GetCoachesResponse> getAllPersonalCoachesByName(Authentication authentication, GetCoachesByNameRequest request);
 
     // endregion
 

@@ -2,7 +2,9 @@ package be.labofitness.labo_fitness.dal.repository;
 
 import be.labofitness.labo_fitness.domain.entity.Coach;
 import be.labofitness.labo_fitness.domain.entity.Physiotherapist;
+import be.labofitness.labo_fitness.domain.entity.TrainingSession;
 import be.labofitness.labo_fitness.domain.entity.User;
+import be.labofitness.labo_fitness.domain.enums.RecommendedLevel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -12,7 +14,6 @@ import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-
 
     //region REGISTER
 
@@ -73,6 +74,40 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<Physiotherapist> findPhysioBySpecialization(String specialization);
 
     //endregion
+
+    // region TRAINING SESSION
+
+    @Query(
+            "SELECT t " +
+                    "FROM TrainingSession t ")
+    List<TrainingSession> findAllTrainingSessions();
+
+    @Query(
+            "SELECT t " +
+                    "FROM TrainingSession t " +
+                    "WHERE t.recommended_level = :recommendedLevel ")
+    List<TrainingSession> findTrainingSessionsByRecommendedLevel(RecommendedLevel recommendedLevel);
+
+    @Query(
+            "SELECT t " +
+                    "FROM TrainingSession t " +
+                    "WHERE t.duration = :duration")
+    List<TrainingSession> findTrainingSessionsByDuration(int duration);
+
+    @Query(
+            "SELECT t " +
+                    "FROM TrainingSession t " +
+                    "WHERE t.name = :name")
+    List<TrainingSession> findTrainingSessionsByName(String name);
+
+    @Query(
+            "SELECT t " +
+                    "FROM TrainingSession t " +
+                    "WHERE t.coach.name = :coachName")
+    List<TrainingSession> findTrainingSessionsByCoachName(String coachName);
+
+
+    // endregion
 
 }
 

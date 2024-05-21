@@ -1,16 +1,24 @@
 package be.labofitness.labo_fitness.api.controller;
 
-import be.labofitness.labo_fitness.bll.models.request.client.getPersonalTrainingSession.*;
-import be.labofitness.labo_fitness.bll.models.request.client.getTrainingSession.ClientGetTrainingSessionByRecommendedLvlRequest;
-import be.labofitness.labo_fitness.bll.models.request.client.getTrainingSession.ClientGetTrainingSessionsByCoachNameRequest;
-import be.labofitness.labo_fitness.bll.models.request.client.getTrainingSession.ClientGetTrainingSessionsByDurationRequest;
-import be.labofitness.labo_fitness.bll.models.request.client.getTrainingSession.ClientGetTrainingSessionsByNameRequest;
-import be.labofitness.labo_fitness.bll.models.response.client.getTrainingSession.ClientGetTrainingSessionResponse;
+
+import be.labofitness.labo_fitness.bll.models.request.user.getCoach.GetCoachesByNameRequest;
+import be.labofitness.labo_fitness.bll.models.request.user.getCoach.GetCoachesByRemoteRequest;
+import be.labofitness.labo_fitness.bll.models.request.user.getCoach.GetCoachesBySpecializationRequest;
+import be.labofitness.labo_fitness.bll.models.request.user.getPhysiotherapist.GetPhysioByNameRequest;
+import be.labofitness.labo_fitness.bll.models.request.user.getPhysiotherapist.GetPhysioBySpecializationRequest;
+import be.labofitness.labo_fitness.bll.models.request.user.getTrainingSession.GetTrainingSessionByRecommendedLvlRequest;
+import be.labofitness.labo_fitness.bll.models.request.user.getTrainingSession.GetTrainingSessionsByCoachNameRequest;
+import be.labofitness.labo_fitness.bll.models.request.user.getTrainingSession.GetTrainingSessionsByDurationRequest;
+import be.labofitness.labo_fitness.bll.models.request.user.getTrainingSession.GetTrainingSessionsByNameRequest;
+import be.labofitness.labo_fitness.bll.models.response.user.getCoach.GetCoachesResponse;
+import be.labofitness.labo_fitness.bll.models.response.user.getPhysiotherapist.GetPhysioResponse;
+import be.labofitness.labo_fitness.bll.models.response.user.getTrainingSession.GetTrainingSessionResponse;
 import be.labofitness.labo_fitness.bll.service.ClientService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,72 +36,86 @@ public class ClientController {
     // region GET PERSONAL TRAINING SESSION
 
     @GetMapping("/personal-training-sessions")
-    @PreAuthorize("hasAuthority('CLIENT')")
-    public ResponseEntity<List<ClientGetTrainingSessionResponse>> getAllPersonalTrainingSessions(@ModelAttribute ClientGetPersonalTrainingSessionByClientIdRequest request) {
-        return ResponseEntity.ok(clientService.findPersonalClientTrainingSessionByClientId(request));
+    @PreAuthorize("hasAuthority('CLIENT') and isAuthenticated()")
+    public ResponseEntity<List<GetTrainingSessionResponse>> getAllPersonalTrainingSessions(Authentication authentication) {
+        return ResponseEntity.ok(clientService.findPersonalClientTrainingSession(authentication));
     }
 
     @GetMapping("/personal-training-sessions-by-lvl")
-    @Secured("CLIENT")
-    public ResponseEntity<List<ClientGetTrainingSessionResponse>> getPersonalTrainingSessionsByRecommendedLvl(@ModelAttribute ClientGetPersonalTrainingSessionByRecommendedLvlRequest request) {
-        return ResponseEntity.ok(clientService.findPersonalClientTrainingSessionByRecommendedLvl(request));
+    @PreAuthorize("hasAuthority('CLIENT') and isAuthenticated()")
+    public ResponseEntity<List<GetTrainingSessionResponse>> getPersonalTrainingSessionsByRecommendedLvl(Authentication authentication, @Valid @ModelAttribute GetTrainingSessionByRecommendedLvlRequest request) {
+        return ResponseEntity.ok(clientService.findPersonalClientTrainingSessionByRecommendedLvl(authentication, request));
     }
 
     @GetMapping("/personal-training-sessions-by-duration")
-    @Secured("CLIENT")
-    public ResponseEntity<List<ClientGetTrainingSessionResponse>> getPersonalTrainingSessionsByDuration(@ModelAttribute ClientGetPersonalTrainingSessionsByDurationRequest request) {
-        return ResponseEntity.ok(clientService.findPersonalClientTrainingSessionByDuration(request));
+    @PreAuthorize("hasAuthority('CLIENT') and isAuthenticated()")
+    public ResponseEntity<List<GetTrainingSessionResponse>> getPersonalTrainingSessionsByDuration(Authentication authentication, @Valid @ModelAttribute GetTrainingSessionsByDurationRequest request) {
+        return ResponseEntity.ok(clientService.findPersonalClientTrainingSessionByDuration(authentication,request));
     }
 
     @GetMapping("/personal-training-sessions-by-name")
-    @Secured("CLIENT")
-    public ResponseEntity<List<ClientGetTrainingSessionResponse>> getPersonalTrainingSessionsByName(@ModelAttribute ClientGetPersonalTrainingSessionsByNameRequest request) {
-        return ResponseEntity.ok(clientService.findPersonalClientTrainingSessionByName(request));
+    @PreAuthorize("hasAuthority('CLIENT') and isAuthenticated()")
+    public ResponseEntity<List<GetTrainingSessionResponse>> getPersonalTrainingSessionsByName(Authentication authentication, @Valid @ModelAttribute GetTrainingSessionsByNameRequest request) {
+        return ResponseEntity.ok(clientService.findPersonalClientTrainingSessionByName(authentication, request));
     }
 
     @GetMapping("/personal-training-sessions-by-coach-name")
-    @Secured("CLIENT")
-    public ResponseEntity<List<ClientGetTrainingSessionResponse>> getPersonalTrainingSessionsByCoachName(@ModelAttribute ClientGetPersonalTrainingSessionsByCoachNameRequest request) {
-        return ResponseEntity.ok(clientService.findPersonalClientTrainingSessionByCoachName(request));
+    @PreAuthorize("hasAuthority('CLIENT') and isAuthenticated()")
+    public ResponseEntity<List<GetTrainingSessionResponse>> getPersonalTrainingSessionsByCoachName(Authentication authentication, @Valid @ModelAttribute GetTrainingSessionsByCoachNameRequest request) {
+        return ResponseEntity.ok(clientService.findPersonalClientTrainingSessionByCoachName(authentication, request));
     }
 
     //endregion
 
-    // region GET PERSONAL TRAINING SESSION
+    //region GET PERSONAL COACHES
 
-    @GetMapping("/training-sessions")
-    @Secured("CLIENT")
-    public ResponseEntity<List<ClientGetTrainingSessionResponse>> getAllTrainingSessions() {
-        return ResponseEntity.ok(clientService.findAllTrainingSession());
+    @PreAuthorize("hasAuthority('CLIENT') and isAuthenticated()")
+    @GetMapping("/personal-coaches")
+    public ResponseEntity<List<GetCoachesResponse>> getAllPersonalCoaches(Authentication authentication) {
+        return ResponseEntity.ok(clientService.getAllPersonalCoaches(authentication));
     }
 
-    @GetMapping("/training-sessions-by-lvl")
-    @Secured("CLIENT")
-    public ResponseEntity<List<ClientGetTrainingSessionResponse>> getTrainingSessionsByRecommendedLvl(@ModelAttribute ClientGetTrainingSessionByRecommendedLvlRequest request) {
-        return ResponseEntity.ok(clientService.findTrainingSessionByRecommendedLvl(request));
+    @PreAuthorize("hasAuthority('CLIENT') and isAuthenticated()")
+    @GetMapping("/personal-coaches-by-remote")
+    public ResponseEntity<List<GetCoachesResponse>> getAllPersonalCoachesByIsRemote(Authentication authentication, @ModelAttribute GetCoachesByRemoteRequest request) {
+        return ResponseEntity.ok(clientService.getAllPersonalCoachesByIsRemote(authentication, request));
     }
 
-    @GetMapping("/training-sessions-by-duration")
-    @Secured("CLIENT")
-    public ResponseEntity<List<ClientGetTrainingSessionResponse>> getTrainingSessionsByDuration(@ModelAttribute ClientGetTrainingSessionsByDurationRequest request) {
-        return ResponseEntity.ok(clientService.findTrainingSessionByDuration(request));
+    @PreAuthorize("hasAuthority('CLIENT') and isAuthenticated()")
+    @GetMapping("/personal-coaches-by-name")
+    public ResponseEntity<List<GetCoachesResponse>> getAllPersonalCoachesByName(Authentication authentication, @Valid @ModelAttribute GetCoachesByNameRequest request) {
+        return ResponseEntity.ok(clientService.getAllPersonalCoachesByName(authentication, request));
     }
 
-    @GetMapping("/training-sessions-by-name")
-    @Secured("CLIENT")
-    public ResponseEntity<List<ClientGetTrainingSessionResponse>> getTrainingSessionsByName(@ModelAttribute ClientGetTrainingSessionsByNameRequest request) {
-        return ResponseEntity.ok(clientService.findTrainingSessionByName(request));
+    @PreAuthorize("hasAuthority('CLIENT') and isAuthenticated()")
+    @GetMapping("/personal-coaches-by-spec")
+    public ResponseEntity<List<GetCoachesResponse>> getAllPersonalCoachesBySpecialization(Authentication authentication, @Valid @ModelAttribute GetCoachesBySpecializationRequest request) {
+        return ResponseEntity.ok(clientService.getAllPersonalCoachesBySpecialization(authentication, request));
     }
 
-    @GetMapping("/training-sessions-by-coach-name")
-    @Secured("CLIENT")
-    public ResponseEntity<List<ClientGetTrainingSessionResponse>> getTrainingSessionsByCoachName(@ModelAttribute ClientGetTrainingSessionsByCoachNameRequest request) {
-        return ResponseEntity.ok(clientService.findTrainingSessionByCoachName(request));
+    // endregion
+
+    //region GET PERSONAL PHYSIOTHERAPIST
+
+    @PreAuthorize("hasAuthority('CLIENT') and isAuthenticated()")
+    @GetMapping("/personal-physio")
+    public ResponseEntity<List<GetPhysioResponse>> getAllPersonalPhysio(Authentication authentication) {
+        return ResponseEntity.ok(clientService.getAllPersonalPhysio(authentication));
     }
 
-    //endregion
+    @PreAuthorize("hasAuthority('CLIENT') and isAuthenticated()")
+    @GetMapping("/personal-physio-by-name")
+    public ResponseEntity<List<GetPhysioResponse>> getAllPersonalPhysioByName(Authentication authentication, @Valid @ModelAttribute GetPhysioByNameRequest request) {
+        return ResponseEntity.ok(clientService.getPersonalPhysioByName(authentication, request));
+    }
 
+    @PreAuthorize("hasAuthority('CLIENT') and isAuthenticated()")
+    @GetMapping("/personal-physio-by-spec")
+    public ResponseEntity<List<GetPhysioResponse>> getAllPersonalPhysioBySpecialization(Authentication authentication, @Valid @ModelAttribute GetPhysioBySpecializationRequest request) {
+        return ResponseEntity.ok(clientService.getPersonalPhysioBySpecialization(authentication, request));
+    }
 
+    // endregion
 
 
 
