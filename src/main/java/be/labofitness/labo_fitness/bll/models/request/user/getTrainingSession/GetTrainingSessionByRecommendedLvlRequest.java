@@ -10,7 +10,7 @@ public record GetTrainingSessionByRecommendedLvlRequest(
                         "or 'AMATEUR'" +
                         "or 'CONFIRME'" +
                         "or 'PROFESSIONNEL'" +
-                        "or 'GIGACHAD'")
+                        "or 'GIGACHAD'")*/
         RecommendedLevel recommendedLevel
 ) {
 }

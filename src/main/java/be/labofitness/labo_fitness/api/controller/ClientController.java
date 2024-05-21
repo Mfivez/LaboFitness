@@ -54,9 +54,9 @@ public class ClientController {
     }
 
     @GetMapping("/personal-training-sessions-by-name")
-    @Secured("CLIENT")
-    public ResponseEntity<List<ClientGetTrainingSessionResponse>> getPersonalTrainingSessionsByName(@ModelAttribute ClientGetPersonalTrainingSessionsByNameRequest request) {
-        return ResponseEntity.ok(clientService.findPersonalClientTrainingSessionByName(request));
+    @PreAuthorize("hasAuthority('CLIENT') and isAuthenticated()")
+    public ResponseEntity<List<GetTrainingSessionResponse>> getPersonalTrainingSessionsByName(Authentication authentication, @Valid @ModelAttribute GetTrainingSessionsByNameRequest request) {
+        return ResponseEntity.ok(clientService.findPersonalClientTrainingSessionByName(authentication, request));
     }
 
     @GetMapping("/personal-training-sessions-by-coach-name")

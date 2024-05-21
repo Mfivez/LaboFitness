@@ -30,7 +30,7 @@ public interface ClientService  extends CrudService<Client, Long> {
 
     public List<GetTrainingSessionResponse> findPersonalClientTrainingSession(Authentication authentication);
 
-    public List<ClientGetTrainingSessionResponse> findPersonalClientTrainingSessionByRecommendedLvl(ClientGetPersonalTrainingSessionByRecommendedLvlRequest request);
+    public List<GetTrainingSessionResponse> findPersonalClientTrainingSessionByRecommendedLvl(Authentication authentication, GetTrainingSessionByRecommendedLvlRequest request );
 
     public List<GetTrainingSessionResponse> findPersonalClientTrainingSessionByDuration(Authentication authentication, GetTrainingSessionsByDurationRequest request);
 
