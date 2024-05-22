@@ -42,8 +42,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class
-ClientServiceImpl  implements ClientService {
+public class ClientServiceImpl  implements ClientService {
 
     private final ClientRepository clientRepository;
     private final PasswordEncoder passwordEncoder;
@@ -79,11 +78,10 @@ ClientServiceImpl  implements ClientService {
 
     @Override @Transactional
     public ClientManageAccountResponse manageAccount(Authentication authentication, ClientManageAccountRequest request) {
-
         if(userRepository.existsByEmail(request.email())){
             throw  new EmailAlreadyExistsException("Email already exists :" + request.email()); }
 
-        Client client = (Client) authentication.getPrincipal();
+        Client client = LaboFitnessUtil.getAuthentication(authentication, Client.class);
         client.setName(request.name());
         client.setLast_name(request.lastName());
         client.setEmail(request.email());
@@ -132,35 +130,35 @@ ClientServiceImpl  implements ClientService {
     // region PERSONAL TRAINING SESSIONS
     @Override
     public List<GetTrainingSessionResponse> findPersonalClientTrainingSession(Authentication authentication) {
-        Client client = (Client) authentication.getPrincipal();
+        Client client = LaboFitnessUtil.getAuthentication(authentication, Client.class);
         List<TrainingSession> trainingSessions = clientRepository.findPersonalTrainingSessions(client.getId());
         return trainingSessionToClientGetTrainingSessionResponse(trainingSessions);
     }
 
     @Override
     public List<GetTrainingSessionResponse> findPersonalClientTrainingSessionByRecommendedLvl(Authentication authentication, GetTrainingSessionByRecommendedLvlRequest request) {
-        Client client = (Client) authentication.getPrincipal();
+        Client client = LaboFitnessUtil.getAuthentication(authentication, Client.class);
         List<TrainingSession> trainingSessions = clientRepository.findPersonalTrainingSessionsByRecommendedLevel(client.getId(), request.recommendedLevel());
         return trainingSessionToClientGetTrainingSessionResponse(trainingSessions);
     }
 
     @Override
     public List<GetTrainingSessionResponse> findPersonalClientTrainingSessionByDuration(Authentication authentication, GetTrainingSessionsByDurationRequest request) {
-        Client client = (Client) authentication.getPrincipal();
+        Client client = LaboFitnessUtil.getAuthentication(authentication, Client.class);
         List<TrainingSession> trainingSessions = clientRepository.findPersonalTrainingSessionsByDuration(client.getId(), request.duration());
         return trainingSessionToClientGetTrainingSessionResponse(trainingSessions);
     }
 
     @Override
     public List<GetTrainingSessionResponse> findPersonalClientTrainingSessionByName(Authentication authentication, GetTrainingSessionsByNameRequest request) {
-        Client client = (Client) authentication.getPrincipal();
+        Client client = LaboFitnessUtil.getAuthentication(authentication, Client.class);
         List<TrainingSession> trainingSessions = clientRepository.findPersonalTrainingSessionsByName(client.getId(), request.name());
         return trainingSessionToClientGetTrainingSessionResponse(trainingSessions);
     }
 
     @Override
     public List<GetTrainingSessionResponse> findPersonalClientTrainingSessionByCoachName(Authentication authentication, GetTrainingSessionsByCoachNameRequest request) {
-        Client client = (Client) authentication.getPrincipal();
+        Client client = LaboFitnessUtil.getAuthentication(authentication, Client.class);
         List<TrainingSession> trainingSessions = clientRepository.findPersonalTrainingSessionsByCoachName(client.getId(), request.coach_name());
         return trainingSessionToClientGetTrainingSessionResponse(trainingSessions);
     }
@@ -177,21 +175,21 @@ ClientServiceImpl  implements ClientService {
 
     @Override
     public List<GetPhysioResponse> getAllPersonalPhysio(Authentication authentication) {
-        Client client = (Client) authentication.getPrincipal();
+        Client client = LaboFitnessUtil.getAuthentication(authentication, Client.class);
         List<Physiotherapist> physio = clientRepository.findAllPersonalPhysio(client.getId());
         return physioToUserGetCoachesResponse(physio);
     }
 
     @Override
     public List<GetPhysioResponse> getPersonalPhysioBySpecialization(Authentication authentication, GetPhysioBySpecializationRequest request) {
-        Client client = (Client) authentication.getPrincipal();
+        Client client = LaboFitnessUtil.getAuthentication(authentication, Client.class);
         List<Physiotherapist> physio = clientRepository.findPersonalPhysioBySpecialization(client.getId(), request.specialization());
         return physioToUserGetCoachesResponse(physio);
     }
 
     @Override
     public List<GetPhysioResponse> getPersonalPhysioByName(Authentication authentication, GetPhysioByNameRequest request) {
-        Client client = (Client) authentication.getPrincipal();
+        Client client = LaboFitnessUtil.getAuthentication(authentication, Client.class);
         List<Physiotherapist> physio = clientRepository.findPersonalPhysioByName(client.getId(), request.name());
         return physioToUserGetCoachesResponse(physio);
     }
@@ -208,14 +206,14 @@ ClientServiceImpl  implements ClientService {
 
     @Override
     public List<GetCoachesResponse> getAllPersonalCoaches(Authentication authentication) {
-        Client client = (Client) authentication.getPrincipal();
+        Client client = LaboFitnessUtil.getAuthentication(authentication, Client.class);
         List<Coach> coaches = clientRepository.findAllPersonalCoaches(client.getId());
         return coachesToUserGetCoachesResponse(coaches);
     }
 
     @Override
     public List<GetCoachesResponse> getAllPersonalCoachesByIsRemote(Authentication authentication, GetCoachesByRemoteRequest request) {
-        Client client = (Client) authentication.getPrincipal();
+        Client client = LaboFitnessUtil.getAuthentication(authentication, Client.class);
         List<Coach> coaches = clientRepository.findPersonalCoachesByIsRemote(client.getId(), request.is_remote());
         return coachesToUserGetCoachesResponse(coaches);
 
@@ -223,14 +221,14 @@ ClientServiceImpl  implements ClientService {
 
     @Override
     public List<GetCoachesResponse> getAllPersonalCoachesBySpecialization(Authentication authentication, GetCoachesBySpecializationRequest request) {
-        Client client = (Client) authentication.getPrincipal();
+        Client client = LaboFitnessUtil.getAuthentication(authentication, Client.class);
         List<Coach> coaches = clientRepository.findPersonalCoachesBySpecialization(client.getId(), request.specialization());
         return coachesToUserGetCoachesResponse(coaches);
     }
 
     @Override
     public List<GetCoachesResponse> getAllPersonalCoachesByName(Authentication authentication, GetCoachesByNameRequest request) {
-        Client client = (Client) authentication.getPrincipal();
+        Client client = LaboFitnessUtil.getAuthentication(authentication, Client.class);
         List<Coach> coaches = clientRepository.findPersonalCoachesByName(client.getId(), request.name());
         return coachesToUserGetCoachesResponse(coaches);
     }
@@ -249,7 +247,7 @@ ClientServiceImpl  implements ClientService {
     public CompetitionRegisterResponse registerToOneCompetition(Authentication authentication, CompetitionRegisterRequest request) {
         String message;
 
-        Client client = (Client) authentication.getPrincipal();
+        Client client = LaboFitnessUtil.getAuthentication(authentication, Client.class);
 
         Competition competition = competitionService.getCompetitionByCompetitionNameId(
                 LaboFitnessUtil.CompetitionNameIdBuilder(

@@ -6,8 +6,10 @@ import be.labofitness.labo_fitness.bll.models.response.coach.manageAccount.Coach
 import be.labofitness.labo_fitness.bll.service.CoachService;
 import be.labofitness.labo_fitness.dal.repository.CoachRepository;
 import be.labofitness.labo_fitness.dal.repository.UserRepository;
+import be.labofitness.labo_fitness.domain.entity.Client;
 import be.labofitness.labo_fitness.domain.entity.Coach;
 import be.labofitness.labo_fitness.domain.entity.base.Adress;
+import be.labofitness.labo_fitness.il.utils.LaboFitnessUtil;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +31,7 @@ public class CoachServiceImpl implements CoachService {
             throw new EmailAlreadyExistsException("Email already exists");
         }
 
-        Coach coach = (Coach) authentication.getPrincipal();
+        Coach coach = LaboFitnessUtil.getAuthentication(authentication, Coach.class);
         coach.setName(request.name());
         coach.setLast_name(request.lastName());
         coach.setEmail(request.email());

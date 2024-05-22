@@ -1,9 +1,13 @@
 package be.labofitness.labo_fitness.il.utils;
 
+import be.labofitness.labo_fitness.bll.exception.Authentication.AuthenticationCastingException;
+import be.labofitness.labo_fitness.bll.exception.Authentication.AuthenticationIsNullException;
 import be.labofitness.labo_fitness.dal.repository.RoleRepository;
 import be.labofitness.labo_fitness.domain.entity.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.core.Authentication;
+
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.Set;
@@ -18,6 +22,18 @@ public class LaboFitnessUtil {
         int iniTime = 0;
         return LocalDateTime.of(year, month, day,iniTime, iniTime,iniTime);
     }
+
+    public static <T> T getAuthentication(Authentication authentication, Class<T> type) {
+        if (authentication == null) {
+            throw new AuthenticationIsNullException("Authentication is null");}
+
+        if (type.isInstance(authentication.getPrincipal())) {
+                return type.cast(authentication.getPrincipal());
+        }
+        else throw new AuthenticationCastingException(
+                "Authentication casting type failed: Authentication is not of type " + type.getName());
+    }
+
 
     public static LocalDateTime createNewDate(int year, Month month, int day, int hour) {
         int iniTime = 0;
