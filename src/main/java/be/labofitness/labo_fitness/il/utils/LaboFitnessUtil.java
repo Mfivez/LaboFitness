@@ -19,6 +19,20 @@ public class LaboFitnessUtil {
         return LocalDateTime.of(year, month, day,iniTime, iniTime,iniTime);
     }
 
+    public static LocalDateTime createNewDate(int year, Month month, int day, int hour) {
+        int iniTime = 0;
+        return LocalDateTime.of(year, month, day,hour, iniTime,iniTime);
+    }
+
+    public static LocalDateTime createNewDate(int year, Month month, int day, int hour, int minute) {
+        int iniTime = 0;
+        return LocalDateTime.of(year, month, day,hour, minute,iniTime);
+    }
+
+    public static String CompetitionNameIdBuilder(String name, LocalDateTime dateTime) {
+        return name + "Of" + dateTime.getDayOfMonth() + "/" + dateTime.getMonthValue() + "/" + dateTime.getYear();
+    }
+
     //v12.2
     public static Set<Role> setRole(Set<String> roles, RoleRepository roleRepository) {
         return roles.stream()

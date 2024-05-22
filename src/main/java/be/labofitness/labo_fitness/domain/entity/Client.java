@@ -30,7 +30,7 @@ public class Client extends User {
     @Column(name = "lifeStyle", nullable = true)
     private double lifeStyle;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable( name ="clients_competitions",
             joinColumns = @JoinColumn(name = "id_client",nullable = true),
             inverseJoinColumns = @JoinColumn(name = "id_competition",nullable = true))

@@ -2,6 +2,7 @@ package be.labofitness.labo_fitness.bll.service.impl;
 
 
 import be.labofitness.labo_fitness.bll.exception.alreadyExists.EmailAlreadyExistsException;
+import be.labofitness.labo_fitness.bll.models.request.client.CompetitionRegister.CompetitionRegisterRequest;
 import be.labofitness.labo_fitness.bll.models.request.client.manageAccount.ClientManageAccountRequest;
 import be.labofitness.labo_fitness.bll.models.request.user.getCoach.GetCoachesByNameRequest;
 import be.labofitness.labo_fitness.bll.models.request.user.getCoach.GetCoachesByRemoteRequest;
@@ -13,19 +14,19 @@ import be.labofitness.labo_fitness.bll.models.request.user.getTrainingSession.Ge
 import be.labofitness.labo_fitness.bll.models.request.user.getTrainingSession.GetTrainingSessionsByDurationRequest;
 import be.labofitness.labo_fitness.bll.models.request.user.getTrainingSession.GetTrainingSessionsByNameRequest;
 import be.labofitness.labo_fitness.bll.models.request.client.registerClient.ClientRegisterRequest;
+import be.labofitness.labo_fitness.bll.models.response.client.CompetitionRegister.CompetitionRegisterResponse;
 import be.labofitness.labo_fitness.bll.models.response.client.manageAccount.ClientManageAccountResponse;
 import be.labofitness.labo_fitness.bll.models.response.user.getCoach.GetCoachesResponse;
 import be.labofitness.labo_fitness.bll.models.response.user.getPhysiotherapist.GetPhysioResponse;
 import be.labofitness.labo_fitness.bll.models.response.user.getTrainingSession.GetTrainingSessionResponse;
 import be.labofitness.labo_fitness.bll.models.response.user.register.RegisterResponse;
 import be.labofitness.labo_fitness.bll.service.ClientService;
+import be.labofitness.labo_fitness.bll.service.CompetitionService;
 import be.labofitness.labo_fitness.dal.repository.ClientRepository;
+import be.labofitness.labo_fitness.dal.repository.CompetitionRepository;
 import be.labofitness.labo_fitness.dal.repository.RoleRepository;
 import be.labofitness.labo_fitness.dal.repository.UserRepository;
-import be.labofitness.labo_fitness.domain.entity.Client;
-import be.labofitness.labo_fitness.domain.entity.Coach;
-import be.labofitness.labo_fitness.domain.entity.Physiotherapist;
-import be.labofitness.labo_fitness.domain.entity.TrainingSession;
+import be.labofitness.labo_fitness.domain.entity.*;
 import be.labofitness.labo_fitness.domain.entity.base.Adress;
 import be.labofitness.labo_fitness.il.utils.LaboFitnessUtil;
 import jakarta.transaction.Transactional;
@@ -33,6 +34,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -46,6 +49,8 @@ ClientServiceImpl  implements ClientService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final CompetitionService competitionService;
+    private final CompetitionRepository competitionRepository;
 
 
     // region AUTHENTICATE
@@ -237,5 +242,40 @@ ClientServiceImpl  implements ClientService {
     }
 
     //endregion
+
+    // region COMPETITION REGISTER
+
+    @Override @Transactional
+    public CompetitionRegisterResponse registerToOneCompetition(Authentication authentication, CompetitionRegisterRequest request) {
+        String message;
+
+        Client client = (Client) authentication.getPrincipal();
+
+        Competition competition = competitionService.getCompetitionByCompetitionNameId(
+                LaboFitnessUtil.CompetitionNameIdBuilder(
+                        request.competitionName(),
+                        request.startDate()
+                ));
+
+        if (client.getCompetitions().stream().anyMatch(competition1 -> competition1.getId().equals(competition.getId()))) {
+            message = "You're already registered to the competition named : " + competition.getName() + " !";
+        } else {
+            client.setCompetitions(List.of(competition));
+            clientRepository.save(client);
+
+            message = "You've been register to the competition named " + competition.getName() +
+                    " du " + competition.getStartDate().getDayOfMonth() +
+                    "/" + competition.getStartDate().getMonthValue() +
+                    "/" + competition.getStartDate().getYear() + " with success !";
+        }
+
+        return new CompetitionRegisterResponse(message);
+    }
+
+
+
+
+
+    // endregion
 
 }
