@@ -24,6 +24,7 @@ import be.labofitness.labo_fitness.dal.repository.ReportRepository;
 import be.labofitness.labo_fitness.dal.repository.UserRepository;
 import be.labofitness.labo_fitness.domain.entity.*;
 import be.labofitness.labo_fitness.il.utils.JwtUtil;
+import be.labofitness.labo_fitness.il.utils.LaboFitnessUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -98,9 +99,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Set<GetReportResponse> getValidReport(Authentication authentication) {
-        return userRepository.getReportMessageByIsValidate(
-                        (  (User) authentication.getPrincipal()  ).getId(), true)
-                .stream().map(GetReportResponse::new)
+        User user = LaboFitnessUtil.getAuthentication(authentication, User.class);
+        return userRepository.getReportMessageByIsValidate(user.getId(),true).stream()
+                .map(GetReportResponse::new)
                 .collect(Collectors.toSet());
     }
 
