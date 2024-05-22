@@ -13,6 +13,6 @@ import org.springframework.security.core.Authentication;
 public interface CoachService  extends CrudService<Coach, Long> {
 
     // region ACCOUNT MANAGEMENT
-    public CoachManageAccountResponse manageAccount(Authentication authentication, CoachManageAccountRequest request);
+    public CoachManageAccountResponse manageAccount(CoachManageAccountRequest request);
     // endregion
 }

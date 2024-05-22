@@ -78,8 +78,8 @@ public class UserServiceImpl implements UserService {
     // region MAKE REPORT
 
     @Override @Transactional
-    public ReportResponse makeReport(Authentication authentication, MakeReportRequest request) {
-        User complainant = (User) authentication.getPrincipal();
+    public ReportResponse makeReport(MakeReportRequest request) {
+        User complainant = LaboFitnessUtil.getAuthentication(User.class);
 
         User reportedUser =  userRepository.findByEmail(request.reportedUserEmail())
                 .orElseThrow(() -> new EmailDoesntExistException(
@@ -98,8 +98,8 @@ public class UserServiceImpl implements UserService {
     // region GET REPORT
 
     @Override
-    public Set<GetReportResponse> getValidReport(Authentication authentication) {
-        User user = LaboFitnessUtil.getAuthentication(authentication, User.class);
+    public Set<GetReportResponse> getValidReport() {
+        User user = LaboFitnessUtil.getAuthentication(User.class);
         return userRepository.getReportMessageByIsValidate(user.getId(),true).stream()
                 .map(GetReportResponse::new)
                 .collect(Collectors.toSet());

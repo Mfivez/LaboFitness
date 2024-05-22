@@ -39,8 +39,8 @@ public class UserController {
 
     @PreAuthorize("isAuthenticated() AND hasAnyAuthority('USER')")
     @PostMapping("/make-report")
-    public ResponseEntity<ReportResponse> makeReport(Authentication authentication, @Valid @ModelAttribute MakeReportRequest request) {
-        return ResponseEntity.ok(userService.makeReport(authentication, request));
+    public ResponseEntity<ReportResponse> makeReport(@Valid @ModelAttribute MakeReportRequest request) {
+        return ResponseEntity.ok(userService.makeReport(request));
     }
 
     //endregion
@@ -49,8 +49,8 @@ public class UserController {
     //GetReportByIsValidateForAuthenticateUser
     @GetMapping("/get-report")
     @PreAuthorize("isAuthenticated() AND hasAnyAuthority('USER')")
-    public ResponseEntity<Set<GetReportResponse>> getReportResponseByIsValidate(Authentication authentication) {
-        return ResponseEntity.ok(userService.getValidReport(authentication));
+    public ResponseEntity<Set<GetReportResponse>> getReportResponseByIsValidate() {
+        return ResponseEntity.ok(userService.getValidReport());
     }
 
 

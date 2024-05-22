@@ -2,6 +2,7 @@ package be.labofitness.labo_fitness.api.controller;
 
 
 import be.labofitness.labo_fitness.bll.models.request.client.CompetitionRegister.CompetitionRegisterRequest;
+import be.labofitness.labo_fitness.bll.models.request.client.TrainingSessionSubscription.TrainingSuscribRequest;
 import be.labofitness.labo_fitness.bll.models.request.client.manageAccount.ClientManageAccountRequest;
 import be.labofitness.labo_fitness.bll.models.request.user.getCoach.GetCoachesByNameRequest;
 import be.labofitness.labo_fitness.bll.models.request.user.getCoach.GetCoachesByRemoteRequest;
@@ -13,6 +14,7 @@ import be.labofitness.labo_fitness.bll.models.request.user.getTrainingSession.Ge
 import be.labofitness.labo_fitness.bll.models.request.user.getTrainingSession.GetTrainingSessionsByDurationRequest;
 import be.labofitness.labo_fitness.bll.models.request.user.getTrainingSession.GetTrainingSessionsByNameRequest;
 import be.labofitness.labo_fitness.bll.models.response.client.CompetitionRegister.CompetitionRegisterResponse;
+import be.labofitness.labo_fitness.bll.models.response.client.TrainingSessionSubscription.TrainingSuscribResponse;
 import be.labofitness.labo_fitness.bll.models.response.client.manageAccount.ClientManageAccountResponse;
 import be.labofitness.labo_fitness.bll.models.response.user.getCoach.GetCoachesResponse;
 import be.labofitness.labo_fitness.bll.models.response.user.getPhysiotherapist.GetPhysioResponse;
@@ -39,8 +41,8 @@ public class ClientController {
 
     @PostMapping("/manage-account")
     @PreAuthorize("hasAuthority('CLIENT') and isAuthenticated()")
-    public ResponseEntity<ClientManageAccountResponse> clientManageAccount(Authentication authentication, @Valid @ModelAttribute ClientManageAccountRequest request) {
-        return ResponseEntity.ok(clientService.manageAccount(authentication, request));
+    public ResponseEntity<ClientManageAccountResponse> clientManageAccount(@Valid @ModelAttribute ClientManageAccountRequest request) {
+        return ResponseEntity.ok(clientService.manageAccount(request));
     }
 
     //endregion
@@ -49,32 +51,32 @@ public class ClientController {
 
     @GetMapping("/personal-training-sessions")
     @PreAuthorize("hasAuthority('CLIENT') and isAuthenticated()")
-    public ResponseEntity<List<GetTrainingSessionResponse>> getAllPersonalTrainingSessions(Authentication authentication) {
-        return ResponseEntity.ok(clientService.findPersonalClientTrainingSession(authentication));
+    public ResponseEntity<List<GetTrainingSessionResponse>> getAllPersonalTrainingSessions() {
+        return ResponseEntity.ok(clientService.findPersonalClientTrainingSession());
     }
 
     @GetMapping("/personal-training-sessions-by-lvl")
     @PreAuthorize("hasAuthority('CLIENT') and isAuthenticated()")
-    public ResponseEntity<List<GetTrainingSessionResponse>> getPersonalTrainingSessionsByRecommendedLvl(Authentication authentication, @Valid @ModelAttribute GetTrainingSessionByRecommendedLvlRequest request) {
-        return ResponseEntity.ok(clientService.findPersonalClientTrainingSessionByRecommendedLvl(authentication, request));
+    public ResponseEntity<List<GetTrainingSessionResponse>> getPersonalTrainingSessionsByRecommendedLvl(@Valid @ModelAttribute GetTrainingSessionByRecommendedLvlRequest request) {
+        return ResponseEntity.ok(clientService.findPersonalClientTrainingSessionByRecommendedLvl(request));
     }
 
     @GetMapping("/personal-training-sessions-by-duration")
     @PreAuthorize("hasAuthority('CLIENT') and isAuthenticated()")
-    public ResponseEntity<List<GetTrainingSessionResponse>> getPersonalTrainingSessionsByDuration(Authentication authentication, @Valid @ModelAttribute GetTrainingSessionsByDurationRequest request) {
-        return ResponseEntity.ok(clientService.findPersonalClientTrainingSessionByDuration(authentication,request));
+    public ResponseEntity<List<GetTrainingSessionResponse>> getPersonalTrainingSessionsByDuration(@Valid @ModelAttribute GetTrainingSessionsByDurationRequest request) {
+        return ResponseEntity.ok(clientService.findPersonalClientTrainingSessionByDuration(request));
     }
 
     @GetMapping("/personal-training-sessions-by-name")
     @PreAuthorize("hasAuthority('CLIENT') and isAuthenticated()")
-    public ResponseEntity<List<GetTrainingSessionResponse>> getPersonalTrainingSessionsByName(Authentication authentication, @Valid @ModelAttribute GetTrainingSessionsByNameRequest request) {
-        return ResponseEntity.ok(clientService.findPersonalClientTrainingSessionByName(authentication, request));
+    public ResponseEntity<List<GetTrainingSessionResponse>> getPersonalTrainingSessionsByName(@Valid @ModelAttribute GetTrainingSessionsByNameRequest request) {
+        return ResponseEntity.ok(clientService.findPersonalClientTrainingSessionByName(request));
     }
 
     @GetMapping("/personal-training-sessions-by-coach-name")
     @PreAuthorize("hasAuthority('CLIENT') and isAuthenticated()")
-    public ResponseEntity<List<GetTrainingSessionResponse>> getPersonalTrainingSessionsByCoachName(Authentication authentication, @Valid @ModelAttribute GetTrainingSessionsByCoachNameRequest request) {
-        return ResponseEntity.ok(clientService.findPersonalClientTrainingSessionByCoachName(authentication, request));
+    public ResponseEntity<List<GetTrainingSessionResponse>> getPersonalTrainingSessionsByCoachName(@Valid @ModelAttribute GetTrainingSessionsByCoachNameRequest request) {
+        return ResponseEntity.ok(clientService.findPersonalClientTrainingSessionByCoachName(request));
     }
 
     //endregion
@@ -83,26 +85,26 @@ public class ClientController {
 
     @PreAuthorize("hasAuthority('CLIENT') and isAuthenticated()")
     @GetMapping("/personal-coaches")
-    public ResponseEntity<List<GetCoachesResponse>> getAllPersonalCoaches(Authentication authentication) {
-        return ResponseEntity.ok(clientService.getAllPersonalCoaches(authentication));
+    public ResponseEntity<List<GetCoachesResponse>> getAllPersonalCoaches() {
+        return ResponseEntity.ok(clientService.getAllPersonalCoaches());
     }
 
     @PreAuthorize("hasAuthority('CLIENT') and isAuthenticated()")
     @GetMapping("/personal-coaches-by-remote")
-    public ResponseEntity<List<GetCoachesResponse>> getAllPersonalCoachesByIsRemote(Authentication authentication, @ModelAttribute GetCoachesByRemoteRequest request) {
-        return ResponseEntity.ok(clientService.getAllPersonalCoachesByIsRemote(authentication, request));
+    public ResponseEntity<List<GetCoachesResponse>> getAllPersonalCoachesByIsRemote(@ModelAttribute GetCoachesByRemoteRequest request) {
+        return ResponseEntity.ok(clientService.getAllPersonalCoachesByIsRemote(request));
     }
 
     @PreAuthorize("hasAuthority('CLIENT') and isAuthenticated()")
     @GetMapping("/personal-coaches-by-name")
-    public ResponseEntity<List<GetCoachesResponse>> getAllPersonalCoachesByName(Authentication authentication, @Valid @ModelAttribute GetCoachesByNameRequest request) {
-        return ResponseEntity.ok(clientService.getAllPersonalCoachesByName(authentication, request));
+    public ResponseEntity<List<GetCoachesResponse>> getAllPersonalCoachesByName(@Valid @ModelAttribute GetCoachesByNameRequest request) {
+        return ResponseEntity.ok(clientService.getAllPersonalCoachesByName(request));
     }
 
     @PreAuthorize("hasAuthority('CLIENT') and isAuthenticated()")
     @GetMapping("/personal-coaches-by-spec")
-    public ResponseEntity<List<GetCoachesResponse>> getAllPersonalCoachesBySpecialization(Authentication authentication, @Valid @ModelAttribute GetCoachesBySpecializationRequest request) {
-        return ResponseEntity.ok(clientService.getAllPersonalCoachesBySpecialization(authentication, request));
+    public ResponseEntity<List<GetCoachesResponse>> getAllPersonalCoachesBySpecialization(@Valid @ModelAttribute GetCoachesBySpecializationRequest request) {
+        return ResponseEntity.ok(clientService.getAllPersonalCoachesBySpecialization(request));
     }
 
     // endregion
@@ -111,20 +113,20 @@ public class ClientController {
 
     @PreAuthorize("hasAuthority('CLIENT') and isAuthenticated()")
     @GetMapping("/personal-physio")
-    public ResponseEntity<List<GetPhysioResponse>> getAllPersonalPhysio(Authentication authentication) {
-        return ResponseEntity.ok(clientService.getAllPersonalPhysio(authentication));
+    public ResponseEntity<List<GetPhysioResponse>> getAllPersonalPhysio() {
+        return ResponseEntity.ok(clientService.getAllPersonalPhysio());
     }
 
     @PreAuthorize("hasAuthority('CLIENT') and isAuthenticated()")
     @GetMapping("/personal-physio-by-name")
-    public ResponseEntity<List<GetPhysioResponse>> getAllPersonalPhysioByName(Authentication authentication, @Valid @ModelAttribute GetPhysioByNameRequest request) {
-        return ResponseEntity.ok(clientService.getPersonalPhysioByName(authentication, request));
+    public ResponseEntity<List<GetPhysioResponse>> getAllPersonalPhysioByName(@Valid @ModelAttribute GetPhysioByNameRequest request) {
+        return ResponseEntity.ok(clientService.getPersonalPhysioByName(request));
     }
 
     @PreAuthorize("hasAuthority('CLIENT') and isAuthenticated()")
     @GetMapping("/personal-physio-by-spec")
-    public ResponseEntity<List<GetPhysioResponse>> getAllPersonalPhysioBySpecialization(Authentication authentication, @Valid @ModelAttribute GetPhysioBySpecializationRequest request) {
-        return ResponseEntity.ok(clientService.getPersonalPhysioBySpecialization(authentication, request));
+    public ResponseEntity<List<GetPhysioResponse>> getAllPersonalPhysioBySpecialization(@Valid @ModelAttribute GetPhysioBySpecializationRequest request) {
+        return ResponseEntity.ok(clientService.getPersonalPhysioBySpecialization(request));
     }
 
     // endregion
@@ -133,11 +135,23 @@ public class ClientController {
 
     @PreAuthorize("isAuthenticated() AND hasAnyAuthority('CLIENT')")
     @PutMapping("/competition-register")
-    public ResponseEntity<CompetitionRegisterResponse> registerToOneCompetition(Authentication authentication, @Valid @RequestBody CompetitionRegisterRequest request) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(clientService.registerToOneCompetition(authentication, request));
+    public ResponseEntity<CompetitionRegisterResponse> registerToOneCompetition(@Valid @RequestBody CompetitionRegisterRequest request) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(clientService.registerToOneCompetition(request));
     }
 
     // endregion
+
+    // region TRAINING SESSIONS SUBSCRIPTION
+
+    @PreAuthorize("isAuthenticated() AND hasAnyAuthority('CLIENT')")
+    @PutMapping("/training-subscription")
+    public ResponseEntity<TrainingSuscribResponse> subscribeToOneTrainingSession(@Valid @RequestBody TrainingSuscribRequest request) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(clientService.subscribeToOneTrainingSession(request));
+    }
+
+    //endregion
+
+
 
 
 

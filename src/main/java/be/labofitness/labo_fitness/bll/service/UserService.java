@@ -68,13 +68,13 @@ public interface UserService extends CrudService<User, Long> , UserDetailsServic
 
     //region MAKE REPORT
 
-    ReportResponse makeReport(Authentication authentication, MakeReportRequest request);
+    ReportResponse makeReport(MakeReportRequest request);
 
     //endregion
 
     // region GET REPORT
 
-    Set<GetReportResponse> getValidReport(Authentication authentication);
+    Set<GetReportResponse> getValidReport();
 
     // endregion
 

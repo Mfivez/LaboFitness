@@ -26,12 +26,12 @@ public class CoachServiceImpl implements CoachService {
     }
 
     @Override
-    public CoachManageAccountResponse manageAccount(Authentication authentication, CoachManageAccountRequest request) {
+    public CoachManageAccountResponse manageAccount(CoachManageAccountRequest request) {
         if(userRepository.existsByEmail(request.email())){
             throw new EmailAlreadyExistsException("Email already exists");
         }
 
-        Coach coach = LaboFitnessUtil.getAuthentication(authentication, Coach.class);
+        Coach coach = LaboFitnessUtil.getAuthentication(Coach.class);
         coach.setName(request.name());
         coach.setLast_name(request.lastName());
         coach.setEmail(request.email());
