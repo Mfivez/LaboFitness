@@ -1,6 +1,7 @@
 package be.labofitness.labo_fitness.api.controller;
 
 
+import be.labofitness.labo_fitness.bll.models.request.client.CompetitionRegister.CompetitionRegisterRequest;
 import be.labofitness.labo_fitness.bll.models.request.client.manageAccount.ClientManageAccountRequest;
 import be.labofitness.labo_fitness.bll.models.request.user.getCoach.GetCoachesByNameRequest;
 import be.labofitness.labo_fitness.bll.models.request.user.getCoach.GetCoachesByRemoteRequest;
@@ -11,6 +12,7 @@ import be.labofitness.labo_fitness.bll.models.request.user.getTrainingSession.Ge
 import be.labofitness.labo_fitness.bll.models.request.user.getTrainingSession.GetTrainingSessionsByCoachNameRequest;
 import be.labofitness.labo_fitness.bll.models.request.user.getTrainingSession.GetTrainingSessionsByDurationRequest;
 import be.labofitness.labo_fitness.bll.models.request.user.getTrainingSession.GetTrainingSessionsByNameRequest;
+import be.labofitness.labo_fitness.bll.models.response.client.CompetitionRegister.CompetitionRegisterResponse;
 import be.labofitness.labo_fitness.bll.models.response.client.manageAccount.ClientManageAccountResponse;
 import be.labofitness.labo_fitness.bll.models.response.user.getCoach.GetCoachesResponse;
 import be.labofitness.labo_fitness.bll.models.response.user.getPhysiotherapist.GetPhysioResponse;
@@ -18,6 +20,7 @@ import be.labofitness.labo_fitness.bll.models.response.user.getTrainingSession.G
 import be.labofitness.labo_fitness.bll.service.ClientService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -122,6 +125,16 @@ public class ClientController {
     @GetMapping("/personal-physio-by-spec")
     public ResponseEntity<List<GetPhysioResponse>> getAllPersonalPhysioBySpecialization(Authentication authentication, @Valid @ModelAttribute GetPhysioBySpecializationRequest request) {
         return ResponseEntity.ok(clientService.getPersonalPhysioBySpecialization(authentication, request));
+    }
+
+    // endregion
+
+    // region COMPETITION REGISTER
+
+    @PreAuthorize("isAuthenticated() AND hasAnyAuthority('CLIENT')")
+    @PutMapping("/competition-register")
+    public ResponseEntity<CompetitionRegisterResponse> registerToOneCompetition(Authentication authentication, @Valid @RequestBody CompetitionRegisterRequest request) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(clientService.registerToOneCompetition(authentication, request));
     }
 
     // endregion

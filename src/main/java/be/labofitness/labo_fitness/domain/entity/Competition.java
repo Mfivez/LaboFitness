@@ -18,6 +18,9 @@ import java.util.Set;
 @AllArgsConstructor
 public class Competition extends BaseEntity<Long> {
 
+    @Column(name = "name_identifier", unique = true, nullable = false)
+    private String competitionNameIdentifier;
+
     @Column(name = "name", nullable = false)
     private String name;
 
@@ -26,6 +29,9 @@ public class Competition extends BaseEntity<Long> {
 
     @Column(name = "end_date", nullable = false)
     private LocalDateTime endDate;
+
+    @Column(name = "inscription_is_open", nullable = false)
+    private boolean inscriptionIsOpen;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable( name = "sports_competitions",
@@ -38,12 +44,13 @@ public class Competition extends BaseEntity<Long> {
     @JoinColumn(nullable = false)
     private Coach coach;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "competitions")
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "competitions")
     private Set<Client> client;
 
     public Competition() {
         this.client = new HashSet<>();
         this.sports = new HashSet<>();
+        this.inscriptionIsOpen = false;
     }
 
 }

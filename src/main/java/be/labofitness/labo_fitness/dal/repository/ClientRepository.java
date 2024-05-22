@@ -1,9 +1,6 @@
 package be.labofitness.labo_fitness.dal.repository;
 
-import be.labofitness.labo_fitness.domain.entity.Client;
-import be.labofitness.labo_fitness.domain.entity.Coach;
-import be.labofitness.labo_fitness.domain.entity.Physiotherapist;
-import be.labofitness.labo_fitness.domain.entity.TrainingSession;
+import be.labofitness.labo_fitness.domain.entity.*;
 import be.labofitness.labo_fitness.domain.enums.RecommendedLevel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -113,4 +110,5 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
     List<Physiotherapist> findPersonalPhysioBySpecialization(Long clientId, String specialization);
 
     //endregion
+
 }
