@@ -62,7 +62,7 @@ public class ClientDataIni extends DataInitializer {
             client2.setGoal(Goal.LIFESTYLE_IMPROVEMENT);
             client2.setLifeStyle(1.6);
             client2.setRoles(LaboFitnessUtil.setRole(Set.of("USER", "CLIENT"), roleRepository));
-            client2.setTrainingSessions(List.of(trainingSession));
+            client2.setTrainingSessions(List.of());
             client2.setBirthdate(LocalDateTime.now());
 
 

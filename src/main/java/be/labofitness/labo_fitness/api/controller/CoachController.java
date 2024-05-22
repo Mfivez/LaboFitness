@@ -24,7 +24,7 @@ public class CoachController {
 
     @PostMapping("/manage-account")
     @PreAuthorize("hasAuthority('COACH') and isAuthenticated()")
-    public ResponseEntity<CoachManageAccountResponse> clientManageAccount(Authentication authentication, @Valid @ModelAttribute CoachManageAccountRequest request) {
-        return ResponseEntity.ok(coachService.manageAccount(authentication, request));
+    public ResponseEntity<CoachManageAccountResponse> clientManageAccount(@Valid @ModelAttribute CoachManageAccountRequest request) {
+        return ResponseEntity.ok(coachService.manageAccount(request));
     }
 }

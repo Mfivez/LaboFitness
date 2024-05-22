@@ -1,6 +1,7 @@
 package be.labofitness.labo_fitness.bll.service;
 
 import be.labofitness.labo_fitness.bll.models.request.client.CompetitionRegister.CompetitionRegisterRequest;
+import be.labofitness.labo_fitness.bll.models.request.client.TrainingSessionSubscription.TrainingSuscribRequest;
 import be.labofitness.labo_fitness.bll.models.request.client.manageAccount.ClientManageAccountRequest;
 import be.labofitness.labo_fitness.bll.models.request.user.getCoach.GetCoachesByNameRequest;
 import be.labofitness.labo_fitness.bll.models.request.user.getCoach.GetCoachesByRemoteRequest;
@@ -13,6 +14,7 @@ import be.labofitness.labo_fitness.bll.models.request.user.getTrainingSession.Ge
 import be.labofitness.labo_fitness.bll.models.request.user.getTrainingSession.GetTrainingSessionsByNameRequest;
 import be.labofitness.labo_fitness.bll.models.request.client.registerClient.ClientRegisterRequest;
 import be.labofitness.labo_fitness.bll.models.response.client.CompetitionRegister.CompetitionRegisterResponse;
+import be.labofitness.labo_fitness.bll.models.response.client.TrainingSessionSubscription.TrainingSuscribResponse;
 import be.labofitness.labo_fitness.bll.models.response.client.manageAccount.ClientManageAccountResponse;
 import be.labofitness.labo_fitness.bll.models.response.user.getCoach.GetCoachesResponse;
 import be.labofitness.labo_fitness.bll.models.response.user.getPhysiotherapist.GetPhysioResponse;
@@ -32,46 +34,52 @@ public interface ClientService  extends CrudService<Client, Long> {
 
     public RegisterResponse register(ClientRegisterRequest request);
 
-    public ClientManageAccountResponse manageAccount(Authentication authentication, ClientManageAccountRequest request);
+    public ClientManageAccountResponse manageAccount(ClientManageAccountRequest request);
 
     // endregion
 
     // region PERSONAL TRAINING SESSIONS
 
-    public List<GetTrainingSessionResponse> findPersonalClientTrainingSession(Authentication authentication);
+    public List<GetTrainingSessionResponse> findPersonalClientTrainingSession();
 
-    public List<GetTrainingSessionResponse> findPersonalClientTrainingSessionByRecommendedLvl(Authentication authentication, GetTrainingSessionByRecommendedLvlRequest request );
+    public List<GetTrainingSessionResponse> findPersonalClientTrainingSessionByRecommendedLvl(GetTrainingSessionByRecommendedLvlRequest request );
 
-    public List<GetTrainingSessionResponse> findPersonalClientTrainingSessionByDuration(Authentication authentication, GetTrainingSessionsByDurationRequest request);
+    public List<GetTrainingSessionResponse> findPersonalClientTrainingSessionByDuration(GetTrainingSessionsByDurationRequest request);
 
-    public List<GetTrainingSessionResponse> findPersonalClientTrainingSessionByName(Authentication authentication, GetTrainingSessionsByNameRequest request);
+    public List<GetTrainingSessionResponse> findPersonalClientTrainingSessionByName(GetTrainingSessionsByNameRequest request);
 
-    public List<GetTrainingSessionResponse> findPersonalClientTrainingSessionByCoachName(Authentication authentication, GetTrainingSessionsByCoachNameRequest request);
+    public List<GetTrainingSessionResponse> findPersonalClientTrainingSessionByCoachName(GetTrainingSessionsByCoachNameRequest request);
 
     // endregion
 
     //region PERSONAL PHYSIOTHERAPIST
-    List<GetPhysioResponse> getAllPersonalPhysio(Authentication authentication);
+    List<GetPhysioResponse> getAllPersonalPhysio();
 
-    List<GetPhysioResponse> getPersonalPhysioBySpecialization(Authentication authentication, GetPhysioBySpecializationRequest request);
+    List<GetPhysioResponse> getPersonalPhysioBySpecialization(GetPhysioBySpecializationRequest request);
 
-    List<GetPhysioResponse> getPersonalPhysioByName(Authentication authentication, GetPhysioByNameRequest request);
+    List<GetPhysioResponse> getPersonalPhysioByName(GetPhysioByNameRequest request);
     //endregion
 
     //region COACH
-    List<GetCoachesResponse> getAllPersonalCoaches(Authentication authentication);
+    List<GetCoachesResponse> getAllPersonalCoaches();
 
-    List<GetCoachesResponse> getAllPersonalCoachesByIsRemote(Authentication authentication, GetCoachesByRemoteRequest request);
+    List<GetCoachesResponse> getAllPersonalCoachesByIsRemote(GetCoachesByRemoteRequest request);
 
-    List<GetCoachesResponse> getAllPersonalCoachesBySpecialization(Authentication authentication, GetCoachesBySpecializationRequest request);
+    List<GetCoachesResponse> getAllPersonalCoachesBySpecialization(GetCoachesBySpecializationRequest request);
 
-    List<GetCoachesResponse> getAllPersonalCoachesByName(Authentication authentication, GetCoachesByNameRequest request);
+    List<GetCoachesResponse> getAllPersonalCoachesByName(GetCoachesByNameRequest request);
 
     // endregion
 
     // region REGISTER COMPETITION
 
-    CompetitionRegisterResponse registerToOneCompetition(Authentication authentication, CompetitionRegisterRequest request);
+    CompetitionRegisterResponse registerToOneCompetition(CompetitionRegisterRequest request);
+
+    // endregion
+
+    // region TRAINING SUBSCRIPTION
+
+    TrainingSuscribResponse subscribeToOneTrainingSession(TrainingSuscribRequest request);
 
     // endregion
 

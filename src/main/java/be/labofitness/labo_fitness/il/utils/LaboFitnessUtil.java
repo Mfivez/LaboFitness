@@ -7,6 +7,7 @@ import be.labofitness.labo_fitness.domain.entity.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.time.LocalDateTime;
 import java.time.Month;
@@ -23,18 +24,6 @@ public class LaboFitnessUtil {
         return LocalDateTime.of(year, month, day,iniTime, iniTime,iniTime);
     }
 
-    public static <T> T getAuthentication(Authentication authentication, Class<T> type) {
-        if (authentication == null) {
-            throw new AuthenticationIsNullException("Authentication is null");}
-
-        if (type.isInstance(authentication.getPrincipal())) {
-                return type.cast(authentication.getPrincipal());
-        }
-        else throw new AuthenticationCastingException(
-                "Authentication casting type failed: Authentication is not of type " + type.getName());
-    }
-
-
     public static LocalDateTime createNewDate(int year, Month month, int day, int hour) {
         int iniTime = 0;
         return LocalDateTime.of(year, month, day,hour, iniTime,iniTime);
@@ -45,8 +34,24 @@ public class LaboFitnessUtil {
         return LocalDateTime.of(year, month, day,hour, minute,iniTime);
     }
 
+    public static String DateToStringFormatDayMonthValueYear(LocalDateTime date) {
+        return date.getDayOfMonth() + "/" + date.getMonthValue() + "/" + date.getYear();
+    }
+
     public static String CompetitionNameIdBuilder(String name, LocalDateTime dateTime) {
-        return name + "Of" + dateTime.getDayOfMonth() + "/" + dateTime.getMonthValue() + "/" + dateTime.getYear();
+        return name + "Of" + DateToStringFormatDayMonthValueYear(dateTime);
+    }
+
+    public static <T> T getAuthentication(Class<T> type) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null) {
+            throw new AuthenticationIsNullException("Authentication is null");}
+
+        if (type.isInstance(authentication.getPrincipal())) {
+            return type.cast(authentication.getPrincipal());
+        }
+        else throw new AuthenticationCastingException(
+                "Authentication casting type failed: Authentication is not of type " + type.getName());
     }
 
     //v12.2

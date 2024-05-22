@@ -31,6 +31,9 @@ public class TrainingSession extends BaseEntity<Long> {
     @Column(name = "description", nullable = false)
     private String description;
 
+    @Column(name = "is_inscription_open", nullable = false)
+    private boolean isInscriptionOpen;
+
     @Column(name = "recomended_level", nullable = false)
     @Enumerated(EnumType.STRING)
     private RecommendedLevel recommended_level;
@@ -41,5 +44,7 @@ public class TrainingSession extends BaseEntity<Long> {
 
 
 
-    public TrainingSession() {}
+    public TrainingSession() {
+        this.isInscriptionOpen = false;
+    }
 }
