@@ -11,6 +11,7 @@ import be.labofitness.labo_fitness.bll.models.request.user.getTrainingSession.Ge
 import be.labofitness.labo_fitness.bll.models.request.user.getTrainingSession.GetTrainingSessionsByDurationRequest;
 import be.labofitness.labo_fitness.bll.models.request.user.getTrainingSession.GetTrainingSessionsByNameRequest;
 import be.labofitness.labo_fitness.bll.models.request.user.makeReport.MakeReportRequest;
+import be.labofitness.labo_fitness.bll.models.response.user.getReport.GetReportResponse;
 import be.labofitness.labo_fitness.bll.models.response.user.getTrainingSession.GetTrainingSessionResponse;
 import be.labofitness.labo_fitness.bll.models.response.user.getCoach.GetCoachesResponse;
 import be.labofitness.labo_fitness.bll.models.response.UserLoginResponse;
@@ -24,6 +25,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
+import java.util.Set;
 
 public interface UserService extends CrudService<User, Long> , UserDetailsService {
 
@@ -62,10 +64,19 @@ public interface UserService extends CrudService<User, Long> , UserDetailsServic
 
     // endregion
 
+    // region REPORT
+
     //region MAKE REPORT
 
     ReportResponse makeReport(Authentication authentication, MakeReportRequest request);
 
     //endregion
 
+    // region GET REPORT
+
+    Set<GetReportResponse> getValidReport(Authentication authentication);
+
+    // endregion
+
+    // endregion
 }

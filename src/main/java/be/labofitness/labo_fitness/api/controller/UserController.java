@@ -10,6 +10,7 @@ import be.labofitness.labo_fitness.bll.models.request.user.getTrainingSession.Ge
 import be.labofitness.labo_fitness.bll.models.request.user.getTrainingSession.GetTrainingSessionsByDurationRequest;
 import be.labofitness.labo_fitness.bll.models.request.user.getTrainingSession.GetTrainingSessionsByNameRequest;
 import be.labofitness.labo_fitness.bll.models.request.user.makeReport.MakeReportRequest;
+import be.labofitness.labo_fitness.bll.models.response.user.getReport.GetReportResponse;
 import be.labofitness.labo_fitness.bll.models.response.user.getTrainingSession.GetTrainingSessionResponse;
 import be.labofitness.labo_fitness.bll.models.response.user.getCoach.GetCoachesResponse;
 import be.labofitness.labo_fitness.bll.models.response.user.getPhysiotherapist.GetPhysioResponse;
@@ -23,6 +24,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/user")
@@ -30,6 +32,8 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+
+    // region REPORT
 
     //region MAKE REPORT
 
@@ -40,6 +44,19 @@ public class UserController {
     }
 
     //endregion
+
+    //region GET REPORT
+    //GetReportByIsValidateForAuthenticateUser
+    @GetMapping("/get-report")
+    @PreAuthorize("isAuthenticated() AND hasAnyAuthority('USER')")
+    public ResponseEntity<Set<GetReportResponse>> getReportResponseByIsValidate(Authentication authentication) {
+        return ResponseEntity.ok(userService.getValidReport(authentication));
+    }
+
+
+
+
+    // endregion
 
     //region GET COACHES
 

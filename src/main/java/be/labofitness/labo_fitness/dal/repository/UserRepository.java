@@ -1,5 +1,6 @@
 package be.labofitness.labo_fitness.dal.repository;
 
+import be.labofitness.labo_fitness.bll.models.response.user.getReport.GetReportResponse;
 import be.labofitness.labo_fitness.domain.entity.*;
 import be.labofitness.labo_fitness.domain.enums.RecommendedLevel;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
@@ -105,6 +107,18 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 
     // endregion
+
+    // region REPORT
+
+    @Query(
+            "SELECT r.description " +
+            "FROM Report r " +
+            "JOIN r.reportedUser u " +
+            "WHERE u.id = :userReportedId " +
+            "AND r.isConfirmed = :isValidate ")
+    Set<String> getReportMessageByIsValidate(Long userReportedId, boolean isValidate);
+
+    //endregion
 
 }
 

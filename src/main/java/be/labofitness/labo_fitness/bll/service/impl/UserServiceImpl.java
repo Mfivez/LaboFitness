@@ -12,6 +12,7 @@ import be.labofitness.labo_fitness.bll.models.request.user.getTrainingSession.Ge
 import be.labofitness.labo_fitness.bll.models.request.user.getTrainingSession.GetTrainingSessionsByDurationRequest;
 import be.labofitness.labo_fitness.bll.models.request.user.getTrainingSession.GetTrainingSessionsByNameRequest;
 import be.labofitness.labo_fitness.bll.models.request.user.makeReport.MakeReportRequest;
+import be.labofitness.labo_fitness.bll.models.response.user.getReport.GetReportResponse;
 import be.labofitness.labo_fitness.bll.models.response.user.getTrainingSession.GetTrainingSessionResponse;
 import be.labofitness.labo_fitness.bll.models.response.user.getCoach.GetCoachesResponse;
 import be.labofitness.labo_fitness.bll.models.response.UserLoginResponse;
@@ -32,7 +33,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -45,11 +48,12 @@ public class UserServiceImpl implements UserService {
     private final ReportService reportService;
 
 
-
+    // region UTILS FUNCTIONS
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         return userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException(email));
     }
+    // endregion
 
     // region LOGIN
 
@@ -68,6 +72,8 @@ public class UserServiceImpl implements UserService {
 
     // endregion
 
+    // region REPORT
+
     // region MAKE REPORT
 
     @Override @Transactional
@@ -85,6 +91,21 @@ public class UserServiceImpl implements UserService {
                 reportedUser.getName() + " " + reportedUser.getLast_name() +
                 " pour le motif suivant : " + request.report());
     }
+
+    // endregion
+
+    // region GET REPORT
+
+    @Override
+    public Set<GetReportResponse> getValidReport(Authentication authentication) {
+        return userRepository.getReportMessageByIsValidate(
+                        (  (User) authentication.getPrincipal()  ).getId(), true)
+                .stream().map(GetReportResponse::new)
+                .collect(Collectors.toSet());
+    }
+
+
+    // endregion
 
     // endregion
 
