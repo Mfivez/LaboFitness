@@ -3,9 +3,13 @@ package be.labofitness.labo_fitness.bll.service.impl;
 
 import be.labofitness.labo_fitness.bll.exception.alreadyExists.EmailAlreadyExistsException;
 import be.labofitness.labo_fitness.bll.exception.doesntExists.DoesntExistException;
+import be.labofitness.labo_fitness.bll.exception.doesntExists.EmailDoesntExistException;
 import be.labofitness.labo_fitness.bll.exception.inscriptionClosed.InscriptionCloseException;
 import be.labofitness.labo_fitness.bll.models.request.client.CompetitionRegister.CompetitionRegisterRequest;
 import be.labofitness.labo_fitness.bll.models.request.client.TrainingSessionSubscription.TrainingSuscribRequest;
+import be.labofitness.labo_fitness.bll.models.request.client.makeAppointment.AcceptAppointmentPlanningRequest;
+import be.labofitness.labo_fitness.bll.models.request.client.makeAppointment.CancelAppointmentRequest;
+import be.labofitness.labo_fitness.bll.models.request.client.makeAppointment.MakeRequestForAppointmentRequest;
 import be.labofitness.labo_fitness.bll.models.request.client.manageAccount.ClientManageAccountRequest;
 import be.labofitness.labo_fitness.bll.models.request.user.getCoach.GetCoachesByNameRequest;
 import be.labofitness.labo_fitness.bll.models.request.user.getCoach.GetCoachesByRemoteRequest;
@@ -19,6 +23,9 @@ import be.labofitness.labo_fitness.bll.models.request.user.getTrainingSession.Ge
 import be.labofitness.labo_fitness.bll.models.request.client.registerClient.ClientRegisterRequest;
 import be.labofitness.labo_fitness.bll.models.response.client.CompetitionRegister.CompetitionRegisterResponse;
 import be.labofitness.labo_fitness.bll.models.response.client.TrainingSessionSubscription.TrainingSuscribResponse;
+import be.labofitness.labo_fitness.bll.models.response.client.makeAppointment.AcceptAppointmentPlanningResponse;
+import be.labofitness.labo_fitness.bll.models.response.client.makeAppointment.CancelAppointmentResponse;
+import be.labofitness.labo_fitness.bll.models.response.client.makeAppointment.MakeRequestForAppointmentResponse;
 import be.labofitness.labo_fitness.bll.models.response.client.manageAccount.ClientManageAccountResponse;
 import be.labofitness.labo_fitness.bll.models.response.user.getCoach.GetCoachesResponse;
 import be.labofitness.labo_fitness.bll.models.response.user.getPhysiotherapist.GetPhysioResponse;
@@ -29,6 +36,7 @@ import be.labofitness.labo_fitness.bll.service.CompetitionService;
 import be.labofitness.labo_fitness.dal.repository.*;
 import be.labofitness.labo_fitness.domain.entity.*;
 import be.labofitness.labo_fitness.domain.entity.base.Adress;
+import be.labofitness.labo_fitness.domain.enums.AppointmentStatus;
 import be.labofitness.labo_fitness.il.utils.LaboFitnessUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +44,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -52,6 +61,9 @@ public class ClientServiceImpl  implements ClientService {
     private final CompetitionService competitionService;
     private final CompetitionRepository competitionRepository;
     private final TrainingSessionRepository trainingSessionRepository;
+    private final PhysiotherapistRepository physiotherapistRepository;
+    private final AppointmentRepository appointmentRepository;
+    private final LaboFitnessUtil laboFitnessUtil;
 
 
     // region AUTHENTICATE
@@ -309,4 +321,79 @@ public class ClientServiceImpl  implements ClientService {
 
     // endregion
 
+    // region MAKE APPOINTMENT
+
+    // Client-Kiné-Raison du RDV
+    @Override @Transactional
+    public MakeRequestForAppointmentResponse makeRequestForAppointment(MakeRequestForAppointmentRequest request) {
+        Client client = LaboFitnessUtil.getAuthentication(Client.class);
+        Physiotherapist physiotherapist = physiotherapistRepository.findByEmail(request.physiotherapistEmail())
+                .orElseThrow(() -> new EmailDoesntExistException(
+                        "Email not found"));
+
+        Appointment appointment = new Appointment();
+        appointment.setClient(client);
+        appointment.setReasonOfAppointment(request.reasonOfAppointment());
+        appointment.setPhysiotherapist(physiotherapist);
+        appointmentRepository.save(appointment);
+
+        return new MakeRequestForAppointmentResponse("Request for appointment sent");
+    }
+
+
+    @Override @Transactional
+    public AcceptAppointmentPlanningResponse acceptAppointmentPlanning(AcceptAppointmentPlanningRequest request) {
+        Appointment appointment = clientRepository.getAppointmentById(  request.id()  );
+        String message ;
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime appointmentDate = appointment.getAppointmentDate();
+        appointment.setAppointmentStatusResponseDescription(request.description());
+        if (now.isAfter(appointmentDate)) {
+            message = "You can't accept an appointment already passed";
+            return new AcceptAppointmentPlanningResponse(message);
+        }
+        if (appointment.getAppointmentDate() == null) {
+            throw new IllegalStateException("Appointment date is not yet defined");
+        }
+        appointment.setAppointmentStatus(request.status());
+        if (request.status() == AppointmentStatus.REFUSED) {
+            appointment.setAppointmentDate(null);
+        }
+        appointmentRepository.save(appointment);
+
+        return new AcceptAppointmentPlanningResponse("Response to appointment sent to physiotherapist");
+    }
+
+    @Override
+    public CancelAppointmentResponse cancelAppointment(CancelAppointmentRequest request) {
+        Appointment appointment = clientRepository.getAppointmentById( request.id() );
+        String message ;
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime appointmentDate = appointment.getAppointmentDate();
+        if (now.isAfter(appointmentDate)){
+            message = "You can't cancel an appointment already passed";
+            return new CancelAppointmentResponse(message);
+        }
+        if (!now.isAfter(appointmentDate.minusDays(1))) {
+            appointment.setPrice(0);
+            message = "Appointment cancelled with success";
+        }
+        else {
+            message = "You can cancel but you have to pay the price of the appointment : " + appointment.getPrice();
+        }
+        appointment.setCancel( request.isCancel() );
+        if (request.isCancel()) {
+            appointment.setAppointmentStatus(AppointmentStatus.CANCELLED);
+        }
+        appointmentRepository.save(appointment);
+
+        return new CancelAppointmentResponse(message);
+    }
+
+    @Override
+    public List<Appointment> getAllAppointments() {
+        return List.of();
+    }
+
+    // endregion
 }
