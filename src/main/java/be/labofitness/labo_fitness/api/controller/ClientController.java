@@ -3,6 +3,9 @@ package be.labofitness.labo_fitness.api.controller;
 
 import be.labofitness.labo_fitness.bll.models.request.client.CompetitionRegister.CompetitionRegisterRequest;
 import be.labofitness.labo_fitness.bll.models.request.client.TrainingSessionSubscription.TrainingSuscribRequest;
+import be.labofitness.labo_fitness.bll.models.request.client.makeAppointment.AcceptAppointmentPlanningRequest;
+import be.labofitness.labo_fitness.bll.models.request.client.makeAppointment.CancelAppointmentRequest;
+import be.labofitness.labo_fitness.bll.models.request.client.makeAppointment.MakeRequestForAppointmentRequest;
 import be.labofitness.labo_fitness.bll.models.request.client.manageAccount.ClientManageAccountRequest;
 import be.labofitness.labo_fitness.bll.models.request.user.getCoach.GetCoachesByNameRequest;
 import be.labofitness.labo_fitness.bll.models.request.user.getCoach.GetCoachesByRemoteRequest;
@@ -15,6 +18,9 @@ import be.labofitness.labo_fitness.bll.models.request.user.getTrainingSession.Ge
 import be.labofitness.labo_fitness.bll.models.request.user.getTrainingSession.GetTrainingSessionsByNameRequest;
 import be.labofitness.labo_fitness.bll.models.response.client.CompetitionRegister.CompetitionRegisterResponse;
 import be.labofitness.labo_fitness.bll.models.response.client.TrainingSessionSubscription.TrainingSuscribResponse;
+import be.labofitness.labo_fitness.bll.models.response.client.makeAppointment.AcceptAppointmentPlanningResponse;
+import be.labofitness.labo_fitness.bll.models.response.client.makeAppointment.CancelAppointmentResponse;
+import be.labofitness.labo_fitness.bll.models.response.client.makeAppointment.MakeRequestForAppointmentResponse;
 import be.labofitness.labo_fitness.bll.models.response.client.manageAccount.ClientManageAccountResponse;
 import be.labofitness.labo_fitness.bll.models.response.user.getCoach.GetCoachesResponse;
 import be.labofitness.labo_fitness.bll.models.response.user.getPhysiotherapist.GetPhysioResponse;
@@ -151,7 +157,30 @@ public class ClientController {
 
     //endregion
 
+    // region APPOINTMENT WITH PHYSIO
 
+    // MakeARequestForAppointment
+    @PreAuthorize("hasAuthority('CLIENT') AND isAuthenticated()")
+    @PostMapping("/make-request-appointment")
+    public ResponseEntity<MakeRequestForAppointmentResponse> makeARequestForAppointment(@RequestBody MakeRequestForAppointmentRequest request) {
+        return ResponseEntity.ok(clientService.makeRequestForAppointment(request));
+    }
+
+    // AcceptAppointmentPlanning
+    @PreAuthorize("hasAuthority('CLIENT') AND isAuthenticated()")
+    @PutMapping("/accept-appointment-planning")
+    public ResponseEntity<AcceptAppointmentPlanningResponse> makeARequestForAppointment(@RequestBody AcceptAppointmentPlanningRequest request) {
+        return ResponseEntity.ok(clientService.acceptAppointmentPlanning(request));
+    }
+
+    // CancelAppointment
+    @PreAuthorize("hasAuthority('CLIENT') AND isAuthenticated()")
+    @PutMapping("/cancel-appointment")
+    public ResponseEntity<CancelAppointmentResponse> makeARequestForAppointment(@RequestBody CancelAppointmentRequest request) {
+        return ResponseEntity.ok(clientService.cancelAppointment(request));
+    }
+
+    // endregion
 
 
 

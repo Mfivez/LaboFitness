@@ -111,4 +111,14 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
 
     //endregion
 
+    //region MAKE APPOINTMENT
+
+    @Query(
+            "SELECT a " +
+                    "FROM Appointment a " +
+                    "WHERE a.id = :appointmentId")
+    Appointment getAppointmentById(Long appointmentId);
+
+
+    // endregion
 }

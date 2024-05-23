@@ -38,16 +38,18 @@ public class AppointmentDataIni extends DataInitializer {
 
             Appointment appointment1 = new Appointment();
             appointment1.setPrice(50);
-            appointment1.setDate(LocalDateTime.now());
+            appointment1.setAppointmentDate(LocalDateTime.now());
             appointment1.setClient(client);
             appointment1.setPhysiotherapist(physiotherapist);
+            appointment1.setReasonOfAppointment("ersrsero");
 
 
             Appointment appointment2 = new Appointment();
             appointment2.setPrice(70);
-            appointment2.setDate(LocalDateTime.now().plusDays(1));
+            appointment2.setAppointmentDate(LocalDateTime.now().plusDays(1));
             appointment2.setClient(client);
             appointment2.setPhysiotherapist(physiotherapist);
+            appointment2.setReasonOfAppointment("erzerzrzer");
 
             appointmentRepository.save(appointment1);
             appointmentRepository.save(appointment2);
