@@ -3,6 +3,7 @@ package be.labofitness.labo_fitness.api.controller;
 
 import be.labofitness.labo_fitness.bll.models.request.client.CompetitionRegister.CompetitionRegisterRequest;
 import be.labofitness.labo_fitness.bll.models.request.client.TrainingSessionSubscription.TrainingSuscribRequest;
+import be.labofitness.labo_fitness.bll.models.request.client.manageAccount.changePassword.ClientChangePasswordRequest;
 import be.labofitness.labo_fitness.bll.models.request.client.makeAppointment.AcceptAppointmentPlanningRequest;
 import be.labofitness.labo_fitness.bll.models.request.client.makeAppointment.CancelAppointmentRequest;
 import be.labofitness.labo_fitness.bll.models.request.client.makeAppointment.MakeRequestForAppointmentRequest;
@@ -18,6 +19,7 @@ import be.labofitness.labo_fitness.bll.models.request.user.getTrainingSession.Ge
 import be.labofitness.labo_fitness.bll.models.request.user.getTrainingSession.GetTrainingSessionsByNameRequest;
 import be.labofitness.labo_fitness.bll.models.response.client.CompetitionRegister.CompetitionRegisterResponse;
 import be.labofitness.labo_fitness.bll.models.response.client.TrainingSessionSubscription.TrainingSuscribResponse;
+import be.labofitness.labo_fitness.bll.models.response.client.manageAccount.changePassword.ClientChangePasswordResponse;
 import be.labofitness.labo_fitness.bll.models.response.client.makeAppointment.AcceptAppointmentPlanningResponse;
 import be.labofitness.labo_fitness.bll.models.response.client.makeAppointment.CancelAppointmentResponse;
 import be.labofitness.labo_fitness.bll.models.response.client.makeAppointment.MakeRequestForAppointmentResponse;
@@ -31,7 +33,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -45,10 +46,16 @@ public class ClientController {
 
     //region CLIENT MANAGE ACCOUNT
 
-    @PostMapping("/manage-account")
+    @PutMapping("/manage-account")
     @PreAuthorize("hasAuthority('CLIENT') and isAuthenticated()")
-    public ResponseEntity<ClientManageAccountResponse> clientManageAccount(@Valid @ModelAttribute ClientManageAccountRequest request) {
+    public ResponseEntity<ClientManageAccountResponse> clientManageAccount(@Valid @RequestBody ClientManageAccountRequest request) {
         return ResponseEntity.ok(clientService.manageAccount(request));
+    }
+
+    @PutMapping("/manage-account/password")
+    @PreAuthorize("hasAuthority('CLIENT') and isAuthenticated()")
+    public ResponseEntity<ClientChangePasswordResponse> changePassword(@Valid @RequestBody ClientChangePasswordRequest request){
+        return ResponseEntity.ok(clientService.changePassword(request));
     }
 
     //endregion
@@ -181,6 +188,8 @@ public class ClientController {
     }
 
     // endregion
+
+
 
 
 

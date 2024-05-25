@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class LaboFitnessUtil {
 
+
     public static LocalDateTime createNewDate(int year, Month month, int day) {
         int iniTime = 0;
         return LocalDateTime.of(year, month, day,iniTime, iniTime,iniTime);
@@ -78,4 +79,24 @@ public class LaboFitnessUtil {
 //            default -> throw new IllegalArgumentException("Invalid role: " + role);
 //        };
 //   }
-}}
+    }
+
+    /*
+     * Get method name from current class
+     * logical :
+     * Get thread + get stack trace
+     * condition ?
+     * stacktrace [] ? (from stack overflow [2] so : check if length < 3 if yes return null
+     * */
+    public static String getCurrentMethodeName(){
+        StackTraceElement[] stack = Thread.currentThread().getStackTrace();
+        if (stack.length < 3) {
+            return null;
+        }
+        StackTraceElement call = stack[2];
+        return call.getMethodName();
+    }
+
+
+
+}

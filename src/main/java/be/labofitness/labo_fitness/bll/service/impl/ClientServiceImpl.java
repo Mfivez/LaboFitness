@@ -5,8 +5,10 @@ import be.labofitness.labo_fitness.bll.exception.alreadyExists.EmailAlreadyExist
 import be.labofitness.labo_fitness.bll.exception.doesntExists.DoesntExistException;
 import be.labofitness.labo_fitness.bll.exception.doesntExists.EmailDoesntExistException;
 import be.labofitness.labo_fitness.bll.exception.inscriptionClosed.InscriptionCloseException;
+import be.labofitness.labo_fitness.bll.exception.notMatching.PasswordNotMatchingException;
 import be.labofitness.labo_fitness.bll.models.request.client.CompetitionRegister.CompetitionRegisterRequest;
 import be.labofitness.labo_fitness.bll.models.request.client.TrainingSessionSubscription.TrainingSuscribRequest;
+import be.labofitness.labo_fitness.bll.models.request.client.manageAccount.changePassword.ClientChangePasswordRequest;
 import be.labofitness.labo_fitness.bll.models.request.client.makeAppointment.AcceptAppointmentPlanningRequest;
 import be.labofitness.labo_fitness.bll.models.request.client.makeAppointment.CancelAppointmentRequest;
 import be.labofitness.labo_fitness.bll.models.request.client.makeAppointment.MakeRequestForAppointmentRequest;
@@ -23,6 +25,7 @@ import be.labofitness.labo_fitness.bll.models.request.user.getTrainingSession.Ge
 import be.labofitness.labo_fitness.bll.models.request.client.registerClient.ClientRegisterRequest;
 import be.labofitness.labo_fitness.bll.models.response.client.CompetitionRegister.CompetitionRegisterResponse;
 import be.labofitness.labo_fitness.bll.models.response.client.TrainingSessionSubscription.TrainingSuscribResponse;
+import be.labofitness.labo_fitness.bll.models.response.client.manageAccount.changePassword.ClientChangePasswordResponse;
 import be.labofitness.labo_fitness.bll.models.response.client.makeAppointment.AcceptAppointmentPlanningResponse;
 import be.labofitness.labo_fitness.bll.models.response.client.makeAppointment.CancelAppointmentResponse;
 import be.labofitness.labo_fitness.bll.models.response.client.makeAppointment.MakeRequestForAppointmentResponse;
@@ -40,15 +43,15 @@ import be.labofitness.labo_fitness.domain.enums.AppointmentStatus;
 import be.labofitness.labo_fitness.il.utils.LaboFitnessUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static be.labofitness.labo_fitness.il.utils.LaboFitnessUtil.getCurrentMethodeName;
 
 @Service
 @RequiredArgsConstructor
@@ -59,15 +62,29 @@ public class ClientServiceImpl  implements ClientService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final CompetitionService competitionService;
-    private final CompetitionRepository competitionRepository;
     private final TrainingSessionRepository trainingSessionRepository;
     private final PhysiotherapistRepository physiotherapistRepository;
     private final AppointmentRepository appointmentRepository;
-    private final LaboFitnessUtil laboFitnessUtil;
 
+
+    @Override
+    @Transactional
+    public ClientChangePasswordResponse changePassword(ClientChangePasswordRequest request) {
+
+        String message = getCurrentMethodeName();
+
+        Client client = LaboFitnessUtil.getAuthentication(Client.class);
+        if(!passwordEncoder.encode(request.oldPassword()).equals(clientRepository.findPasswordByClientId(client.getId()))){
+
+            throw new PasswordNotMatchingException("passwords are not matching");
+        }
+        client.setPassword(passwordEncoder.encode(request.newPassword()));
+        clientRepository.save(client);
+
+        return ClientChangePasswordResponse.fromEntity(client, message);
+    }
 
     // region AUTHENTICATE
-
     @Transactional @Override
     public RegisterResponse register(ClientRegisterRequest request) {
 
@@ -93,6 +110,9 @@ public class ClientServiceImpl  implements ClientService {
 
     @Override @Transactional
     public ClientManageAccountResponse manageAccount(ClientManageAccountRequest request) {
+
+        String message  = getCurrentMethodeName();
+
         if(userRepository.existsByEmail(request.email())){
             throw  new EmailAlreadyExistsException("Email already exists :" + request.email()); }
 
@@ -106,7 +126,7 @@ public class ClientServiceImpl  implements ClientService {
         client.setHeight(request.height());
         clientRepository.save(client);
 
-        return new ClientManageAccountResponse("Account modified with success");
+        return ClientManageAccountResponse.fromEntity(client,message);
     }
 
     //endregion
@@ -143,7 +163,6 @@ public class ClientServiceImpl  implements ClientService {
     // endregion
 
     // region PERSONAL TRAINING SESSIONS
-
     @Override
     public List<GetTrainingSessionResponse> findPersonalClientTrainingSession() {
         Client client = LaboFitnessUtil.getAuthentication(Client.class);
@@ -278,19 +297,13 @@ public class ClientServiceImpl  implements ClientService {
             clientRepository.save(client);
 
             message = "You've been register to the competition named " + competition.getName() +
-                    " du " + LaboFitnessUtil.DateToStringFormatDayMonthValueYear(competition.getStartDate()) + " with success !";
+                    " du " + competition.getStartDate().getDayOfMonth() +
+                    "/" + competition.getStartDate().getMonthValue() +
+                    "/" + competition.getStartDate().getYear() + " with success !";
         }
 
         return new CompetitionRegisterResponse(message);
     }
-
-
-
-
-
-    // endregion
-
-    // region TRAINING SUBSCRIPTION
 
     @Override @Transactional
     public TrainingSuscribResponse subscribeToOneTrainingSession(TrainingSuscribRequest request) {
@@ -310,7 +323,7 @@ public class ClientServiceImpl  implements ClientService {
 
             message = "You've been register to the competition named " + training.getName() +
                     " du " + LaboFitnessUtil.DateToStringFormatDayMonthValueYear(training.getStart_date()) + " with success !";
-            }
+        }
         else {
             throw new InscriptionCloseException("Training session inscription closed");
         }

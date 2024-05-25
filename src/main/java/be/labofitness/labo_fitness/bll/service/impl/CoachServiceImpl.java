@@ -1,32 +1,46 @@
 package be.labofitness.labo_fitness.bll.service.impl;
 
 import be.labofitness.labo_fitness.bll.exception.alreadyExists.EmailAlreadyExistsException;
+import be.labofitness.labo_fitness.bll.exception.notMatching.PasswordNotMatchingException;
+import be.labofitness.labo_fitness.bll.models.request.client.manageAccount.changePassword.ClientChangePasswordRequest;
 import be.labofitness.labo_fitness.bll.models.request.coach.manageAccount.CoachManageAccountRequest;
+import be.labofitness.labo_fitness.bll.models.request.coach.manageAccount.changePassword.CoachChangePasswordRequest;
 import be.labofitness.labo_fitness.bll.models.response.coach.manageAccount.CoachManageAccountResponse;
+import be.labofitness.labo_fitness.bll.models.response.coach.manageAccount.changePassword.CoachChangePasswordResponse;
 import be.labofitness.labo_fitness.bll.service.CoachService;
 import be.labofitness.labo_fitness.dal.repository.CoachRepository;
 import be.labofitness.labo_fitness.dal.repository.UserRepository;
-import be.labofitness.labo_fitness.domain.entity.Client;
 import be.labofitness.labo_fitness.domain.entity.Coach;
 import be.labofitness.labo_fitness.domain.entity.base.Adress;
 import be.labofitness.labo_fitness.il.utils.LaboFitnessUtil;
+import jakarta.transaction.Transactional;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+import static be.labofitness.labo_fitness.il.utils.LaboFitnessUtil.getCurrentMethodeName;
 
 @Service
 public class CoachServiceImpl implements CoachService {
     private final UserRepository userRepository;
     private final CoachRepository coachRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public CoachServiceImpl(UserRepository userRepository, CoachRepository coachRepository) {
+    public CoachServiceImpl(UserRepository userRepository, CoachRepository coachRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.coachRepository = coachRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
+    @Transactional
     public CoachManageAccountResponse manageAccount(CoachManageAccountRequest request) {
+
+        String message  = getCurrentMethodeName();
+
         if(userRepository.existsByEmail(request.email())){
             throw new EmailAlreadyExistsException("Email already exists");
         }
@@ -41,8 +55,27 @@ public class CoachServiceImpl implements CoachService {
         coach.setPriceHour(request.pricePerHour());
 
         coachRepository.save(coach);
-        return new CoachManageAccountResponse("Account modified with success");
+        return CoachManageAccountResponse.fromEntity(coach,message);
     }
+
+    @Override
+    @Transactional
+    public CoachChangePasswordResponse changePassword(CoachChangePasswordRequest request) {
+
+        String message = getCurrentMethodeName();
+
+        Coach coach = LaboFitnessUtil.getAuthentication(Coach.class);
+
+        if(!passwordEncoder.encode(request.oldPassword()).equals(coachRepository.findPasswordByCoachId(coach.getId()))){
+
+            throw new PasswordNotMatchingException("passwords are not matching");
+        }
+        coach.setPassword(passwordEncoder.encode(request.newPassword()));
+        coachRepository.save(coach);
+
+        return CoachChangePasswordResponse.fromEntity(coach, message);
+    }
+
 
     @Override
     public Coach getOne(Long aLong) {

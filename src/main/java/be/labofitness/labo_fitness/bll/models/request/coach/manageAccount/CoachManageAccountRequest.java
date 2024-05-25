@@ -1,24 +1,22 @@
 package be.labofitness.labo_fitness.bll.models.request.coach.manageAccount;
 
 import be.labofitness.labo_fitness.domain.enums.Gender;
+import be.labofitness.labo_fitness.il.utils.annotations.validatorsMessage.ValidatorMessageCustom;
 import jakarta.validation.constraints.*;
 
 public record CoachManageAccountRequest(
 
-        @NotBlank(message = "Coach name cannot be a white space")
-        @NotNull(message ="Coach name cannot be null")
-        @Size(min= 3, message = "Coach name must be at least 3 characters long")
+        @NotBlank(message = "error.coach.name.blank")
+        @ValidatorMessageCustom(entity = "coach", field = "name", min = 3)
         String name,
 
 
-        @NotBlank(message = "Coach last name cannot be a white space" )
-        @NotNull(message = "Coach last name cannot be null")
-        @Size(min = 3, message = "Coach last name must be at least 3 characters long")
+        @NotBlank(message = "error.coach.lastName.blank" )
+        @ValidatorMessageCustom(entity = "coach", field = "lastName", min = 3)
         String lastName,
 
 
-        @NotBlank(message = "Coach email cannot be a white space")
-        @NotNull(message = "Coach email cannot be null")
+        @NotBlank(message = "error.coach.email.blank")
         @Email
         String email,
 
@@ -26,32 +24,28 @@ public record CoachManageAccountRequest(
         Gender gender,
 
 
-        @NotBlank(message = "Street name cannot be a white space")
-        @NotNull(message = "Street name cannot be null" )
-        @Size(min = 4, message = "Street name must be at least 4 characters long")
+        @NotBlank(message = "error.coach.street.blank")
+        @ValidatorMessageCustom(entity = "coach", field = "street", min = 4)
         String street,
 
 
-        @NotBlank(message = "Street number cannot be a white space")
-        @NotNull(message = "Street number cannot be null")
-        @Size(min = 1, message = "Street number must be at least 1 character")
+        @NotBlank(message = "error.coach.number.blank")
+        @ValidatorMessageCustom(entity = "coach", field = "number", min = 1)
         String number,
 
-        @NotBlank(message = "City cannot be a white space")
-        @NotNull(message = "City cannot be null")
-        @Size(min = 3, message = "City must be at least 3 characters")
+        @NotBlank(message = "error.coach.city.blank")
+        @ValidatorMessageCustom(entity = "coach", field = "city", min = 3)
         String city,
 
-        @NotBlank(message = "City zipcode cannot be a white space")
-        @NotNull(message = "City zipcode cannot be null")
-        @Size(min = 3, message = "City zipcode must be at least 3 characters")
+        @NotBlank(message = "error.coach.zipcode.blank")
+        @ValidatorMessageCustom(entity = "coach", field = "zipcode", min = 3)
         String zipCode,
 
-        @NotNull(message = "Price per hour can't be null")
+        @NotNull(message = "error.coach.pricePerHour.null")
         @Min(value = 5)
         int pricePerHour,
 
-        @NotNull(message = "Remote field must be filled")
+        @NotNull(message = "error.coach.remote.null")
         boolean isRemote
 ) {
 

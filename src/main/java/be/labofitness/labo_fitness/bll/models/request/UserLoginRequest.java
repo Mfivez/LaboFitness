@@ -8,9 +8,9 @@ import jakarta.validation.constraints.NotBlank;
 //TODO VALIDATORS
 
 public record UserLoginRequest(
-        @NotBlank(message = "email cannot be blank")
+        @NotBlank(message = "error.register.email.blank")
         String email,
-        @NotBlank(message = "password cannot be blank")
+        @NotBlank(message = "error.register.password.blank")
         String password
 ) {
 
