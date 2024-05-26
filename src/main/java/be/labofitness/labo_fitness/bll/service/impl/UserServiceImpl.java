@@ -18,23 +18,20 @@ import be.labofitness.labo_fitness.bll.models.response.user.getCoach.GetCoachesR
 import be.labofitness.labo_fitness.bll.models.response.UserLoginResponse;
 import be.labofitness.labo_fitness.bll.models.response.user.getPhysiotherapist.GetPhysioResponse;
 import be.labofitness.labo_fitness.bll.models.response.user.makeReport.ReportResponse;
-import be.labofitness.labo_fitness.bll.service.ReportService;
-import be.labofitness.labo_fitness.bll.service.UserService;
-import be.labofitness.labo_fitness.dal.repository.ReportRepository;
+import be.labofitness.labo_fitness.bll.service.service.ReportService;
+import be.labofitness.labo_fitness.bll.service.service.UserService;
+import be.labofitness.labo_fitness.bll.service.service.security.SecurityService;
 import be.labofitness.labo_fitness.dal.repository.UserRepository;
 import be.labofitness.labo_fitness.domain.entity.*;
 import be.labofitness.labo_fitness.il.utils.JwtUtil;
-import be.labofitness.labo_fitness.il.utils.LaboFitnessUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -47,6 +44,7 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
     private final ReportService reportService;
+    private final SecurityService securityService;
 
 
     // region UTILS FUNCTIONS
@@ -79,7 +77,7 @@ public class UserServiceImpl implements UserService {
 
     @Override @Transactional
     public ReportResponse makeReport(MakeReportRequest request) {
-        User complainant = LaboFitnessUtil.getAuthentication(User.class);
+        User complainant = securityService.getAuthentication(User.class);
 
         User reportedUser =  userRepository.findByEmail(request.reportedUserEmail())
                 .orElseThrow(() -> new EmailDoesntExistException(
@@ -99,7 +97,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Set<GetReportResponse> getValidReport() {
-        User user = LaboFitnessUtil.getAuthentication(User.class);
+        User user = securityService.getAuthentication(User.class);
         return userRepository.getReportMessageByIsValidate(user.getId(),true).stream()
                 .map(GetReportResponse::new)
                 .collect(Collectors.toSet());

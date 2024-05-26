@@ -1,18 +1,15 @@
 package be.labofitness.labo_fitness.il.utils.initializer;
 
+import be.labofitness.labo_fitness.bll.service.service.RoleService;
 import be.labofitness.labo_fitness.dal.repository.CoachRepository;
 import be.labofitness.labo_fitness.dal.repository.LocationRepository;
 import be.labofitness.labo_fitness.dal.repository.RoleRepository;
-import be.labofitness.labo_fitness.dal.repository.UserRepository;
 import be.labofitness.labo_fitness.domain.entity.Coach;
 import be.labofitness.labo_fitness.domain.entity.LocationPlace;
-import be.labofitness.labo_fitness.domain.entity.Role;
-import be.labofitness.labo_fitness.domain.entity.User;
 import be.labofitness.labo_fitness.domain.entity.base.Adress;
 import be.labofitness.labo_fitness.il.utils.LaboFitnessUtil;
 import be.labofitness.labo_fitness.il.utils.initializer.base.DataInitializer;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.DependsOn;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -30,6 +27,7 @@ public class CoachDataIni extends DataInitializer {
     private final CoachRepository coachRepository;
     private final LocationRepository locationRepository;
     private final PasswordEncoder passwordEncoder;
+    private final RoleService roleService;
 
     @Override
     public void run(String... args) throws Exception {
@@ -46,7 +44,7 @@ public class CoachDataIni extends DataInitializer {
             coach1.setAdress(new Adress("123 Street", "2", "City", "12345"));
             coach1.setSpecialization("Fitness");
             coach1.setPriceHour(50);
-            coach1.setRoles((LaboFitnessUtil.setRole(Set.of("USER", "COACH"), roleRepository)));
+            coach1.setRoles((roleService.setRole(Set.of("USER", "COACH"), roleRepository)));
             coach1.setLocationPlace(Set.of(coachLocationPlace));
             coach1.setWorkSchedule("Du Lundi au Vendredi 9h - 17h");
             coach1.setBirthdate(LocalDateTime.now());
@@ -60,7 +58,7 @@ public class CoachDataIni extends DataInitializer {
             coach2.setSpecialization("Yoga");
             coach2.setRemote(true);
             coach2.setPriceHour(60);
-            coach2.setRoles((LaboFitnessUtil.setRole(Set.of("USER", "COACH"), roleRepository)));
+            coach2.setRoles((roleService.setRole(Set.of("USER", "COACH"), roleRepository)));
             coach2.setLocationPlace(Set.of(coachLocationPlace));
             coach2.setWorkSchedule("Du Lundi au Vendredi 9h - 17h");
             coach2.setBirthdate(LaboFitnessUtil.createNewDate(2000, Month.JANUARY, 12));

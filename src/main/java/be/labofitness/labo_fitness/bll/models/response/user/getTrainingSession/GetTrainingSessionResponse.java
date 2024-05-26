@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 @Data
 public class GetTrainingSessionResponse {
     private String name;
-    private int duration;
     private LocalDateTime start_date;
     private LocalDateTime end_date;
     private String description;
@@ -18,9 +17,8 @@ public class GetTrainingSessionResponse {
     private String coach_lastname;
     private String coach_mail;
 
-    public GetTrainingSessionResponse(String name, int duration, LocalDateTime start_date, LocalDateTime end_date, String description, RecommendedLevel recommended_level, String coach_name, String coach_lastname, String coach_mail) {
+    public GetTrainingSessionResponse(String name, LocalDateTime start_date, LocalDateTime end_date, String description, RecommendedLevel recommended_level, String coach_name, String coach_lastname, String coach_mail) {
         this.name = name;
-        this.duration = duration;
         this.start_date = start_date;
         this.end_date = end_date;
         this.description = description;
@@ -33,9 +31,8 @@ public class GetTrainingSessionResponse {
     public static GetTrainingSessionResponse fromEntity(TrainingSession trainingSession) {
         return new GetTrainingSessionResponse(
                 trainingSession.getName(),
-                trainingSession.getDuration(),
-                trainingSession.getStart_date(),
-                trainingSession.getEnd_date(),
+                trainingSession.getStartDate(),
+                trainingSession.getEndDate(),
                 trainingSession.getDescription(),
                 trainingSession.getRecommended_level(),
                 trainingSession.getCoach().getName(),

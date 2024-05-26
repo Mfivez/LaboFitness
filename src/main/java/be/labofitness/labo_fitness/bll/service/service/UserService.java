@@ -1,4 +1,4 @@
-package be.labofitness.labo_fitness.bll.service;
+package be.labofitness.labo_fitness.bll.service.service;
 
 import be.labofitness.labo_fitness.bll.models.request.user.getCoach.GetCoachesByNameRequest;
 import be.labofitness.labo_fitness.bll.models.request.user.getCoach.GetCoachesByRemoteRequest;
@@ -18,10 +18,7 @@ import be.labofitness.labo_fitness.bll.models.response.UserLoginResponse;
 import be.labofitness.labo_fitness.bll.models.response.user.getPhysiotherapist.GetPhysioResponse;
 import be.labofitness.labo_fitness.bll.models.response.user.makeReport.ReportResponse;
 import be.labofitness.labo_fitness.bll.service.base.CrudService;
-import be.labofitness.labo_fitness.domain.entity.Report;
 import be.labofitness.labo_fitness.domain.entity.User;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
@@ -52,15 +49,15 @@ public interface UserService extends CrudService<User, Long> , UserDetailsServic
 
     // region TRAINING SESSIONS
 
-    public List<GetTrainingSessionResponse> findAllTrainingSession();
+    List<GetTrainingSessionResponse> findAllTrainingSession();
 
-    public List<GetTrainingSessionResponse> findTrainingSessionByRecommendedLvl(GetTrainingSessionByRecommendedLvlRequest request);
+    List<GetTrainingSessionResponse> findTrainingSessionByRecommendedLvl(GetTrainingSessionByRecommendedLvlRequest request);
 
-    public List<GetTrainingSessionResponse> findTrainingSessionByDuration(GetTrainingSessionsByDurationRequest request);
+    List<GetTrainingSessionResponse> findTrainingSessionByDuration(GetTrainingSessionsByDurationRequest request);
 
-    public List<GetTrainingSessionResponse> findTrainingSessionByName(GetTrainingSessionsByNameRequest request);
+    List<GetTrainingSessionResponse> findTrainingSessionByName(GetTrainingSessionsByNameRequest request);
 
-    public List<GetTrainingSessionResponse> findTrainingSessionByCoachName(GetTrainingSessionsByCoachNameRequest request);
+    List<GetTrainingSessionResponse> findTrainingSessionByCoachName(GetTrainingSessionsByCoachNameRequest request);
 
     // endregion
 

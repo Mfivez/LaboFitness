@@ -15,12 +15,11 @@ import be.labofitness.labo_fitness.bll.models.response.user.getTrainingSession.G
 import be.labofitness.labo_fitness.bll.models.response.user.getCoach.GetCoachesResponse;
 import be.labofitness.labo_fitness.bll.models.response.user.getPhysiotherapist.GetPhysioResponse;
 import be.labofitness.labo_fitness.bll.models.response.user.makeReport.ReportResponse;
-import be.labofitness.labo_fitness.bll.service.UserService;
+import be.labofitness.labo_fitness.bll.service.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

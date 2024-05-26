@@ -3,17 +3,17 @@ package be.labofitness.labo_fitness.il.utils.initializer;
 import be.labofitness.labo_fitness.dal.repository.ClientRepository;
 import be.labofitness.labo_fitness.dal.repository.PostRepository;
 import be.labofitness.labo_fitness.dal.repository.SportRepository;
-import be.labofitness.labo_fitness.domain.entity.*;
-import be.labofitness.labo_fitness.domain.enums.AccreditationType;
+import be.labofitness.labo_fitness.domain.entity.Client;
+import be.labofitness.labo_fitness.domain.entity.Post;
+import be.labofitness.labo_fitness.domain.entity.Sport;
 import be.labofitness.labo_fitness.il.utils.initializer.base.DataInitializer;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-@Order(12)
+@Order(13)
 public class PostDataIni extends DataInitializer {
 
     private final PostRepository postRepository;

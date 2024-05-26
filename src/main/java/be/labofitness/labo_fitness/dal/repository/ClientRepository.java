@@ -1,15 +1,26 @@
 package be.labofitness.labo_fitness.dal.repository;
 
 import be.labofitness.labo_fitness.domain.entity.*;
+import be.labofitness.labo_fitness.domain.enums.AppointmentStatus;
 import be.labofitness.labo_fitness.domain.enums.RecommendedLevel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ClientRepository extends JpaRepository<Client, Long> {
+
+    //region UTILS
+
+    @Query( "Select c " +
+            "from Client c " +
+            "where c.email ilike :email")
+    Optional<Client> findByEmail(String email);
+
+    //endregion
 
     // region PERSONAL TRAINING SESSION
 
@@ -111,6 +122,26 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
 
     //endregion
 
+    // region PERSONAL COMPETITION
+    @Query(
+            "SELECT c.competitions " +
+            "FROM Client c " +
+            "WHERE c.id = :clientId")
+    List<Competition> findCompetitionsByClientId(Long clientId);
+
+    // endregion
+
+    // region PERSONAL APPOINTMENT
+
+    @Query(
+            "SELECT a " +
+            "FROM Appointment a " +
+            "WHERE a.client.id = :clientId " +
+            "AND a.appointmentStatus = :appointmentStatus")
+    List<Appointment> findAcceptAppointmentsByClientId(Long clientId, AppointmentStatus appointmentStatus);
+
+    //endregion
+
     //region MAKE APPOINTMENT
 
     @Query(
@@ -121,4 +152,6 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
 
 
     // endregion
+
+
 }
