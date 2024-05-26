@@ -17,9 +17,14 @@ public interface CompetitionRepository extends JpaRepository<Competition, Long>,
     @Query(
             "SELECT c " +
             "FROM Competition c " +
-            "WHERE c.competitionNameIdentifier = :competitionNameId"
-    )
+            "WHERE c.competitionNameIdentifier = :competitionNameId")
     Optional<Competition> findByCompetitionNameId(String competitionNameId);
+
+    @Query(
+            "SELECT c " +
+            "FROM Competition c " +
+            "WHERE c.id = :id")
+    Optional<Competition> findByCompetitionId(Long id);
 
     // endregion
 
