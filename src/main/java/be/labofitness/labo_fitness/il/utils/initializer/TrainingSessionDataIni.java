@@ -1,6 +1,5 @@
 package be.labofitness.labo_fitness.il.utils.initializer;
 
-import be.labofitness.labo_fitness.dal.repository.ClientRepository;
 import be.labofitness.labo_fitness.dal.repository.CoachRepository;
 import be.labofitness.labo_fitness.dal.repository.TrainingSessionRepository;
 import be.labofitness.labo_fitness.domain.entity.Coach;
@@ -20,7 +19,6 @@ public class TrainingSessionDataIni extends DataInitializer {
 
 
     private final TrainingSessionRepository trainingSessionRepository;
-    private final ClientRepository clientRepository;
     private final CoachRepository coachRepository;
 
 

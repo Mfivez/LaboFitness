@@ -8,7 +8,6 @@ import be.labofitness.labo_fitness.bll.models.response.user.register.RegisterRes
 import be.labofitness.labo_fitness.bll.service.service.ClientService;
 import be.labofitness.labo_fitness.bll.service.service.ProfessionalService;
 import be.labofitness.labo_fitness.bll.service.service.UserService;
-import be.labofitness.labo_fitness.il.utils.JwtUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +24,6 @@ public class AuthController {
     private final UserService userService;
     private final ClientService clientService;
     private final ProfessionalService professionalService;
-    private final JwtUtil jwtUtil;
 
     @PreAuthorize("isAnonymous()")
     @PostMapping("/login")

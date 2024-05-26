@@ -40,23 +40,23 @@ public interface ClientService  extends CrudService<Client, Long> {
 
     // region ACCOUNT MANAGEMENT
 
-    public RegisterResponse register(ClientRegisterRequest request);
+    RegisterResponse register(ClientRegisterRequest request);
 
-    public ClientManageAccountResponse manageAccount(ClientManageAccountRequest request);
+    ClientManageAccountResponse manageAccount(ClientManageAccountRequest request);
 
     // endregion
 
     // region PERSONAL TRAINING SESSIONS
 
-    public List<GetTrainingSessionResponse> findPersonalClientTrainingSession();
+    List<GetTrainingSessionResponse> findPersonalClientTrainingSession();
 
-    public List<GetTrainingSessionResponse> findPersonalClientTrainingSessionByRecommendedLvl(GetTrainingSessionByRecommendedLvlRequest request );
+    List<GetTrainingSessionResponse> findPersonalClientTrainingSessionByRecommendedLvl(GetTrainingSessionByRecommendedLvlRequest request );
 
-    public List<GetTrainingSessionResponse> findPersonalClientTrainingSessionByDuration(GetTrainingSessionsByDurationRequest request);
+    List<GetTrainingSessionResponse> findPersonalClientTrainingSessionByDuration(GetTrainingSessionsByDurationRequest request);
 
-    public List<GetTrainingSessionResponse> findPersonalClientTrainingSessionByName(GetTrainingSessionsByNameRequest request);
+    List<GetTrainingSessionResponse> findPersonalClientTrainingSessionByName(GetTrainingSessionsByNameRequest request);
 
-    public List<GetTrainingSessionResponse> findPersonalClientTrainingSessionByCoachName(GetTrainingSessionsByCoachNameRequest request);
+    List<GetTrainingSessionResponse> findPersonalClientTrainingSessionByCoachName(GetTrainingSessionsByCoachNameRequest request);
 
     // endregion
 

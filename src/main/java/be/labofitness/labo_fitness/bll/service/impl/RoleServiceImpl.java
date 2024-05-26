@@ -12,12 +12,6 @@ import java.util.stream.Collectors;
 @Service
 public class RoleServiceImpl implements RoleService {
 
-    private final RoleRepository roleRepository;
-
-    public RoleServiceImpl(RoleRepository roleRepository) {
-        this.roleRepository = roleRepository;
-    }
-
     @Override
     public Set<Role> setRole(Set<String> roles, RoleRepository roleRepository) {
         //TODO REFACTO -> JUST TRY CATCH WITH FILTER AND DELETE SWITCH

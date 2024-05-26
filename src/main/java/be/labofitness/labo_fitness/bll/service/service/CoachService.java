@@ -16,6 +16,6 @@ public interface CoachService  extends CrudService<Coach, Long> {
     // endregion
 
     // region ACCOUNT MANAGEMENT
-    public CoachManageAccountResponse manageAccount(CoachManageAccountRequest request);
+    CoachManageAccountResponse manageAccount(CoachManageAccountRequest request);
     // endregion
 }

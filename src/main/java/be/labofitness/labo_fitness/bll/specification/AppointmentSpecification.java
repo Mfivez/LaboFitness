@@ -23,11 +23,6 @@ public abstract class AppointmentSpecification {
                 criteriaBuilder.equal(root.get("physiotherapist").get("id"), physiotherapistId);
     }
 
-    public static Specification<Appointment> isPlanned(boolean isPlanned) {
-        return (root, query, criteriaBuilder) ->
-                criteriaBuilder.equal(root.get("isPlannified"), isPlanned);
-    }
-
     public static Specification<Appointment> hasStartDateAfter(LocalDateTime startDate) {
         return (root, query, criteriaBuilder) ->
                 criteriaBuilder.greaterThanOrEqualTo(root.get("startDate"), startDate);

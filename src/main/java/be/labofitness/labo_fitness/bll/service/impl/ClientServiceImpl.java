@@ -68,7 +68,6 @@ public class ClientServiceImpl  implements ClientService {
     private final SecurityService securityService;
     private final RoleService roleService;
     private final PlanningService planningService;
-    private final CompetitionRepository competitionRepository;
 
 
     // region AUTHENTICATE
