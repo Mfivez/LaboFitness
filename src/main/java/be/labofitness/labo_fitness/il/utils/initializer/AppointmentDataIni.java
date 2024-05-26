@@ -1,16 +1,14 @@
 package be.labofitness.labo_fitness.il.utils.initializer;
 
-import be.labofitness.labo_fitness.dal.repository.AccreditationRepository;
 import be.labofitness.labo_fitness.dal.repository.AppointmentRepository;
 import be.labofitness.labo_fitness.dal.repository.ClientRepository;
 import be.labofitness.labo_fitness.dal.repository.PhysiotherapistRepository;
-import be.labofitness.labo_fitness.domain.entity.Accreditation;
 import be.labofitness.labo_fitness.domain.entity.Appointment;
 import be.labofitness.labo_fitness.domain.entity.Client;
 import be.labofitness.labo_fitness.domain.entity.Physiotherapist;
+import be.labofitness.labo_fitness.domain.enums.AppointmentStatus;
 import be.labofitness.labo_fitness.il.utils.initializer.base.DataInitializer;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.DependsOn;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -18,7 +16,7 @@ import java.time.LocalDateTime;
 
 @Component
 @RequiredArgsConstructor
-@Order(9)
+@Order(10)
 public class AppointmentDataIni extends DataInitializer {
 
 
@@ -34,19 +32,20 @@ public class AppointmentDataIni extends DataInitializer {
 
         if (appointmentRepository.count() == 0) {
             Client client = clientRepository.findById(5L).orElseThrow();
-            Physiotherapist physiotherapist = physiotherapistRepository.findById(4L).orElseThrow();
+            Physiotherapist physiotherapist = physiotherapistRepository.findById(3L).orElseThrow();
 
             Appointment appointment1 = new Appointment();
             appointment1.setPrice(50);
-            appointment1.setAppointmentDate(LocalDateTime.now());
+            appointment1.setStartDate(LocalDateTime.now());
             appointment1.setClient(client);
+            appointment1.setAppointmentStatus(AppointmentStatus.ACCEPTED);
             appointment1.setPhysiotherapist(physiotherapist);
             appointment1.setReasonOfAppointment("ersrsero");
 
 
             Appointment appointment2 = new Appointment();
             appointment2.setPrice(70);
-            appointment2.setAppointmentDate(LocalDateTime.now().plusDays(1));
+            appointment2.setStartDate(LocalDateTime.now().plusDays(1));
             appointment2.setClient(client);
             appointment2.setPhysiotherapist(physiotherapist);
             appointment2.setReasonOfAppointment("erzerzrzer");

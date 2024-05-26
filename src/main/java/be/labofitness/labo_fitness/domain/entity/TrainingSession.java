@@ -3,12 +3,12 @@ package be.labofitness.labo_fitness.domain.entity;
 import be.labofitness.labo_fitness.domain.entity.base.BaseEntity;
 import be.labofitness.labo_fitness.domain.enums.RecommendedLevel;
 import jakarta.persistence.*;
-import lombok.*;
-import lombok.experimental.SuperBuilder;
-
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name ="training_session")
@@ -23,10 +23,10 @@ public class TrainingSession extends BaseEntity<Long> {
     private int duration;
 
     @Column(name = "start_date",nullable = true)
-    private LocalDateTime start_date;
+    private LocalDateTime startDate;
 
     @Column(name = "end_date",nullable = true)
-    private LocalDateTime end_date;
+    private LocalDateTime endDate;
 
     @Column(name = "description", nullable = false)
     private String description;
@@ -41,6 +41,9 @@ public class TrainingSession extends BaseEntity<Long> {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(nullable = false)
     private Coach coach;
+
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "trainingSessions")
+    private Set<Client> clients;
 
 
 

@@ -7,6 +7,7 @@ import be.labofitness.labo_fitness.bll.models.request.client.makeAppointment.Acc
 import be.labofitness.labo_fitness.bll.models.request.client.makeAppointment.CancelAppointmentRequest;
 import be.labofitness.labo_fitness.bll.models.request.client.makeAppointment.MakeRequestForAppointmentRequest;
 import be.labofitness.labo_fitness.bll.models.request.client.manageAccount.ClientManageAccountRequest;
+import be.labofitness.labo_fitness.bll.models.request.planning.ClientPlanningRequest;
 import be.labofitness.labo_fitness.bll.models.request.user.getCoach.GetCoachesByNameRequest;
 import be.labofitness.labo_fitness.bll.models.request.user.getCoach.GetCoachesByRemoteRequest;
 import be.labofitness.labo_fitness.bll.models.request.user.getCoach.GetCoachesBySpecializationRequest;
@@ -22,16 +23,16 @@ import be.labofitness.labo_fitness.bll.models.response.client.makeAppointment.Ac
 import be.labofitness.labo_fitness.bll.models.response.client.makeAppointment.CancelAppointmentResponse;
 import be.labofitness.labo_fitness.bll.models.response.client.makeAppointment.MakeRequestForAppointmentResponse;
 import be.labofitness.labo_fitness.bll.models.response.client.manageAccount.ClientManageAccountResponse;
+import be.labofitness.labo_fitness.bll.models.response.planning.PlanningResponse;
 import be.labofitness.labo_fitness.bll.models.response.user.getCoach.GetCoachesResponse;
 import be.labofitness.labo_fitness.bll.models.response.user.getPhysiotherapist.GetPhysioResponse;
 import be.labofitness.labo_fitness.bll.models.response.user.getTrainingSession.GetTrainingSessionResponse;
-import be.labofitness.labo_fitness.bll.service.ClientService;
+import be.labofitness.labo_fitness.bll.service.service.ClientService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -157,6 +158,16 @@ public class ClientController {
 
     //endregion
 
+    // region PLANNING
+
+    @PreAuthorize("isAuthenticated() AND hasAnyAuthority('CLIENT')")
+    @GetMapping("/Planning")
+    public ResponseEntity<PlanningResponse> getPlanningWithSpecifications(@ModelAttribute ClientPlanningRequest request) {
+        return ResponseEntity.ok(clientService.getPlanning(request));
+    }
+
+    // endregion
+
     // region APPOINTMENT WITH PHYSIO
 
     // MakeARequestForAppointment
@@ -181,7 +192,5 @@ public class ClientController {
     }
 
     // endregion
-
-
 
 }

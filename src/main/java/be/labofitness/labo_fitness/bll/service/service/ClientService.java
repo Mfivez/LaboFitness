@@ -1,4 +1,4 @@
-package be.labofitness.labo_fitness.bll.service;
+package be.labofitness.labo_fitness.bll.service.service;
 
 import be.labofitness.labo_fitness.bll.models.request.client.CompetitionRegister.CompetitionRegisterRequest;
 import be.labofitness.labo_fitness.bll.models.request.client.TrainingSessionSubscription.TrainingSuscribRequest;
@@ -6,6 +6,7 @@ import be.labofitness.labo_fitness.bll.models.request.client.makeAppointment.Acc
 import be.labofitness.labo_fitness.bll.models.request.client.makeAppointment.CancelAppointmentRequest;
 import be.labofitness.labo_fitness.bll.models.request.client.makeAppointment.MakeRequestForAppointmentRequest;
 import be.labofitness.labo_fitness.bll.models.request.client.manageAccount.ClientManageAccountRequest;
+import be.labofitness.labo_fitness.bll.models.request.planning.ClientPlanningRequest;
 import be.labofitness.labo_fitness.bll.models.request.user.getCoach.GetCoachesByNameRequest;
 import be.labofitness.labo_fitness.bll.models.request.user.getCoach.GetCoachesByRemoteRequest;
 import be.labofitness.labo_fitness.bll.models.request.user.getCoach.GetCoachesBySpecializationRequest;
@@ -22,6 +23,7 @@ import be.labofitness.labo_fitness.bll.models.response.client.makeAppointment.Ac
 import be.labofitness.labo_fitness.bll.models.response.client.makeAppointment.CancelAppointmentResponse;
 import be.labofitness.labo_fitness.bll.models.response.client.makeAppointment.MakeRequestForAppointmentResponse;
 import be.labofitness.labo_fitness.bll.models.response.client.manageAccount.ClientManageAccountResponse;
+import be.labofitness.labo_fitness.bll.models.response.planning.PlanningResponse;
 import be.labofitness.labo_fitness.bll.models.response.user.getCoach.GetCoachesResponse;
 import be.labofitness.labo_fitness.bll.models.response.user.getPhysiotherapist.GetPhysioResponse;
 import be.labofitness.labo_fitness.bll.models.response.user.getTrainingSession.GetTrainingSessionResponse;
@@ -29,7 +31,6 @@ import be.labofitness.labo_fitness.bll.models.response.user.register.RegisterRes
 import be.labofitness.labo_fitness.bll.service.base.CrudService;
 import be.labofitness.labo_fitness.domain.entity.Appointment;
 import be.labofitness.labo_fitness.domain.entity.Client;
-import org.springframework.security.core.Authentication;
 
 
 import java.util.List;
@@ -87,6 +88,12 @@ public interface ClientService  extends CrudService<Client, Long> {
     // region TRAINING SUBSCRIPTION
 
     TrainingSuscribResponse subscribeToOneTrainingSession(TrainingSuscribRequest request);
+
+    // endregion
+
+    // PLANNING
+
+    PlanningResponse getPlanning(ClientPlanningRequest request) ;
 
     // endregion
 

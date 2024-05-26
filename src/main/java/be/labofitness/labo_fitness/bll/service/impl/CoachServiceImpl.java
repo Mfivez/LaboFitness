@@ -2,28 +2,94 @@ package be.labofitness.labo_fitness.bll.service.impl;
 
 import be.labofitness.labo_fitness.bll.exception.alreadyExists.EmailAlreadyExistsException;
 import be.labofitness.labo_fitness.bll.models.request.coach.manageAccount.CoachManageAccountRequest;
+import be.labofitness.labo_fitness.bll.models.request.planning.CoachPlanningRequest;
 import be.labofitness.labo_fitness.bll.models.response.coach.manageAccount.CoachManageAccountResponse;
-import be.labofitness.labo_fitness.bll.service.CoachService;
+import be.labofitness.labo_fitness.bll.models.response.planning.PlanningResponse;
+import be.labofitness.labo_fitness.bll.service.service.CoachService;
+import be.labofitness.labo_fitness.bll.service.service.PlanningService;
+import be.labofitness.labo_fitness.bll.service.service.security.SecurityService;
 import be.labofitness.labo_fitness.dal.repository.CoachRepository;
 import be.labofitness.labo_fitness.dal.repository.UserRepository;
-import be.labofitness.labo_fitness.domain.entity.Client;
 import be.labofitness.labo_fitness.domain.entity.Coach;
+import be.labofitness.labo_fitness.domain.entity.Competition;
+import be.labofitness.labo_fitness.domain.entity.TrainingSession;
 import be.labofitness.labo_fitness.domain.entity.base.Adress;
-import be.labofitness.labo_fitness.il.utils.LaboFitnessUtil;
-import org.springframework.security.core.Authentication;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 @Service
 public class CoachServiceImpl implements CoachService {
+
     private final UserRepository userRepository;
     private final CoachRepository coachRepository;
+    private final SecurityService securityService;
+    private final PlanningService planningService;
 
-    public CoachServiceImpl(UserRepository userRepository, CoachRepository coachRepository) {
-        this.userRepository = userRepository;
-        this.coachRepository = coachRepository;
+    // region PLANNING
+    //TODO TRANSFER METHODS GET THINGS NOT OVERRIDE ON PLANNING SERVICE
+    @Override
+    public PlanningResponse getPlanning(CoachPlanningRequest request) {
+        return new PlanningResponse(
+                getStartDates(request),
+                getEndDates(request),
+                getEventNames(request)
+        );
     }
+
+    private List<LocalDateTime> getStartDates(CoachPlanningRequest request) {
+        boolean includeOnlyComp = request.sports() != null;
+        boolean includeAll = (request.types() == null || request.types().isEmpty()) && !includeOnlyComp;
+
+        if (includeOnlyComp || includeAll) {
+            return planningService.getAllCoachCompetitions(request).stream()
+                    .map(Competition::getStartDate)
+                    .collect(Collectors.toList());
+        } else {
+            return planningService.getAllCoachTrainings(request).stream()
+                    .map(TrainingSession::getStartDate)
+                    .collect(Collectors.toList());
+        }
+    }
+
+    private List<LocalDateTime> getEndDates(CoachPlanningRequest request) {
+        boolean includeOnlyComp = request.sports() != null;
+        boolean includeAll = request.types() == null || request.types().isEmpty();
+
+        if (includeOnlyComp || includeAll) {
+            return planningService.getAllCoachCompetitions(request).stream()
+                    .map(Competition::getEndDate)
+                    .collect(Collectors.toList());
+        } else {
+            return planningService.getAllCoachTrainings(request).stream()
+                    .map(TrainingSession::getEndDate)
+                    .collect(Collectors.toList());
+        }
+    }
+
+    private List<String> getEventNames(CoachPlanningRequest request) {
+        boolean includeOnlyComp = request.sports() != null;
+        boolean includeAll = request.types() == null || request.types().isEmpty();
+
+        if (includeOnlyComp || includeAll || request.types().contains("competition")) {
+            return planningService.getAllCoachCompetitions(request).stream()
+                    .map(Competition::getName)
+                    .collect(Collectors.toList());
+        } else {
+            return planningService.getAllCoachTrainings(request).stream()
+                    .map(TrainingSession::getName)
+                    .collect(Collectors.toList());
+        }
+    }
+
+    //endregion
+
+
+    // region COACH MANAGE ACCOUNT
 
     @Override
     public CoachManageAccountResponse manageAccount(CoachManageAccountRequest request) {
@@ -31,7 +97,7 @@ public class CoachServiceImpl implements CoachService {
             throw new EmailAlreadyExistsException("Email already exists");
         }
 
-        Coach coach = LaboFitnessUtil.getAuthentication(Coach.class);
+        Coach coach = securityService.getAuthentication(Coach.class);
         coach.setName(request.name());
         coach.setLast_name(request.lastName());
         coach.setEmail(request.email());
@@ -43,6 +109,10 @@ public class CoachServiceImpl implements CoachService {
         coachRepository.save(coach);
         return new CoachManageAccountResponse("Account modified with success");
     }
+
+    // endregion
+
+    // region CLASSIC CRUD
 
     @Override
     public Coach getOne(Long aLong) {
@@ -68,4 +138,7 @@ public class CoachServiceImpl implements CoachService {
     public Coach delete(Long aLong) {
         return null;
     }
+
+    // endregion
+
 }

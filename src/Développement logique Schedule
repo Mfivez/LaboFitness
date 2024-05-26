@@ -1,0 +1,72 @@
+
+
+**** Qui peut voir un planning :
+-> Tous les Users:
+    -> Client
+    -> Professionnel :
+        -> Physiotherapist
+        -> Coach
+
+**** Quels sont les évènements qui peuvent apparaître dans les plannings :
+
+    Client :
+    -> Rendez-vous chez le kiné
+    -> Compétition
+    -> Training_Session
+
+    Professionnel :
+    -> Kiné :
+        -> Liste de Rendez-vous
+    -> Coach :
+        -> Liste de Training session
+        -> Liste de compétition
+
+
+********************************************************************************************
+****  LOGIQUE : Faire un planningService à part du reste pour bien séparer la logique  *****
+********************************************************************************************
+
+1. Récupérer pour chaque type d'user sa liste d'évènement.
+2. Pour la gestion des plannings, s'assurer qu'il n'y a aucun cas ou 2 évènements se chevauchent.
+3. Déterminer et rendre fonctionnelles la liste des Affichages et possibilités de chacun
+    1. CLIENT:
+        -> update planning :
+                ->Client: cancel appointment
+                ->Client: Voir tous les évènements disponibles à un moment T ou le CLIENT EST DISPONIBLE
+                ->Client: Voir tous les event dispo pendant une période T ou le CLIENT EST DISPONIBLE
+
+                ->Client: See planning avec tout ses events                                                    OK
+                ->Client: Ne voir que les compétitions | training_session | Rendez-vous                        OK
+                ->Client: ne voir que les compétitions selon 1 sport                                           OK
+                ->Client: ne voir que les compétitions contenant dans le nom le string "x"                     OK
+                ->Client: ne voir que que les trainings sessions contenant le string "x"                       OK
+                ->Client: S'inscrire depuis le planning à un évènement.
+                ->Client: See Passed Event
+                ->Client: See Not Passed Event
+
+    2. PROFESSIONNEL:
+
+        2A. KINE:
+            ->Kiné: See planning avec tout ses events                                                           OK
+            ->Kiné: Voir sa liste de rdv                                                                        OK
+            ->Kiné: Voir sa liste de rdv selon le nom d'un client                                               OK
+            ->Kiné: Chercher une date avec une plage horaire d'un temps T minimum disponible à la suite
+            ->Kiné: Insérer un rdv avec un client via l'horaire.
+            ->Kiné: See Passed Event
+            ->Kiné: Cancel appointment
+            ->Kiné: See Not Passed Event
+
+        2B. COACH:
+            ->Coach: See planning avec tout ses events                                                          OK
+            ->Coach: ne voir que les compétitions selon 1 sport                                                 OK
+            ->Coach: Voir sa liste de Competition | Training session                                            OK
+            ->Coach: Cancel competition
+            ->Coach: Cancel training session
+            ->Coach: Chercher une date avec une plage horaire
+                            correspondant au temps nécessaire d'une training session / Competition
+            ->Coach: Insérer/Créer un event
+            ->Coach: See Passed Event
+            ->Coach: See Not Passed Event
+
+
+
