@@ -1,9 +1,9 @@
 package be.labofitness.labo_fitness.bll.service.service;
 
 
-import be.labofitness.labo_fitness.bll.models.request.planning.ClientPlanningRequest;
-import be.labofitness.labo_fitness.bll.models.request.planning.CoachPlanningRequest;
-import be.labofitness.labo_fitness.bll.models.request.planning.PhysioPlanningRequest;
+import be.labofitness.labo_fitness.bll.model.request.planning.ClientPlanningRequest;
+import be.labofitness.labo_fitness.bll.model.request.planning.CoachPlanningRequest;
+import be.labofitness.labo_fitness.bll.model.request.planning.PhysioPlanningRequest;
 import be.labofitness.labo_fitness.domain.entity.Appointment;
 import be.labofitness.labo_fitness.domain.entity.Competition;
 import be.labofitness.labo_fitness.domain.entity.TrainingSession;

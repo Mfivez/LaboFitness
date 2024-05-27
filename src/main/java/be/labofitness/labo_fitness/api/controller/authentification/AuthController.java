@@ -1,10 +1,10 @@
 package be.labofitness.labo_fitness.api.controller.authentification;
 
-import be.labofitness.labo_fitness.bll.models.request.UserLoginRequest;
-import be.labofitness.labo_fitness.bll.models.request.client.registerClient.ClientRegisterRequest;
-import be.labofitness.labo_fitness.bll.models.request.professionnel.ProfessionalRegisterRequest;
-import be.labofitness.labo_fitness.bll.models.response.UserLoginResponse;
-import be.labofitness.labo_fitness.bll.models.response.user.register.RegisterResponse;
+import be.labofitness.labo_fitness.bll.model.request.UserLoginRequest;
+import be.labofitness.labo_fitness.bll.model.request.client.registerClient.ClientRegisterRequest;
+import be.labofitness.labo_fitness.bll.model.request.professionnel.ProfessionalRegisterRequest;
+import be.labofitness.labo_fitness.bll.model.response.UserLoginResponse;
+import be.labofitness.labo_fitness.bll.model.response.user.register.RegisterResponse;
 import be.labofitness.labo_fitness.bll.service.service.ClientService;
 import be.labofitness.labo_fitness.bll.service.service.ProfessionalService;
 import be.labofitness.labo_fitness.bll.service.service.UserService;

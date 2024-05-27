@@ -1,8 +1,8 @@
 package be.labofitness.labo_fitness.bll.service.impl;
 
-import be.labofitness.labo_fitness.bll.models.request.planning.ClientPlanningRequest;
-import be.labofitness.labo_fitness.bll.models.request.planning.CoachPlanningRequest;
-import be.labofitness.labo_fitness.bll.models.request.planning.PhysioPlanningRequest;
+import be.labofitness.labo_fitness.bll.model.request.planning.ClientPlanningRequest;
+import be.labofitness.labo_fitness.bll.model.request.planning.CoachPlanningRequest;
+import be.labofitness.labo_fitness.bll.model.request.planning.PhysioPlanningRequest;
 import be.labofitness.labo_fitness.bll.service.service.PlanningService;
 import be.labofitness.labo_fitness.bll.service.service.security.SecurityService;
 import be.labofitness.labo_fitness.bll.specification.AppointmentSpecification;
@@ -20,13 +20,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PlanningServiceImpl implements PlanningService {
 
-    private final ClientRepository clientRepository;
-    private final AppointmentRepository appointmentRepository;
-    private final TrainingSessionRepository trainingSessionRepository;
+    private final ClientRepository clientRepository;  //TODO REFAC
+    private final AppointmentRepository appointmentRepository;  //TODO REFAC
+    private final TrainingSessionRepository trainingSessionRepository;  //TODO REFAC
     private final SecurityService securityService;
-    private final PhysiotherapistRepository physiotherapistRepository;
-    private final CoachRepository coachRepository;
-    private final CompetitionRepository competitionRepository;
+    private final PhysiotherapistRepository physiotherapistRepository;  //TODO REFAC
+    private final CoachRepository coachRepository;  //TODO REFAC
+    private final CompetitionRepository competitionRepository;  //TODO REFAC
 
     //region CLIENT
 
