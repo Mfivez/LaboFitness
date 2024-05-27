@@ -438,9 +438,29 @@ public class ClientServiceImpl  implements ClientService {
                 .orElseThrow(() -> new EmailDoesntExistException(
                         "Email not found"));
 
+    //Verifier le nombre de demandes en attente
+        long pendingRequestsCount = appointmentRepository.countByClientAndAppointmentStatus(client, AppointmentStatus.PENDING);
+
+        // Limiter a 3 appointments par client
+        int maxPendingRequests = 3;
+
+        if (pendingRequestsCount >= maxPendingRequests) {
+            throw new IllegalStateException("Too many pending appointment requests");
+        }
+
         Appointment appointment = new Appointment();
         appointment.setClient(client);
         appointment.setReasonOfAppointment(request.reasonOfAppointment());
+        // Verifier Reason of appointment
+        boolean duplicateReasonExists = appointmentRepository.existsByClientAndReasonOfAppointmentAndAppointmentStatus(
+                client,
+                request.reasonOfAppointment(),
+                AppointmentStatus.PENDING);
+
+        if (duplicateReasonExists) {
+            throw new IllegalStateException("That pending appointment reason already exist");
+        }
+        appointment.setAppointmentStatus(AppointmentStatus.PENDING);
         appointment.setPhysiotherapist(physiotherapist);
         appointmentRepository.save(appointment);
 
