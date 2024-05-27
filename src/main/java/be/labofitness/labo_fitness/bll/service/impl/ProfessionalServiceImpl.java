@@ -1,8 +1,8 @@
 package be.labofitness.labo_fitness.bll.service.impl;
 
 import be.labofitness.labo_fitness.bll.exception.alreadyExists.EmailAlreadyExistsException;
-import be.labofitness.labo_fitness.bll.models.request.professionnel.ProfessionalRegisterRequest;
-import be.labofitness.labo_fitness.bll.models.response.user.register.RegisterResponse;
+import be.labofitness.labo_fitness.bll.model.request.professionnel.ProfessionalRegisterRequest;
+import be.labofitness.labo_fitness.bll.model.response.user.register.RegisterResponse;
 import be.labofitness.labo_fitness.bll.service.service.AccreditationService;
 import be.labofitness.labo_fitness.bll.service.service.ProfessionalService;
 import be.labofitness.labo_fitness.bll.service.service.RoleService;
@@ -22,10 +22,10 @@ public class ProfessionalServiceImpl implements ProfessionalService{
 
 
     private final PasswordEncoder passwordEncoder;
-    private final UserRepository userRepository;
-    private final PhysiotherapistRepository physiotherapistRepository;
-    private final CoachRepository coachRepository;
-    private final RoleRepository roleRepository;
+    private final UserRepository userRepository;  //TODO REFAC
+    private final PhysiotherapistRepository physiotherapistRepository;  //TODO REFAC
+    private final CoachRepository coachRepository; //TODO REFAC
+    private final RoleRepository roleRepository;  //TODO REFAC
     private final AccreditationService accreditationService;
     private final RoleService roleService;
 

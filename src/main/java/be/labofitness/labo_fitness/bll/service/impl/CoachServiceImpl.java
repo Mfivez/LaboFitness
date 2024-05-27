@@ -31,12 +31,12 @@ import java.util.stream.Collectors;
 //TODO REFACT IL FAUDRAIT QUE LES IMPL DE SERVICE N'APPELLENT QUE DES SERVICES ET PAS DES REPOS
 public class CoachServiceImpl implements CoachService {
 
-    private final UserRepository userRepository;
+    private final UserRepository userRepository;  //TODO REFAC
     private final CoachRepository coachRepository;
     private final SecurityService securityService;
     private final PlanningService planningService;
-    private final CompetitionRepository competitionRepository;
-    private final TrainingSessionRepository trainingSessionRepository;
+    private final CompetitionRepository competitionRepository;  //TODO REFAC
+    private final TrainingSessionRepository trainingSessionRepository;  //TODO REFAC
 
     // region PLANNING
     //TODO TRANSFER METHODS GET THINGS NOT OVERRIDE ON PLANNING SERVICE
