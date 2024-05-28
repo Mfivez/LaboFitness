@@ -1,5 +1,4 @@
 package be.labofitness.labo_fitness.il.utils.initializer;
-
 import be.labofitness.labo_fitness.dal.repository.ClientRepository;
 import be.labofitness.labo_fitness.dal.repository.PostRepository;
 import be.labofitness.labo_fitness.dal.repository.SportRepository;
@@ -11,6 +10,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
+/**
+ * Data initializer for populating the database with initial {@link Post} data.
+ */
 @Component
 @RequiredArgsConstructor
 @Order(13)
@@ -20,7 +22,12 @@ public class PostDataIni extends DataInitializer {
     private final ClientRepository clientRepository;
     private final SportRepository sportRepository;
 
-
+    /**
+     * Populates the database with initial {@link Post} data if no {@link Post} records exist.
+     *
+     * @param args Command-line arguments.
+     * @throws Exception If an error occurs during data initialization.
+     */
     @Override
     public void run(String... args) throws Exception {
         super.run(args);

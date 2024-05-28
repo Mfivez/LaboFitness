@@ -1,28 +1,28 @@
 package be.labofitness.labo_fitness.il.config;
-/** en hauteur
- * WOLA PAS COPIé DE CHEZ NOTRE SEIGNEUR DIEU ET MAITRE DU JAVA
- */
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.io.FileSystemResource;
 
 /**
- * Configuration class for the application.
- * It will replace property placeholders (application.yml) with the ones in the .env file.
- * This class is annotated with @Configuration to indicate that it is a source of bean definitions.
- * The AppConfig class is not instantiable, attempting to do so will result in an IllegalStateException.
+ * <p>Configuration class for the application.</p>
+ * <p>It will replace property placeholders {@code (application.yml)} with
+ * the ones in the {@code .env} file.</p>
+ * <p>This class is annotated with {@code @Configuration} to indicate that it is
+ * a source of bean definitions.</p>
+ * <p>The {@code AppConfig} class is not instantiable, attempting to do so will result
+ * in an {@link IllegalStateException}.</p>
+ * @author faisal
  */
 @Configuration
 public class PropertiesPlaceholderConfig {
 
     /**
-     * Bean definition for PropertySourcesPlaceholderConfigurer.
-     * This bean allows the application to use placeholders in property files.
-     * The placeholders are replaced with the actual values from the .env file.
+     * Bean definition for {@link PropertySourcesPlaceholderConfigurer}.
+     * <br>This bean allows the application to use placeholders in property files.
+     * The placeholders are replaced with the actual values from the {@code .env} file.
      *
-     * @return a PropertySourcesPlaceholderConfigurer with the location of the .env file set.
+     * @return a {@link PropertySourcesPlaceholderConfigurer} with the location of the {@code .env} file set.
      */
     @Bean
     public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {

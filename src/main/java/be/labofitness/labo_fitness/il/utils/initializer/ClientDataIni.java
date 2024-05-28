@@ -1,7 +1,12 @@
 package be.labofitness.labo_fitness.il.utils.initializer;
 import be.labofitness.labo_fitness.bll.service.service.RoleService;
-import be.labofitness.labo_fitness.dal.repository.*;
-import be.labofitness.labo_fitness.domain.entity.*;
+import be.labofitness.labo_fitness.dal.repository.ClientRepository;
+import be.labofitness.labo_fitness.dal.repository.CompetitionRepository;
+import be.labofitness.labo_fitness.dal.repository.RoleRepository;
+import be.labofitness.labo_fitness.dal.repository.TrainingSessionRepository;
+import be.labofitness.labo_fitness.domain.entity.Client;
+import be.labofitness.labo_fitness.domain.entity.Competition;
+import be.labofitness.labo_fitness.domain.entity.TrainingSession;
 import be.labofitness.labo_fitness.domain.entity.base.Address;
 import be.labofitness.labo_fitness.domain.enums.Goal;
 import be.labofitness.labo_fitness.il.utils.initializer.base.DataInitializer;
@@ -14,7 +19,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
-
+/**
+ * Data initializer for populating the database with initial {@link Client} data.
+ */
 @Component
 @RequiredArgsConstructor
 @Order(9)
@@ -27,7 +34,12 @@ public class ClientDataIni extends DataInitializer {
     private final PasswordEncoder passwordEncoder;
     private final RoleService roleService;
 
-
+    /**
+     * Populates the database with initial {@link Client} data if no {@link Client} records exist.
+     *
+     * @param args Command-line arguments.
+     * @throws Exception If an error occurs during data initialization.
+     */
     @Override
     public void run(String... args) throws Exception {
         super.run(args);
@@ -63,7 +75,6 @@ public class ClientDataIni extends DataInitializer {
             client2.setRoles(roleService.setRole(Set.of("USER", "CLIENT"), roleRepository));
             client2.setTrainingSessions(List.of());
             client2.setBirthdate(LocalDateTime.now());
-
 
             clientRepository.save(client1);
             clientRepository.save(client2);

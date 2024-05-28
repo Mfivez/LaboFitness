@@ -1,30 +1,31 @@
 package be.labofitness.labo_fitness.il.utils.initializer;
-
-import be.labofitness.labo_fitness.dal.repository.ProfessionalRepository;
 import be.labofitness.labo_fitness.dal.repository.SportRepository;
-import be.labofitness.labo_fitness.domain.entity.Professional;
 import be.labofitness.labo_fitness.domain.entity.Sport;
 import be.labofitness.labo_fitness.domain.enums.TypeSport;
 import be.labofitness.labo_fitness.il.utils.initializer.base.DataInitializer;
-import lombok.Builder;
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
+/**
+ * Data initializer for populating the database with initial {@link Sport} data.
+ */
 @Component
+@RequiredArgsConstructor
 @Order(1)
 public class SportDataIni extends DataInitializer {
 
     private final SportRepository sportRepository;
 
-    public SportDataIni(SportRepository sportRepository) {
-        this.sportRepository = sportRepository;
-    }
-
+    /**
+     * Populates the database with initial {@link Sport} data if no {@link Sport} records exist.
+     *
+     * @param args Command-line arguments.
+     * @throws Exception If an error occurs during data initialization.
+     */
     @Override
     public void run(String... args) throws Exception {
         super.run(args);
-
-
         if (sportRepository.count() == 0) {
             Sport sport1 = new Sport();
             sport1.setName("Football");
