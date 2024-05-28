@@ -1,10 +1,11 @@
 package be.labofitness.labo_fitness.bll.service.impl;
 
 import be.labofitness.labo_fitness.bll.exception.alreadyExists.EmailAlreadyExistsException;
-import be.labofitness.labo_fitness.bll.models.request.professionnel.ProfessionalRegisterRequest;
-import be.labofitness.labo_fitness.bll.models.response.user.register.RegisterResponse;
-import be.labofitness.labo_fitness.bll.service.AccreditationService;
-import be.labofitness.labo_fitness.bll.service.ProfessionalService;
+import be.labofitness.labo_fitness.bll.model.request.professionnel.ProfessionalRegisterRequest;
+import be.labofitness.labo_fitness.bll.model.response.user.register.RegisterResponse;
+import be.labofitness.labo_fitness.bll.service.service.AccreditationService;
+import be.labofitness.labo_fitness.bll.service.service.ProfessionalService;
+import be.labofitness.labo_fitness.bll.service.service.RoleService;
 import be.labofitness.labo_fitness.dal.repository.*;
 import be.labofitness.labo_fitness.domain.entity.*;
 import be.labofitness.labo_fitness.il.utils.LaboFitnessUtil;
@@ -21,11 +22,12 @@ public class ProfessionalServiceImpl implements ProfessionalService{
 
 
     private final PasswordEncoder passwordEncoder;
-    private final UserRepository userRepository;
-    private final PhysiotherapistRepository physiotherapistRepository;
-    private final CoachRepository coachRepository;
-    private final RoleRepository roleRepository;
+    private final UserRepository userRepository;  //TODO REFAC
+    private final PhysiotherapistRepository physiotherapistRepository;  //TODO REFAC
+    private final CoachRepository coachRepository; //TODO REFAC
+    private final RoleRepository roleRepository;  //TODO REFAC
     private final AccreditationService accreditationService;
+    private final RoleService roleService;
 
 
     @Override
@@ -43,7 +45,7 @@ public class ProfessionalServiceImpl implements ProfessionalService{
             physiotherapist.setBirthdate(LaboFitnessUtil.createNewDate(request.year(), request.month(), request.day()));
             physiotherapist.setEmail(request.email());
             physiotherapist.setPassword(passwordEncoder.encode(request.password()));
-            physiotherapist.setRoles(LaboFitnessUtil.setRole(Set.of("USER", "PHYSIOTHERAPIST"),roleRepository));
+            physiotherapist.setRoles(roleService.setRole(Set.of("USER", "PHYSIOTHERAPIST"),roleRepository));
             physiotherapistRepository.save(physiotherapist);
             accreditationService.createWithParam(request.accreditation(), request.accreditationDescription(), physiotherapist);
             }
@@ -54,7 +56,7 @@ public class ProfessionalServiceImpl implements ProfessionalService{
             coach.setBirthdate(LaboFitnessUtil.createNewDate(request.year(), request.month(), request.day()));
             coach.setEmail(request.email());
             coach.setPassword(passwordEncoder.encode(request.password()));
-            coach.setRoles(LaboFitnessUtil.setRole(Set.of("USER", "COACH"),roleRepository));
+            coach.setRoles(roleService.setRole(Set.of("USER", "COACH"),roleRepository));
             coachRepository.save(coach);
             accreditationService.createWithParam(request.accreditation(), request.accreditationDescription(), coach);
         }

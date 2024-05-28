@@ -1,33 +1,33 @@
 package be.labofitness.labo_fitness.api.controller;
 
 
-import be.labofitness.labo_fitness.bll.models.request.client.CompetitionRegister.CompetitionRegisterRequest;
-import be.labofitness.labo_fitness.bll.models.request.client.TrainingSessionSubscription.TrainingSuscribRequest;
-import be.labofitness.labo_fitness.bll.models.request.client.manageAccount.changePassword.ClientChangePasswordRequest;
-import be.labofitness.labo_fitness.bll.models.request.client.makeAppointment.AcceptAppointmentPlanningRequest;
-import be.labofitness.labo_fitness.bll.models.request.client.makeAppointment.CancelAppointmentRequest;
-import be.labofitness.labo_fitness.bll.models.request.client.makeAppointment.MakeRequestForAppointmentRequest;
-import be.labofitness.labo_fitness.bll.models.request.client.manageAccount.ClientManageAccountRequest;
-import be.labofitness.labo_fitness.bll.models.request.user.getCoach.GetCoachesByNameRequest;
-import be.labofitness.labo_fitness.bll.models.request.user.getCoach.GetCoachesByRemoteRequest;
-import be.labofitness.labo_fitness.bll.models.request.user.getCoach.GetCoachesBySpecializationRequest;
-import be.labofitness.labo_fitness.bll.models.request.user.getPhysiotherapist.GetPhysioByNameRequest;
-import be.labofitness.labo_fitness.bll.models.request.user.getPhysiotherapist.GetPhysioBySpecializationRequest;
-import be.labofitness.labo_fitness.bll.models.request.user.getTrainingSession.GetTrainingSessionByRecommendedLvlRequest;
-import be.labofitness.labo_fitness.bll.models.request.user.getTrainingSession.GetTrainingSessionsByCoachNameRequest;
-import be.labofitness.labo_fitness.bll.models.request.user.getTrainingSession.GetTrainingSessionsByDurationRequest;
-import be.labofitness.labo_fitness.bll.models.request.user.getTrainingSession.GetTrainingSessionsByNameRequest;
-import be.labofitness.labo_fitness.bll.models.response.client.CompetitionRegister.CompetitionRegisterResponse;
-import be.labofitness.labo_fitness.bll.models.response.client.TrainingSessionSubscription.TrainingSuscribResponse;
-import be.labofitness.labo_fitness.bll.models.response.client.manageAccount.changePassword.ClientChangePasswordResponse;
-import be.labofitness.labo_fitness.bll.models.response.client.makeAppointment.AcceptAppointmentPlanningResponse;
-import be.labofitness.labo_fitness.bll.models.response.client.makeAppointment.CancelAppointmentResponse;
-import be.labofitness.labo_fitness.bll.models.response.client.makeAppointment.MakeRequestForAppointmentResponse;
-import be.labofitness.labo_fitness.bll.models.response.client.manageAccount.ClientManageAccountResponse;
-import be.labofitness.labo_fitness.bll.models.response.user.getCoach.GetCoachesResponse;
-import be.labofitness.labo_fitness.bll.models.response.user.getPhysiotherapist.GetPhysioResponse;
-import be.labofitness.labo_fitness.bll.models.response.user.getTrainingSession.GetTrainingSessionResponse;
-import be.labofitness.labo_fitness.bll.service.ClientService;
+import be.labofitness.labo_fitness.bll.model.request.client.CompetitionRegister.CompetitionRegisterRequest;
+import be.labofitness.labo_fitness.bll.model.request.client.TrainingSessionSubscription.TrainingSuscribRequest;
+import be.labofitness.labo_fitness.bll.model.request.client.makeAppointment.AcceptAppointmentPlanningRequest;
+import be.labofitness.labo_fitness.bll.model.request.client.makeAppointment.CancelAppointmentRequest;
+import be.labofitness.labo_fitness.bll.model.request.client.makeAppointment.MakeRequestForAppointmentRequest;
+import be.labofitness.labo_fitness.bll.model.request.client.manageAccount.ClientManageAccountRequest;
+import be.labofitness.labo_fitness.bll.model.request.planning.ClientPlanningRequest;
+import be.labofitness.labo_fitness.bll.model.request.user.getCoach.GetCoachesByNameRequest;
+import be.labofitness.labo_fitness.bll.model.request.user.getCoach.GetCoachesByRemoteRequest;
+import be.labofitness.labo_fitness.bll.model.request.user.getCoach.GetCoachesBySpecializationRequest;
+import be.labofitness.labo_fitness.bll.model.request.user.getPhysiotherapist.GetPhysioByNameRequest;
+import be.labofitness.labo_fitness.bll.model.request.user.getPhysiotherapist.GetPhysioBySpecializationRequest;
+import be.labofitness.labo_fitness.bll.model.request.user.getTrainingSession.GetTrainingSessionByRecommendedLvlRequest;
+import be.labofitness.labo_fitness.bll.model.request.user.getTrainingSession.GetTrainingSessionsByCoachNameRequest;
+import be.labofitness.labo_fitness.bll.model.request.user.getTrainingSession.GetTrainingSessionsByDurationRequest;
+import be.labofitness.labo_fitness.bll.model.request.user.getTrainingSession.GetTrainingSessionsByNameRequest;
+import be.labofitness.labo_fitness.bll.model.response.client.CompetitionRegister.CompetitionRegisterResponse;
+import be.labofitness.labo_fitness.bll.model.response.client.TrainingSessionSubscription.TrainingSuscribResponse;
+import be.labofitness.labo_fitness.bll.model.response.client.makeAppointment.AcceptAppointmentPlanningResponse;
+import be.labofitness.labo_fitness.bll.model.response.client.makeAppointment.CancelAppointmentResponse;
+import be.labofitness.labo_fitness.bll.model.response.client.makeAppointment.MakeRequestForAppointmentResponse;
+import be.labofitness.labo_fitness.bll.model.response.client.manageAccount.ClientManageAccountResponse;
+import be.labofitness.labo_fitness.bll.model.response.planning.PlanningResponse;
+import be.labofitness.labo_fitness.bll.model.response.user.getCoach.GetCoachesResponse;
+import be.labofitness.labo_fitness.bll.model.response.user.getPhysiotherapist.GetPhysioResponse;
+import be.labofitness.labo_fitness.bll.model.response.user.getTrainingSession.GetTrainingSessionResponse;
+import be.labofitness.labo_fitness.bll.service.service.ClientService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -164,6 +164,16 @@ public class ClientController {
 
     //endregion
 
+    // region PLANNING
+
+    @PreAuthorize("isAuthenticated() AND hasAnyAuthority('CLIENT')")
+    @GetMapping("/Planning")
+    public ResponseEntity<PlanningResponse> getPlanningWithSpecifications(@ModelAttribute ClientPlanningRequest request) {
+        return ResponseEntity.ok(clientService.getPlanning(request));
+    }
+
+    // endregion
+
     // region APPOINTMENT WITH PHYSIO
 
     // MakeARequestForAppointment
@@ -188,9 +198,5 @@ public class ClientController {
     }
 
     // endregion
-
-
-
-
 
 }

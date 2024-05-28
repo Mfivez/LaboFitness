@@ -1,41 +1,42 @@
 package be.labofitness.labo_fitness.bll.service.impl;
 
-
 import be.labofitness.labo_fitness.bll.exception.alreadyExists.EmailAlreadyExistsException;
 import be.labofitness.labo_fitness.bll.exception.doesntExists.DoesntExistException;
 import be.labofitness.labo_fitness.bll.exception.doesntExists.EmailDoesntExistException;
 import be.labofitness.labo_fitness.bll.exception.inscriptionClosed.InscriptionCloseException;
-import be.labofitness.labo_fitness.bll.exception.notMatching.PasswordNotMatchingException;
-import be.labofitness.labo_fitness.bll.models.request.client.CompetitionRegister.CompetitionRegisterRequest;
-import be.labofitness.labo_fitness.bll.models.request.client.TrainingSessionSubscription.TrainingSuscribRequest;
-import be.labofitness.labo_fitness.bll.models.request.client.manageAccount.changePassword.ClientChangePasswordRequest;
-import be.labofitness.labo_fitness.bll.models.request.client.makeAppointment.AcceptAppointmentPlanningRequest;
-import be.labofitness.labo_fitness.bll.models.request.client.makeAppointment.CancelAppointmentRequest;
-import be.labofitness.labo_fitness.bll.models.request.client.makeAppointment.MakeRequestForAppointmentRequest;
-import be.labofitness.labo_fitness.bll.models.request.client.manageAccount.ClientManageAccountRequest;
-import be.labofitness.labo_fitness.bll.models.request.user.getCoach.GetCoachesByNameRequest;
-import be.labofitness.labo_fitness.bll.models.request.user.getCoach.GetCoachesByRemoteRequest;
-import be.labofitness.labo_fitness.bll.models.request.user.getCoach.GetCoachesBySpecializationRequest;
-import be.labofitness.labo_fitness.bll.models.request.user.getPhysiotherapist.GetPhysioByNameRequest;
-import be.labofitness.labo_fitness.bll.models.request.user.getPhysiotherapist.GetPhysioBySpecializationRequest;
-import be.labofitness.labo_fitness.bll.models.request.user.getTrainingSession.GetTrainingSessionByRecommendedLvlRequest;
-import be.labofitness.labo_fitness.bll.models.request.user.getTrainingSession.GetTrainingSessionsByCoachNameRequest;
-import be.labofitness.labo_fitness.bll.models.request.user.getTrainingSession.GetTrainingSessionsByDurationRequest;
-import be.labofitness.labo_fitness.bll.models.request.user.getTrainingSession.GetTrainingSessionsByNameRequest;
-import be.labofitness.labo_fitness.bll.models.request.client.registerClient.ClientRegisterRequest;
-import be.labofitness.labo_fitness.bll.models.response.client.CompetitionRegister.CompetitionRegisterResponse;
-import be.labofitness.labo_fitness.bll.models.response.client.TrainingSessionSubscription.TrainingSuscribResponse;
-import be.labofitness.labo_fitness.bll.models.response.client.manageAccount.changePassword.ClientChangePasswordResponse;
-import be.labofitness.labo_fitness.bll.models.response.client.makeAppointment.AcceptAppointmentPlanningResponse;
-import be.labofitness.labo_fitness.bll.models.response.client.makeAppointment.CancelAppointmentResponse;
-import be.labofitness.labo_fitness.bll.models.response.client.makeAppointment.MakeRequestForAppointmentResponse;
-import be.labofitness.labo_fitness.bll.models.response.client.manageAccount.ClientManageAccountResponse;
-import be.labofitness.labo_fitness.bll.models.response.user.getCoach.GetCoachesResponse;
-import be.labofitness.labo_fitness.bll.models.response.user.getPhysiotherapist.GetPhysioResponse;
-import be.labofitness.labo_fitness.bll.models.response.user.getTrainingSession.GetTrainingSessionResponse;
-import be.labofitness.labo_fitness.bll.models.response.user.register.RegisterResponse;
-import be.labofitness.labo_fitness.bll.service.ClientService;
-import be.labofitness.labo_fitness.bll.service.CompetitionService;
+import be.labofitness.labo_fitness.bll.model.request.client.CompetitionRegister.CompetitionRegisterRequest;
+import be.labofitness.labo_fitness.bll.model.request.client.TrainingSessionSubscription.TrainingSuscribRequest;
+import be.labofitness.labo_fitness.bll.model.request.client.makeAppointment.AcceptAppointmentPlanningRequest;
+import be.labofitness.labo_fitness.bll.model.request.client.makeAppointment.CancelAppointmentRequest;
+import be.labofitness.labo_fitness.bll.model.request.client.makeAppointment.MakeRequestForAppointmentRequest;
+import be.labofitness.labo_fitness.bll.model.request.client.manageAccount.ClientManageAccountRequest;
+import be.labofitness.labo_fitness.bll.model.request.planning.ClientPlanningRequest;
+import be.labofitness.labo_fitness.bll.model.request.user.getCoach.GetCoachesByNameRequest;
+import be.labofitness.labo_fitness.bll.model.request.user.getCoach.GetCoachesByRemoteRequest;
+import be.labofitness.labo_fitness.bll.model.request.user.getCoach.GetCoachesBySpecializationRequest;
+import be.labofitness.labo_fitness.bll.model.request.user.getPhysiotherapist.GetPhysioByNameRequest;
+import be.labofitness.labo_fitness.bll.model.request.user.getPhysiotherapist.GetPhysioBySpecializationRequest;
+import be.labofitness.labo_fitness.bll.model.request.user.getTrainingSession.GetTrainingSessionByRecommendedLvlRequest;
+import be.labofitness.labo_fitness.bll.model.request.user.getTrainingSession.GetTrainingSessionsByCoachNameRequest;
+import be.labofitness.labo_fitness.bll.model.request.user.getTrainingSession.GetTrainingSessionsByDurationRequest;
+import be.labofitness.labo_fitness.bll.model.request.user.getTrainingSession.GetTrainingSessionsByNameRequest;
+import be.labofitness.labo_fitness.bll.model.request.client.registerClient.ClientRegisterRequest;
+import be.labofitness.labo_fitness.bll.model.response.client.CompetitionRegister.CompetitionRegisterResponse;
+import be.labofitness.labo_fitness.bll.model.response.client.TrainingSessionSubscription.TrainingSuscribResponse;
+import be.labofitness.labo_fitness.bll.model.response.client.makeAppointment.AcceptAppointmentPlanningResponse;
+import be.labofitness.labo_fitness.bll.model.response.client.makeAppointment.CancelAppointmentResponse;
+import be.labofitness.labo_fitness.bll.model.response.client.makeAppointment.MakeRequestForAppointmentResponse;
+import be.labofitness.labo_fitness.bll.model.response.client.manageAccount.ClientManageAccountResponse;
+import be.labofitness.labo_fitness.bll.model.response.planning.PlanningResponse;
+import be.labofitness.labo_fitness.bll.model.response.user.getCoach.GetCoachesResponse;
+import be.labofitness.labo_fitness.bll.model.response.user.getPhysiotherapist.GetPhysioResponse;
+import be.labofitness.labo_fitness.bll.model.response.user.getTrainingSession.GetTrainingSessionResponse;
+import be.labofitness.labo_fitness.bll.model.response.user.register.RegisterResponse;
+import be.labofitness.labo_fitness.bll.service.service.ClientService;
+import be.labofitness.labo_fitness.bll.service.service.CompetitionService;
+import be.labofitness.labo_fitness.bll.service.service.PlanningService;
+import be.labofitness.labo_fitness.bll.service.service.RoleService;
+import be.labofitness.labo_fitness.bll.service.service.security.SecurityService;
 import be.labofitness.labo_fitness.dal.repository.*;
 import be.labofitness.labo_fitness.domain.entity.*;
 import be.labofitness.labo_fitness.domain.entity.base.Adress;
@@ -47,6 +48,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -59,13 +61,15 @@ public class ClientServiceImpl  implements ClientService {
 
     private final ClientRepository clientRepository;
     private final PasswordEncoder passwordEncoder;
-    private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
+    private final UserRepository userRepository; //TODO REFAC
+    private final RoleRepository roleRepository; //TODO REFAC
     private final CompetitionService competitionService;
-    private final TrainingSessionRepository trainingSessionRepository;
-    private final PhysiotherapistRepository physiotherapistRepository;
-    private final AppointmentRepository appointmentRepository;
-
+    private final TrainingSessionRepository trainingSessionRepository; //TODO REFAC
+    private final PhysiotherapistRepository physiotherapistRepository; //TODO REFAC
+    private final AppointmentRepository appointmentRepository; //TODO REFAC
+    private final SecurityService securityService;
+    private final RoleService roleService;
+    private final PlanningService planningService;
 
     @Override
     @Transactional
@@ -85,6 +89,7 @@ public class ClientServiceImpl  implements ClientService {
     }
 
     // region AUTHENTICATE
+
     @Transactional @Override
     public RegisterResponse register(ClientRegisterRequest request) {
 
@@ -102,7 +107,7 @@ public class ClientServiceImpl  implements ClientService {
                 client.setPassword(passwordEncoder.encode(request.password()));
                 client.setGender(request.gender());
                 client.setAdress(new Adress(request.street(), request.number(), request.city(), request.zipCode()));
-                client.setRoles(LaboFitnessUtil.setRole(Set.of("USER", "CLIENT"), roleRepository));
+                client.setRoles(roleService.setRole(Set.of("USER", "CLIENT"), roleRepository));
         clientRepository.save(client);
 
         return new RegisterResponse("Account created with success");
@@ -116,7 +121,7 @@ public class ClientServiceImpl  implements ClientService {
         if(userRepository.existsByEmail(request.email())){
             throw  new EmailAlreadyExistsException("Email already exists :" + request.email()); }
 
-        Client client = LaboFitnessUtil.getAuthentication(Client.class);
+        Client client = securityService.getAuthentication(Client.class);
         client.setName(request.name());
         client.setLast_name(request.lastName());
         client.setEmail(request.email());
@@ -163,37 +168,38 @@ public class ClientServiceImpl  implements ClientService {
     // endregion
 
     // region PERSONAL TRAINING SESSIONS
+
     @Override
     public List<GetTrainingSessionResponse> findPersonalClientTrainingSession() {
-        Client client = LaboFitnessUtil.getAuthentication(Client.class);
+        Client client = securityService.getAuthentication(Client.class);
         List<TrainingSession> trainingSessions = clientRepository.findPersonalTrainingSessions(client.getId());
         return trainingSessionToClientGetTrainingSessionResponse(trainingSessions);
     }
 
     @Override
     public List<GetTrainingSessionResponse> findPersonalClientTrainingSessionByRecommendedLvl(GetTrainingSessionByRecommendedLvlRequest request) {
-        Client client = LaboFitnessUtil.getAuthentication(Client.class);
+        Client client = securityService.getAuthentication(Client.class);
         List<TrainingSession> trainingSessions = clientRepository.findPersonalTrainingSessionsByRecommendedLevel(client.getId(), request.recommendedLevel());
         return trainingSessionToClientGetTrainingSessionResponse(trainingSessions);
     }
 
     @Override
     public List<GetTrainingSessionResponse> findPersonalClientTrainingSessionByDuration(GetTrainingSessionsByDurationRequest request) {
-        Client client = LaboFitnessUtil.getAuthentication(Client.class);
+        Client client = securityService.getAuthentication(Client.class);
         List<TrainingSession> trainingSessions = clientRepository.findPersonalTrainingSessionsByDuration(client.getId(), request.duration());
         return trainingSessionToClientGetTrainingSessionResponse(trainingSessions);
     }
 
     @Override
     public List<GetTrainingSessionResponse> findPersonalClientTrainingSessionByName(GetTrainingSessionsByNameRequest request) {
-        Client client = LaboFitnessUtil.getAuthentication(Client.class);
+        Client client = securityService.getAuthentication(Client.class);
         List<TrainingSession> trainingSessions = clientRepository.findPersonalTrainingSessionsByName(client.getId(), request.name());
         return trainingSessionToClientGetTrainingSessionResponse(trainingSessions);
     }
 
     @Override
     public List<GetTrainingSessionResponse> findPersonalClientTrainingSessionByCoachName(GetTrainingSessionsByCoachNameRequest request) {
-        Client client = LaboFitnessUtil.getAuthentication(Client.class);
+        Client client = securityService.getAuthentication(Client.class);
         List<TrainingSession> trainingSessions = clientRepository.findPersonalTrainingSessionsByCoachName(client.getId(), request.coach_name());
         return trainingSessionToClientGetTrainingSessionResponse(trainingSessions);
     }
@@ -210,21 +216,21 @@ public class ClientServiceImpl  implements ClientService {
 
     @Override
     public List<GetPhysioResponse> getAllPersonalPhysio() {
-        Client client = LaboFitnessUtil.getAuthentication(Client.class);
+        Client client = securityService.getAuthentication(Client.class);
         List<Physiotherapist> physio = clientRepository.findAllPersonalPhysio(client.getId());
         return physioToUserGetCoachesResponse(physio);
     }
 
     @Override
     public List<GetPhysioResponse> getPersonalPhysioBySpecialization(GetPhysioBySpecializationRequest request) {
-        Client client = LaboFitnessUtil.getAuthentication(Client.class);
+        Client client = securityService.getAuthentication(Client.class);
         List<Physiotherapist> physio = clientRepository.findPersonalPhysioBySpecialization(client.getId(), request.specialization());
         return physioToUserGetCoachesResponse(physio);
     }
 
     @Override
     public List<GetPhysioResponse> getPersonalPhysioByName(GetPhysioByNameRequest request) {
-        Client client = LaboFitnessUtil.getAuthentication(Client.class);
+        Client client = securityService.getAuthentication(Client.class);
         List<Physiotherapist> physio = clientRepository.findPersonalPhysioByName(client.getId(), request.name());
         return physioToUserGetCoachesResponse(physio);
     }
@@ -241,14 +247,14 @@ public class ClientServiceImpl  implements ClientService {
 
     @Override
     public List<GetCoachesResponse> getAllPersonalCoaches() {
-        Client client = LaboFitnessUtil.getAuthentication(Client.class);
+        Client client = securityService.getAuthentication(Client.class);
         List<Coach> coaches = clientRepository.findAllPersonalCoaches(client.getId());
         return coachesToUserGetCoachesResponse(coaches);
     }
 
     @Override
     public List<GetCoachesResponse> getAllPersonalCoachesByIsRemote(GetCoachesByRemoteRequest request) {
-        Client client = LaboFitnessUtil.getAuthentication(Client.class);
+        Client client = securityService.getAuthentication(Client.class);
         List<Coach> coaches = clientRepository.findPersonalCoachesByIsRemote(client.getId(), request.is_remote());
         return coachesToUserGetCoachesResponse(coaches);
 
@@ -256,14 +262,14 @@ public class ClientServiceImpl  implements ClientService {
 
     @Override
     public List<GetCoachesResponse> getAllPersonalCoachesBySpecialization(GetCoachesBySpecializationRequest request) {
-        Client client = LaboFitnessUtil.getAuthentication(Client.class);
+        Client client = securityService.getAuthentication(Client.class);
         List<Coach> coaches = clientRepository.findPersonalCoachesBySpecialization(client.getId(), request.specialization());
         return coachesToUserGetCoachesResponse(coaches);
     }
 
     @Override
     public List<GetCoachesResponse> getAllPersonalCoachesByName(GetCoachesByNameRequest request) {
-        Client client = LaboFitnessUtil.getAuthentication(Client.class);
+        Client client = securityService.getAuthentication(Client.class);
         List<Coach> coaches = clientRepository.findPersonalCoachesByName(client.getId(), request.name());
         return coachesToUserGetCoachesResponse(coaches);
     }
@@ -282,7 +288,7 @@ public class ClientServiceImpl  implements ClientService {
     public CompetitionRegisterResponse registerToOneCompetition(CompetitionRegisterRequest request) {
         String message;
 
-        Client client = LaboFitnessUtil.getAuthentication(Client.class);
+        Client client = securityService.getAuthentication(Client.class);
 
         Competition competition = competitionService.getCompetitionByCompetitionNameId(
                 LaboFitnessUtil.CompetitionNameIdBuilder(
@@ -297,18 +303,20 @@ public class ClientServiceImpl  implements ClientService {
             clientRepository.save(client);
 
             message = "You've been register to the competition named " + competition.getName() +
-                    " du " + competition.getStartDate().getDayOfMonth() +
-                    "/" + competition.getStartDate().getMonthValue() +
-                    "/" + competition.getStartDate().getYear() + " with success !";
+                    " du " + LaboFitnessUtil.DateToStringFormatDayMonthValueYear(competition.getStartDate()) + " with success !";
         }
 
         return new CompetitionRegisterResponse(message);
     }
 
+    // endregion
+
+    // region TRAINING SUBSCRIPTION
+
     @Override @Transactional
     public TrainingSuscribResponse subscribeToOneTrainingSession(TrainingSuscribRequest request) {
         String message;
-        Client client = LaboFitnessUtil.getAuthentication(Client.class);
+        Client client = securityService.getAuthentication(Client.class);
 
         TrainingSession training = trainingSessionRepository.findTrainingSessionById(request.id()).orElseThrow(
                 () -> new DoesntExistException("Training not found")
@@ -322,13 +330,116 @@ public class ClientServiceImpl  implements ClientService {
             clientRepository.save(client);
 
             message = "You've been register to the competition named " + training.getName() +
-                    " du " + LaboFitnessUtil.DateToStringFormatDayMonthValueYear(training.getStart_date()) + " with success !";
-        }
+                    " du " + LaboFitnessUtil.DateToStringFormatDayMonthValueYear(training.getStartDate()) + " with success !";
+            }
         else {
             throw new InscriptionCloseException("Training session inscription closed");
         }
 
         return new TrainingSuscribResponse(message);
+    }
+
+    // endregion
+
+    // region PLANNING
+
+    @Override
+    public PlanningResponse getPlanning(ClientPlanningRequest request) {
+        return new PlanningResponse(
+                getStartDates(request),
+                getEndDates(request),
+                getEventName(request)
+        );
+    }
+
+    private List<LocalDateTime> getStartDates(ClientPlanningRequest request) {
+        List<LocalDateTime> startDate = new ArrayList<>();
+        boolean includeAll = request.types() == null || request.types().isEmpty();
+        boolean includeOnlyComp = request.sports() != null && !request.sports().isEmpty();
+        boolean includeCoach = request.coachMail() != null;
+        boolean includePhysio = request.physiotherapistMail() != null;
+
+        if ((includeAll || request.types().contains("competition")) && !includePhysio) {
+            List<LocalDateTime> compStartDates = planningService.getAllClientCompetitions(request).stream()
+                    .map(Competition::getStartDate)
+                    .collect(Collectors.toList());
+            startDate.addAll(compStartDates);
+        }
+
+        if (!includeOnlyComp && (includeAll || request.types().contains("appointment")) && !includeCoach) {
+            List<LocalDateTime> appStartDates = planningService.getAllClientAppointments(request).stream()
+                    .map(Appointment::getStartDate)
+                    .collect(Collectors.toList());
+            startDate.addAll(appStartDates);
+        }
+
+        if (!includeOnlyComp && (includeAll || request.types().contains("training")) && !includePhysio) {
+            List<LocalDateTime> trainingStartDates = planningService.getAllClientTrainings(request).stream()
+                    .map(TrainingSession::getStartDate)
+                    .collect(Collectors.toList());
+            startDate.addAll(trainingStartDates);
+        }
+        return startDate;
+    }
+
+    private List<LocalDateTime> getEndDates(ClientPlanningRequest request) {
+        List<LocalDateTime> endDate = new ArrayList<>();
+        boolean includeAll = request.types() == null || request.types().isEmpty();
+        boolean includeOnlyComp = request.sports() != null && !request.sports().isEmpty();
+        boolean includeCoach = request.coachMail() != null;
+        boolean includePhysio = request.physiotherapistMail() != null;
+
+        if ( !includeOnlyComp && (includeAll || request.types().contains("appointment")) && !includeCoach) {
+            List<LocalDateTime> appointmentEndDate = planningService.getAllClientAppointments(request).stream()
+                    .map(Appointment::getEndDate)
+                    .collect(Collectors.toList());
+            endDate.addAll(appointmentEndDate);
+        }
+
+        if ((includeAll || request.types().contains("competition")) && !includePhysio) {
+            List<LocalDateTime> compEndDates = planningService.getAllClientCompetitions(request).stream()
+                    .map(Competition::getEndDate)
+                    .collect(Collectors.toList());
+            endDate.addAll(compEndDates);
+        }
+
+        if (!includeOnlyComp && (includeAll || request.types().contains("training")) && !includePhysio) {
+            List<LocalDateTime> trainingEndDates = planningService.getAllClientTrainings(request).stream()
+                    .map(TrainingSession::getEndDate)
+                    .collect(Collectors.toList());
+            endDate.addAll(trainingEndDates);
+        }
+        return endDate;
+    }
+
+    private List<String> getEventName(ClientPlanningRequest request) {
+        List<String> names = new ArrayList<>();
+        boolean includeAll = request.types() == null || request.types().isEmpty();
+        boolean includeOnlyComp = request.sports() != null && !request.sports().isEmpty();
+        boolean includeCoach = request.coachMail() != null;
+        boolean includePhysio = request.physiotherapistMail() != null;
+
+        if (!includeOnlyComp && (includeAll || request.types().contains("appointment")) && !includeCoach) {
+            List<String> appointmentNames = planningService.getAllClientAppointments(request).stream()
+                    .map(Appointment::getName)
+                    .collect(Collectors.toList());
+            names.addAll(appointmentNames);
+        }
+
+        if ((includeAll || request.types().contains("competition")) && !includePhysio) {
+            List<String> compNames = planningService.getAllClientCompetitions(request).stream()
+                    .map(Competition::getName)
+                    .collect(Collectors.toList());
+            names.addAll(compNames);
+        }
+
+        if (!includeOnlyComp && (includeAll || request.types().contains("training")) && !includePhysio) {
+            List<String> trainingNames = planningService.getAllClientTrainings(request).stream()
+                    .map(TrainingSession::getName)
+                    .collect(Collectors.toList());
+            names.addAll(trainingNames);
+        }
+        return names;
     }
 
 
@@ -339,14 +450,30 @@ public class ClientServiceImpl  implements ClientService {
     // Client-Kiné-Raison du RDV
     @Override @Transactional
     public MakeRequestForAppointmentResponse makeRequestForAppointment(MakeRequestForAppointmentRequest request) {
-        Client client = LaboFitnessUtil.getAuthentication(Client.class);
+        Client client = securityService.getAuthentication(Client.class);
         Physiotherapist physiotherapist = physiotherapistRepository.findByEmail(request.physiotherapistEmail())
                 .orElseThrow(() -> new EmailDoesntExistException(
                         "Email not found"));
 
+        long pendingRequestsCount = appointmentRepository.countByClientAndAppointmentStatus(client, AppointmentStatus.PENDING);
+
+        if (pendingRequestsCount >= 3) {
+            throw new IllegalStateException("Too many pending appointment requests");
+        }
+
         Appointment appointment = new Appointment();
         appointment.setClient(client);
         appointment.setReasonOfAppointment(request.reasonOfAppointment());
+
+        boolean duplicateReasonExists = appointmentRepository.existsByClientAndReasonOfAppointmentAndAppointmentStatus(
+                client,
+                request.reasonOfAppointment(),
+                AppointmentStatus.PENDING);
+
+        if (duplicateReasonExists) {
+            throw new IllegalStateException("That pending appointment reason already exist");
+        }
+        appointment.setAppointmentStatus(AppointmentStatus.PENDING);
         appointment.setPhysiotherapist(physiotherapist);
         appointmentRepository.save(appointment);
 
@@ -359,18 +486,18 @@ public class ClientServiceImpl  implements ClientService {
         Appointment appointment = clientRepository.getAppointmentById(  request.id()  );
         String message ;
         LocalDateTime now = LocalDateTime.now();
-        LocalDateTime appointmentDate = appointment.getAppointmentDate();
+        LocalDateTime appointmentDate = appointment.getStartDate();
         appointment.setAppointmentStatusResponseDescription(request.description());
         if (now.isAfter(appointmentDate)) {
             message = "You can't accept an appointment already passed";
             return new AcceptAppointmentPlanningResponse(message);
         }
-        if (appointment.getAppointmentDate() == null) {
+        if (appointment.getStartDate() == null) {
             throw new IllegalStateException("Appointment date is not yet defined");
         }
         appointment.setAppointmentStatus(request.status());
         if (request.status() == AppointmentStatus.REFUSED) {
-            appointment.setAppointmentDate(null);
+            appointment.setStartDate(null);
         }
         appointmentRepository.save(appointment);
 
@@ -382,7 +509,7 @@ public class ClientServiceImpl  implements ClientService {
         Appointment appointment = clientRepository.getAppointmentById( request.id() );
         String message ;
         LocalDateTime now = LocalDateTime.now();
-        LocalDateTime appointmentDate = appointment.getAppointmentDate();
+        LocalDateTime appointmentDate = appointment.getStartDate();
         if (now.isAfter(appointmentDate)){
             message = "You can't cancel an appointment already passed";
             return new CancelAppointmentResponse(message);
@@ -409,4 +536,5 @@ public class ClientServiceImpl  implements ClientService {
     }
 
     // endregion
+
 }

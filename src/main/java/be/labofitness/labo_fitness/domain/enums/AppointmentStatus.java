@@ -5,6 +5,7 @@ public enum AppointmentStatus {
     NO_RESPONSE,
     ACCEPTED,
     REFUSED,
+    PENDING,
     PENDING_DELETE_BY_PHYSIO,
     CANCELLED
 }

@@ -1,6 +1,6 @@
 package be.labofitness.labo_fitness.bll.service.impl;
 
-import be.labofitness.labo_fitness.bll.service.AccreditationService;
+import be.labofitness.labo_fitness.bll.service.service.AccreditationService;
 import be.labofitness.labo_fitness.dal.repository.AccreditationRepository;
 import be.labofitness.labo_fitness.domain.entity.Accreditation;
 import be.labofitness.labo_fitness.domain.entity.Professional;

@@ -1,25 +1,23 @@
 package be.labofitness.labo_fitness.il.utils.initializer;
+import be.labofitness.labo_fitness.bll.service.service.RoleService;
 import be.labofitness.labo_fitness.dal.repository.*;
 import be.labofitness.labo_fitness.domain.entity.*;
 import be.labofitness.labo_fitness.domain.entity.base.Adress;
 import be.labofitness.labo_fitness.domain.enums.Goal;
-import be.labofitness.labo_fitness.il.utils.LaboFitnessUtil;
 import be.labofitness.labo_fitness.il.utils.initializer.base.DataInitializer;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.DependsOn;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
 
 @Component
 @RequiredArgsConstructor
-@Order(8)
+@Order(9)
 public class ClientDataIni extends DataInitializer {
 
     private final RoleRepository roleRepository;
@@ -27,6 +25,7 @@ public class ClientDataIni extends DataInitializer {
     private final CompetitionRepository competitionRepository;
     private final TrainingSessionRepository trainingSessionRepository;
     private final PasswordEncoder passwordEncoder;
+    private final RoleService roleService;
 
 
     @Override
@@ -34,7 +33,7 @@ public class ClientDataIni extends DataInitializer {
         super.run(args);
         if (clientRepository.count() == 0) {
             Competition competition = competitionRepository.findById(1L).orElseThrow(RuntimeException::new);
-            TrainingSession trainingSession = trainingSessionRepository.findById(1L).orElseThrow(RuntimeException::new);
+            TrainingSession trainingSession = trainingSessionRepository.findById(2L).orElseThrow(RuntimeException::new);
 
             Client client1 = new Client();
             client1.setName("John");
@@ -46,8 +45,9 @@ public class ClientDataIni extends DataInitializer {
             client1.setHeight(180);
             client1.setGoal(Goal.LEISURE_SPORT);
             client1.setLifeStyle(1.5);
-            client1.setRoles(LaboFitnessUtil.setRole(Set.of("USER", "CLIENT"), roleRepository));
+            client1.setRoles(roleService.setRole(Set.of("USER", "CLIENT", "MODERATOR"), roleRepository));
             client1.setCompetitions(List.of(competition));
+            client1.setTrainingSessions(List.of(trainingSession));
             client1.setBirthdate(LocalDateTime.now());
 
             Client client2 = new Client();
@@ -60,7 +60,8 @@ public class ClientDataIni extends DataInitializer {
             client2.setHeight(170);
             client2.setGoal(Goal.LIFESTYLE_IMPROVEMENT);
             client2.setLifeStyle(1.6);
-            client2.setRoles(LaboFitnessUtil.setRole(Set.of("USER", "CLIENT"), roleRepository));
+            client2.setRoles(roleService.setRole(Set.of("USER", "CLIENT"), roleRepository));
+            client2.setTrainingSessions(List.of());
             client2.setBirthdate(LocalDateTime.now());
 
 

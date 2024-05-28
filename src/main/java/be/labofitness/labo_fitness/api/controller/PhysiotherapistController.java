@@ -1,27 +1,32 @@
 package be.labofitness.labo_fitness.api.controller;
 
-import be.labofitness.labo_fitness.bll.models.request.physiotherapist.manageAccount.PhysiotherapistManageAccountRequest;
-import be.labofitness.labo_fitness.bll.models.request.physiotherapist.manageAccount.changePassWord.PhysiotherapistChangePasswordRequest;
-import be.labofitness.labo_fitness.bll.models.response.physiotherapist.manageAccount.PhysiotherapistManageAccountResponse;
-import be.labofitness.labo_fitness.bll.models.response.physiotherapist.manageAccount.changePassword.PhysiotherapistChangePasswordResponse;
-import be.labofitness.labo_fitness.bll.service.PhysiotherapistService;
-import be.labofitness.labo_fitness.domain.entity.Physiotherapist;
-import jakarta.validation.Valid;
+import be.labofitness.labo_fitness.bll.model.request.planning.PhysioPlanningRequest;
+import be.labofitness.labo_fitness.bll.model.response.planning.PlanningResponse;
+import be.labofitness.labo_fitness.bll.service.service.PhysiotherapistService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/api/physio")
 @RequiredArgsConstructor
-@RequestMapping("/api/physiotherapist")
 public class PhysiotherapistController {
 
     private final PhysiotherapistService physiotherapistService;
 
+    // region PLANNING
+    //TODO REFAC ISAUTHORIZE BCZ USELESS (ON EVERY CONTROLLER OF PROG)
+    @PreAuthorize("hasAuthority('PHYSIOTHERAPIST')")
+    @GetMapping("/Planning")
+    public ResponseEntity<PlanningResponse> getPlanningWithSpecifications(@ModelAttribute PhysioPlanningRequest request) {
+        return ResponseEntity.ok(physiotherapistService.getPlanning(request));
+    }
+
+    // endregion
 
     //region PHYSIOTHERAPIST MANAGE ACCOUNT
 
@@ -40,3 +45,4 @@ public class PhysiotherapistController {
 
     //endregion
 }
+

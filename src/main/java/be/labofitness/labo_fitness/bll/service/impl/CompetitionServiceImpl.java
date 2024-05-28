@@ -1,14 +1,12 @@
 package be.labofitness.labo_fitness.bll.service.impl;
 
-import be.labofitness.labo_fitness.bll.service.CompetitionService;
+import be.labofitness.labo_fitness.bll.service.service.CompetitionService;
 import be.labofitness.labo_fitness.dal.repository.CompetitionRepository;
-import be.labofitness.labo_fitness.domain.entity.Client;
 import be.labofitness.labo_fitness.domain.entity.Competition;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Set;
 
 @Service
 @RequiredArgsConstructor

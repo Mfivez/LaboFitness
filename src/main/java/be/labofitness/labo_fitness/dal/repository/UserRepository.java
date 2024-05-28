@@ -1,7 +1,9 @@
 package be.labofitness.labo_fitness.dal.repository;
 
-import be.labofitness.labo_fitness.bll.models.response.user.getReport.GetReportResponse;
-import be.labofitness.labo_fitness.domain.entity.*;
+import be.labofitness.labo_fitness.domain.entity.Coach;
+import be.labofitness.labo_fitness.domain.entity.Physiotherapist;
+import be.labofitness.labo_fitness.domain.entity.TrainingSession;
+import be.labofitness.labo_fitness.domain.entity.User;
 import be.labofitness.labo_fitness.domain.enums.RecommendedLevel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -78,19 +80,19 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query(
             "SELECT t " +
-                    "FROM TrainingSession t ")
+            "FROM TrainingSession t ")
     List<TrainingSession> findAllTrainingSessions();
 
     @Query(
             "SELECT t " +
-                    "FROM TrainingSession t " +
-                    "WHERE t.recommended_level = :recommendedLevel ")
+            "FROM TrainingSession t " +
+            "WHERE t.recommended_level = :recommendedLevel ")
     List<TrainingSession> findTrainingSessionsByRecommendedLevel(RecommendedLevel recommendedLevel);
 
     @Query(
             "SELECT t " +
-                    "FROM TrainingSession t " +
-                    "WHERE t.duration = :duration")
+            "FROM TrainingSession t " +
+            "WHERE t.duration = :duration")
     List<TrainingSession> findTrainingSessionsByDuration(int duration);
 
     @Query(

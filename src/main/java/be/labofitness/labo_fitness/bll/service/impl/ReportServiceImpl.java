@@ -1,10 +1,7 @@
 package be.labofitness.labo_fitness.bll.service.impl;
 
-import be.labofitness.labo_fitness.bll.exception.doesntExists.EmailDoesntExistException;
-import be.labofitness.labo_fitness.bll.models.response.user.makeReport.ReportResponse;
-import be.labofitness.labo_fitness.bll.service.ReportService;
+import be.labofitness.labo_fitness.bll.service.service.ReportService;
 import be.labofitness.labo_fitness.dal.repository.ReportRepository;
-import be.labofitness.labo_fitness.dal.repository.UserRepository;
 import be.labofitness.labo_fitness.domain.entity.Report;
 import be.labofitness.labo_fitness.domain.entity.User;
 import jakarta.transaction.Transactional;

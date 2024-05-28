@@ -1,40 +1,70 @@
 package be.labofitness.labo_fitness.bll.service.impl;
 
-import be.labofitness.labo_fitness.bll.exception.alreadyExists.EmailAlreadyExistsException;
-import be.labofitness.labo_fitness.bll.exception.notMatching.PasswordNotMatchingException;
-import be.labofitness.labo_fitness.bll.models.request.physiotherapist.manageAccount.PhysiotherapistManageAccountRequest;
-import be.labofitness.labo_fitness.bll.models.request.physiotherapist.manageAccount.changePassWord.PhysiotherapistChangePasswordRequest;
-import be.labofitness.labo_fitness.bll.models.response.physiotherapist.manageAccount.PhysiotherapistManageAccountResponse;
-import be.labofitness.labo_fitness.bll.models.response.physiotherapist.manageAccount.changePassword.PhysiotherapistChangePasswordResponse;
-import be.labofitness.labo_fitness.bll.service.PhysiotherapistService;
-import be.labofitness.labo_fitness.dal.repository.PhysiotherapistRepository;
-import be.labofitness.labo_fitness.dal.repository.UserRepository;
-import be.labofitness.labo_fitness.domain.entity.Coach;
+import be.labofitness.labo_fitness.bll.model.request.planning.PhysioPlanningRequest;
+import be.labofitness.labo_fitness.bll.model.response.planning.PlanningResponse;
+import be.labofitness.labo_fitness.bll.service.service.PhysiotherapistService;
+import be.labofitness.labo_fitness.bll.service.service.PlanningService;
+import be.labofitness.labo_fitness.domain.entity.Appointment;
 import be.labofitness.labo_fitness.domain.entity.Physiotherapist;
-import be.labofitness.labo_fitness.domain.entity.base.Adress;
-import be.labofitness.labo_fitness.il.utils.LaboFitnessUtil;
-import jakarta.transaction.Transactional;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 import java.util.List;
 
 import static be.labofitness.labo_fitness.il.utils.LaboFitnessUtil.getCurrentMethodeName;
 
 @Service
-public class PhysiotherapistServiceImpl implements PhysiotherapistService{
+@RequiredArgsConstructor
+public class PhysiotherapistServiceImpl implements PhysiotherapistService {
 
+    private final PlanningService planningService;
     private final UserRepository userRepository;
     private final PhysiotherapistRepository physiotherapistRepository;
     private final PasswordEncoder  passwordEncoder;
 
-    public PhysiotherapistServiceImpl(UserRepository userRepository, PhysiotherapistRepository physiotherapistRepository, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.physiotherapistRepository = physiotherapistRepository;
-        this.passwordEncoder = passwordEncoder;
+    // region GET PLANNING
+
+    @Override
+    public PlanningResponse getPlanning(PhysioPlanningRequest request) {
+        return new PlanningResponse(
+                planningService.getAllPhysioAppointments(request).stream().map(Appointment::getStartDate).collect(Collectors.toList()),
+                planningService.getAllPhysioAppointments(request).stream().map(Appointment::getEndDate).collect(Collectors.toList()),
+                planningService.getAllPhysioAppointments(request).stream().map(Appointment::getName).collect(Collectors.toList()));
     }
 
+    //endregion
 
+    // region CLASSIC CRUD
+    @Override
+    public Physiotherapist getOne(Long aLong) {
+        return null;
+    }
+
+    @Override
+    public List<Physiotherapist> getAll() {
+        return List.of();
+    }
+
+    @Override
+    public Physiotherapist create(Physiotherapist entity) {
+        return null;
+    }
+
+    @Override
+    public Physiotherapist update(Physiotherapist entity) {
+        return null;
+    }
+
+    @Override
+    public Physiotherapist delete(Long aLong) {
+        return null;
+    }
+    // endregion
+
+    // region MANAGE ACCOUNT
 
     @Override
     @Transactional
@@ -77,30 +107,5 @@ public class PhysiotherapistServiceImpl implements PhysiotherapistService{
         return PhysiotherapistChangePasswordResponse.fromEntity(physiotherapist,message);
     }
 
-
-    @Override
-    public Physiotherapist getOne(Long aLong) {
-        return null;
-    }
-
-    @Override
-    public List<Physiotherapist> getAll() {
-        return List.of();
-    }
-
-    @Override
-    public Physiotherapist create(Physiotherapist entity) {
-        return null;
-    }
-
-    @Override
-    public Physiotherapist update(Physiotherapist entity) {
-        return null;
-    }
-
-    @Override
-    public Physiotherapist delete(Long aLong) {
-        return null;
-    }
-
+    // endregion
 }

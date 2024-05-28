@@ -26,11 +26,14 @@ public class Report extends BaseEntity<Long> {
     @JoinColumn(name = "id_complainant_user",nullable = false)
     private User complainant;
 
-    @Column(name = "is_confirme", nullable = false)
+    @Column(name = "is_confirmed", nullable = false)
     private boolean isConfirmed;
 
+    @Column(name = "is_approved", nullable = false)
+    private boolean isApproved;
 
     public Report() {
         this.isConfirmed = false;
+        this.isApproved = false;
     }
 }
