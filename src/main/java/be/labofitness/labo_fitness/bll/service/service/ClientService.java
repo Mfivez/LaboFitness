@@ -7,6 +7,8 @@ import be.labofitness.labo_fitness.bll.model.client.makeAppointment.CancelAppoin
 import be.labofitness.labo_fitness.bll.model.client.makeAppointment.MakeRequestForAppointmentRequest;
 import be.labofitness.labo_fitness.bll.model.client.manageAccount.ClientManageAccountRequest;
 import be.labofitness.labo_fitness.bll.model.planning.ClientPlanningRequest;
+import be.labofitness.labo_fitness.bll.model.request.client.manageAccount.changePassword.ClientChangePasswordRequest;
+import be.labofitness.labo_fitness.bll.model.response.client.manageAccount.changePassword.ClientChangePasswordResponse;
 import be.labofitness.labo_fitness.bll.model.user.getCoach.GetCoachesByNameRequest;
 import be.labofitness.labo_fitness.bll.model.user.getCoach.GetCoachesByRemoteRequest;
 import be.labofitness.labo_fitness.bll.model.user.getCoach.GetCoachesBySpecializationRequest;
@@ -39,6 +41,8 @@ public interface ClientService  extends CrudService<Client, Long> {
 
 
     // region ACCOUNT MANAGEMENT
+
+    ClientChangePasswordResponse changePassword (ClientChangePasswordRequest request);
 
     RegisterResponse register(ClientRegisterRequest request);
 

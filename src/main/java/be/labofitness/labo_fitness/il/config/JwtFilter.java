@@ -23,6 +23,16 @@ public class JwtFilter extends OncePerRequestFilter {
     private final UserDetailsService userService;
 
 
+    /* //TODO Retirer ça
+    *    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        return request.getServletPath().startsWith("/api/auth/");
+    }
+    *
+    * Permet de d'empecher au filter de s'appliquer au chemin /api/auth/(du coup pas besoin du logout)
+    * */
+
+
     @Override
     protected void doFilterInternal(
             HttpServletRequest request,

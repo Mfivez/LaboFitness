@@ -25,6 +25,6 @@ public class Physiotherapist extends Professional{
      * <br>It is marked as {@code nullable = false} to indicate that the {@code INAMI number} is required for all {@code physiotherapists}.</p>
      */
     @Column(name = "inami_number", nullable = false)
-    private Integer inamiNumber;
+    private String inamiNumber;
 
 }

@@ -6,6 +6,8 @@ import be.labofitness.labo_fitness.bll.model.planning.CoachPlanningRequest;
 import be.labofitness.labo_fitness.bll.model.coach.ManageEventInscription.ManageEventInscriptionResponse;
 import be.labofitness.labo_fitness.bll.model.coach.manageAccount.CoachManageAccountResponse;
 import be.labofitness.labo_fitness.bll.model.planning.PlanningResponse;
+import be.labofitness.labo_fitness.bll.model.request.coach.manageAccount.changePassword.CoachChangePasswordRequest;
+import be.labofitness.labo_fitness.bll.model.response.coach.manageAccount.changePassword.CoachChangePasswordResponse;
 import be.labofitness.labo_fitness.bll.service.base.CrudService;
 import be.labofitness.labo_fitness.domain.entity.Coach;
 
@@ -20,6 +22,8 @@ public interface CoachService  extends CrudService<Coach, Long> {
     // region ACCOUNT MANAGEMENT
 
     CoachManageAccountResponse manageAccount(CoachManageAccountRequest request);
+
+    CoachChangePasswordResponse changePassword(CoachChangePasswordRequest request);
 
     // endregion
 

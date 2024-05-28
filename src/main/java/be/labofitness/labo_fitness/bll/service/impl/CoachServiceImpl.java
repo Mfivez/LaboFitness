@@ -1,12 +1,17 @@
 package be.labofitness.labo_fitness.bll.service.impl;
 
 import be.labofitness.labo_fitness.bll.exception.alreadyExists.EmailAlreadyExistsException;
+import be.labofitness.labo_fitness.bll.exception.notMatching.PasswordNotMatchingException;
 import be.labofitness.labo_fitness.bll.model.coach.ManageEventInscription.ManageEventInscriptionRequest;
 import be.labofitness.labo_fitness.bll.model.coach.manageAccount.CoachManageAccountRequest;
 import be.labofitness.labo_fitness.bll.model.planning.CoachPlanningRequest;
 import be.labofitness.labo_fitness.bll.model.coach.ManageEventInscription.ManageEventInscriptionResponse;
 import be.labofitness.labo_fitness.bll.model.coach.manageAccount.CoachManageAccountResponse;
 import be.labofitness.labo_fitness.bll.model.planning.PlanningResponse;
+import be.labofitness.labo_fitness.bll.model.request.coach.manageAccount.changePassword.CoachChangePasswordRequest;
+import be.labofitness.labo_fitness.bll.model.request.physiotherapist.manageAccount.PhysiotherapistManageAccountRequest;
+import be.labofitness.labo_fitness.bll.model.response.coach.manageAccount.changePassword.CoachChangePasswordResponse;
+import be.labofitness.labo_fitness.bll.model.response.physiotherapist.manageAccount.PhysiotherapistManageAccountResponse;
 import be.labofitness.labo_fitness.bll.service.service.CoachService;
 import be.labofitness.labo_fitness.bll.service.service.PlanningService;
 import be.labofitness.labo_fitness.bll.service.service.security.SecurityService;
@@ -14,18 +19,19 @@ import be.labofitness.labo_fitness.dal.repository.CoachRepository;
 import be.labofitness.labo_fitness.dal.repository.CompetitionRepository;
 import be.labofitness.labo_fitness.dal.repository.TrainingSessionRepository;
 import be.labofitness.labo_fitness.dal.repository.UserRepository;
-import be.labofitness.labo_fitness.domain.entity.Client;
-import be.labofitness.labo_fitness.domain.entity.Coach;
-import be.labofitness.labo_fitness.domain.entity.Competition;
-import be.labofitness.labo_fitness.domain.entity.TrainingSession;
+import be.labofitness.labo_fitness.domain.entity.*;
 import be.labofitness.labo_fitness.domain.entity.base.Address;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
+
+//TODO METH
+//import static be.labofitness.labo_fitness.il.utils.LaboFitnessUtil.getCurrentMethodeName;
 
 @RequiredArgsConstructor
 @Service
@@ -37,7 +43,8 @@ public class CoachServiceImpl implements CoachService {
     private final SecurityService securityService;
     private final PlanningService planningService;
     private final CompetitionRepository competitionRepository;  //TODO REFAC
-    private final TrainingSessionRepository trainingSessionRepository;  //TODO REFAC
+    private final TrainingSessionRepository trainingSessionRepository;
+    private final PasswordEncoder passwordEncoder;//TODO REFAC
 
     // region PLANNING
     //TODO TRANSFER METHODS GET THINGS NOT OVERRIDE ON PLANNING SERVICE
@@ -99,24 +106,61 @@ public class CoachServiceImpl implements CoachService {
 
     // region COACH MANAGE ACCOUNT
 
+    /**
+     * Update an {@link Coach} account
+     * @param request of the {@link CoachManageAccountRequest} to update
+     * @return response {@link CoachManageAccountResponse} with a message
+     */
     @Override
+    @Transactional
     public CoachManageAccountResponse manageAccount(CoachManageAccountRequest request) {
-        if(userRepository.existsByEmail(request.email())){
-            throw new EmailAlreadyExistsException("Email already exists");
-        }
 
+        String message  = "getCurrentMethodeName()";
         Coach coach = securityService.getAuthentication(Coach.class);
+
+        if (!coach.getEmail().equals(request.email())) {
+            if (!userRepository.existsByEmail(request.email())) {  coach.setEmail(request.email());  }
+            else{
+                throw new PasswordNotMatchingException("Email already exists");
+            }
+        }
         coach.setName(request.name());
         coach.setLastname(request.lastName());
-        coach.setEmail(request.email());
         coach.setGender(request.gender());
         coach.setAddress(new Address(request.street(), request.number(), request.city(), request.zipCode()));
         coach.setRemote(request.isRemote());
         coach.setPriceHour(request.pricePerHour());
 
         coachRepository.save(coach);
-        return new CoachManageAccountResponse("Account modified with success");
+
+        return CoachManageAccountResponse.fromEntity(coach,message);
+
+
     }
+
+    /**
+     * Update the password of an {@link Coach} account
+     * @param request of the {@link CoachChangePasswordRequest} to update
+     * @return response {@link CoachChangePasswordResponse} with a message
+     */
+    @Override
+    @Transactional
+    public CoachChangePasswordResponse changePassword(CoachChangePasswordRequest request) {
+
+        String message = "getCurrentMethodeName()";
+
+        Coach coach = securityService.getAuthentication(Coach.class);
+
+        if(!passwordEncoder.matches(request.oldPassword(),coach.getPassword())){
+
+            throw new PasswordNotMatchingException("passwords are not matching");
+        }
+        coach.setPassword(passwordEncoder.encode(request.newPassword()));
+        coachRepository.save(coach);
+
+        return CoachChangePasswordResponse.fromEntity(coach, message);
+    }
+
 
     // endregion
 

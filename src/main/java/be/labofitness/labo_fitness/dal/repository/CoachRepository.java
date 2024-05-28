@@ -22,6 +22,12 @@ public interface CoachRepository extends JpaRepository<Coach, Long> {
      * @return An {@link Optional} {@link Coach} object.
      */
     @Query(
+            "SELECT c.password " +
+            "FROM Coach c " +
+            "WHERE c.id = :id")
+    String findPasswordByCoachId(Long id);
+
+    @Query(
             "SELECT c " +
             "FROM Coach c " +
             "WHERE c.email = :email")

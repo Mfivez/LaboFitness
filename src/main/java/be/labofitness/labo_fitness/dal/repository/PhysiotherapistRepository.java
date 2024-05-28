@@ -42,4 +42,7 @@ public interface PhysiotherapistRepository extends JpaRepository<Physiotherapist
             "WHERE p.email = :email")
     Optional<Physiotherapist> findByEmail(String email);
 
+
+    @Query("SELECT p.password FROM Physiotherapist p WHERE p.id = :id")
+    String findPasswordByPhysiotherapistId(Long id);
 }

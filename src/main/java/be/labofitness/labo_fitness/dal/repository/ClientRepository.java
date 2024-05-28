@@ -31,6 +31,17 @@ import java.util.Optional;
 @Repository
 public interface ClientRepository extends JpaRepository<Client, Long> {
 
+
+    //region PASSWORD MANAGEMENT
+
+    @Query("SELECT c.password FROM Client c WHERE c.email ilike :email")
+    String findPasswordByClientEmail(String email);
+
+    @Query("SELECT c.password FROM Client c where c.id = :id")
+    String findPasswordByClientId(Long id);
+
+    //endregion
+    
     // region PERSONAL TRAINING SESSION
 
     /**
