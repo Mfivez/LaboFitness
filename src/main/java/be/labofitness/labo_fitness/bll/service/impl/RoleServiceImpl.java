@@ -1,8 +1,6 @@
 package be.labofitness.labo_fitness.bll.service.impl;
-
 import be.labofitness.labo_fitness.bll.service.service.RoleService;
 import be.labofitness.labo_fitness.dal.repository.RoleRepository;
-import be.labofitness.labo_fitness.domain.entity.Report;
 import be.labofitness.labo_fitness.domain.entity.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,12 +9,23 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * Implementation of the {@link RoleService} interface.
+ * <br>Provides methods to manage {@link Role}.
+ */
 @RequiredArgsConstructor
 @Service
 public class RoleServiceImpl implements RoleService {
 
     private final RoleRepository roleRepository;
 
+    /**
+     * Sets the {@link Role} for a user based on a set of {@link Role} names.
+     *
+     * @param roles a set of {@link Role} names
+     * @param roleRepository the repository to find {@link Role}
+     * @return a set of {@link Role} entities
+     */
     @Override
     public Set<Role> setRole(Set<String> roles, RoleRepository roleRepository) {
         //TODO REFACTO -> JUST TRY CATCH WITH FILTER AND DELETE SWITCH

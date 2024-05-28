@@ -1,13 +1,16 @@
 package be.labofitness.labo_fitness.bll.service.impl;
-import be.labofitness.labo_fitness.domain.entity.Sport;
 import be.labofitness.labo_fitness.bll.service.service.SportService;
 import be.labofitness.labo_fitness.dal.repository.SportRepository;
-import be.labofitness.labo_fitness.domain.entity.Role;
+import be.labofitness.labo_fitness.domain.entity.Sport;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Implementation of the {@link SportService} interface.
+ * <br>Provides methods to manage {@link Sport}.
+ */
 @RequiredArgsConstructor
 @Service
 public class SportServiceImpl implements SportService {

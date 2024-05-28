@@ -1,5 +1,4 @@
 package be.labofitness.labo_fitness.bll.service.impl;
-import be.labofitness.labo_fitness.bll.exception.alreadyExists.EmailAlreadyExistsException;
 import be.labofitness.labo_fitness.bll.exception.notMatching.PasswordNotMatchingException;
 import be.labofitness.labo_fitness.bll.model.planning.PhysioPlanningRequest;
 import be.labofitness.labo_fitness.bll.model.planning.PlanningResponse;
@@ -19,11 +18,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 import java.util.stream.Collectors;
+
 //TODO METH
 //import static be.labofitness.labo_fitness.il.utils.LaboFitnessUtil.getCurrentMethodeName;
 
+/**
+ * Implementation of the {@link PhysiotherapistService} interface.
+ * <br>Provides methods for managing {@link Physiotherapist}-related operations.
+ */
 @RequiredArgsConstructor
 @Service
 public class PhysiotherapistServiceImpl implements PhysiotherapistService {
@@ -36,6 +41,12 @@ public class PhysiotherapistServiceImpl implements PhysiotherapistService {
 
     // region GET PLANNING
 
+    /**
+     * Retrieves the planning for a {@link Physiotherapist} based on the provided request.
+     *
+     * @param request the request containing criteria for fetching the planning
+     * @return a {@link PlanningResponse} object containing the planning details
+     */
     @Override
     public PlanningResponse getPlanning(PhysioPlanningRequest request) {
         return new PlanningResponse(

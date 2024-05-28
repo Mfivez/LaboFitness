@@ -1,15 +1,16 @@
 package be.labofitness.labo_fitness.bll.service.impl;
 import be.labofitness.labo_fitness.bll.exception.doesntExists.EmailDoesntExistException;
 import be.labofitness.labo_fitness.bll.model.login.UserLoginRequest;
-import be.labofitness.labo_fitness.bll.model.user.makeReport.MakeReportRequest;
-import be.labofitness.labo_fitness.bll.model.user.getReport.GetReportResponse;
 import be.labofitness.labo_fitness.bll.model.login.UserLoginResponse;
+import be.labofitness.labo_fitness.bll.model.user.getReport.GetReportResponse;
+import be.labofitness.labo_fitness.bll.model.user.makeReport.MakeReportRequest;
 import be.labofitness.labo_fitness.bll.model.user.makeReport.ReportResponse;
 import be.labofitness.labo_fitness.bll.service.service.ReportService;
 import be.labofitness.labo_fitness.bll.service.service.UserService;
 import be.labofitness.labo_fitness.bll.service.service.security.SecurityService;
 import be.labofitness.labo_fitness.dal.repository.UserRepository;
-import be.labofitness.labo_fitness.domain.entity.*;
+import be.labofitness.labo_fitness.domain.entity.Report;
+import be.labofitness.labo_fitness.domain.entity.User;
 import be.labofitness.labo_fitness.il.utils.JwtUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * Implementation of the {@link UserService} interface.
+ * <br>Provides methods to manage {@link User}.
+ */
 @RequiredArgsConstructor
 @Service
 public class UserServiceImpl implements UserService {
@@ -34,6 +39,14 @@ public class UserServiceImpl implements UserService {
     private final SecurityService securityService;
 
     // region UTILS FUNCTIONS
+
+    /**
+     * Loads a {@link User} by their email.
+     *
+     * @param email the email of the {@link User} to load
+     * @return the {@link UserDetails} of the {@link User}
+     * @throws UsernameNotFoundException if the {@link User} is not found
+     */
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         return userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException(email));
@@ -42,6 +55,14 @@ public class UserServiceImpl implements UserService {
 
     // region LOGIN
 
+    /**
+     * Authenticates a {@link User} and generates a {@code JWT token}.
+     *
+     * @param loginRequest the login request containing the email and password
+     * @return the {@link UserLoginResponse} containing the {@link User} details and {@code JWT token}
+     * @throws UsernameNotFoundException if the {@link User} is not found
+     * @throws BadCredentialsException if the password is incorrect
+     */
     @Override
     public UserLoginResponse login(UserLoginRequest loginRequest) {
         User user = userRepository.findByEmail(loginRequest.email()).orElseThrow(() -> new UsernameNotFoundException(loginRequest.email()));
@@ -59,6 +80,13 @@ public class UserServiceImpl implements UserService {
 
     // region REPORT
 
+    /**
+     * Creates a new {@link Report} based on the given request.
+     *
+     * @param request the request containing the details of the {@link Report}
+     * @return the {@link ReportResponse} containing the result of the {@link Report} creation
+     * @throws EmailDoesntExistException if the reported {@link User}'s email does not exist
+     */
     @Override @Transactional
     public ReportResponse makeReport(MakeReportRequest request) {
         User complainant = securityService.getAuthentication(User.class);
@@ -75,6 +103,11 @@ public class UserServiceImpl implements UserService {
                 " pour le motif suivant : " + request.report());
     }
 
+    /**
+     * Retrieves valid {@link Report} for the authenticated {@link User}.
+     *
+     * @return a set of {@link GetReportResponse} containing the valid reports
+     */
     @Override
     public Set<GetReportResponse> getValidReport() {
         User user = securityService.getAuthentication(User.class);

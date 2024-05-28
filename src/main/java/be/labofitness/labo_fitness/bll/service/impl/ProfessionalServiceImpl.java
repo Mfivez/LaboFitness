@@ -1,5 +1,4 @@
 package be.labofitness.labo_fitness.bll.service.impl;
-
 import be.labofitness.labo_fitness.bll.exception.alreadyExists.EmailAlreadyExistsException;
 import be.labofitness.labo_fitness.bll.model.register.ProfessionalRegisterRequest;
 import be.labofitness.labo_fitness.bll.model.register.RegisterResponse;
@@ -16,6 +15,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Implementation of the {@link ProfessionalService} interface.
+ * <br>Provides functionality for registering professionals
+ * such as {@link Physiotherapist} and {@link Coach}.
+ */
 @RequiredArgsConstructor
 @Service
 public class ProfessionalServiceImpl implements ProfessionalService{
@@ -29,13 +33,21 @@ public class ProfessionalServiceImpl implements ProfessionalService{
     private final RoleService roleService;
     private final ProfessionalRepository professionalRepository;
 
+    // region REGISTER
+
+    /**
+     * Registers a new {@link Professional} ({@link Physiotherapist} or {@link Coach}) based on the provided request.
+     *
+     * @param request the {@link Professional} registration request
+     * @return a {@link RegisterResponse} indicating the success of the registration
+     * @throws EmailAlreadyExistsException if the email already exists
+     */
     @Override
     public RegisterResponse register(ProfessionalRegisterRequest request) {
 
         if(userRepository.existsByEmail(request.email())) {
             throw new EmailAlreadyExistsException("email already exists : " + request.email());
         }
-
 
         if(request.role().equals("PHYSIOTHERAPIST")) {
             Physiotherapist physiotherapist = new Physiotherapist();
@@ -60,10 +72,10 @@ public class ProfessionalServiceImpl implements ProfessionalService{
             accreditationService.createWithParam(request.accreditation(), request.accreditationDescription(), coach);
         }
 
-
-
         return new RegisterResponse("Account created with success");
     }
+
+    //endregion
 
     // region CLASSIC CRUD
 
