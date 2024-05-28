@@ -2,14 +2,15 @@ package be.labofitness.labo_fitness.bll.service.impl;
 
 import be.labofitness.labo_fitness.bll.service.service.CompetitionService;
 import be.labofitness.labo_fitness.dal.repository.CompetitionRepository;
+import be.labofitness.labo_fitness.domain.entity.Coach;
 import be.labofitness.labo_fitness.domain.entity.Competition;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
 @RequiredArgsConstructor
+@Service
 public class CompetitionServiceImpl implements CompetitionService {
 
     private final CompetitionRepository competitionRepository;
@@ -24,28 +25,57 @@ public class CompetitionServiceImpl implements CompetitionService {
 
     // region CLASSIC CRUD
 
+    /**
+     * Retrieves an {@link Competition} by its ID.
+     *
+     * @param id the ID of the {@link Competition} to retrieve
+     * @return the {@link Competition} with the given ID
+     */
     @Override
-    public Competition getOne(Long aLong) {
+    public Competition getOne(Long id) {
         return null;
     }
 
+    /**
+     * Retrieves all {@link Competition}.
+     *
+     * @return a list of all {@link Competition}
+     */
     @Override
     public List<Competition> getAll() {
-        return List.of();
+        return competitionRepository.findAll();
     }
 
+    /**
+     * Creates a new {@link Competition}.
+     *
+     * @param entity the {@link Competition} to create
+     * @return the created {@link Competition}
+     */
     @Override
     public Competition create(Competition entity) {
         return null;
     }
 
+    /**
+     * Updates an existing {@link Competition}.
+     *
+     * @param entity the {@link Competition} to update
+     * @return the updated {@link Competition}
+     */
     @Override
     public Competition update(Competition entity) {
         return null;
     }
 
+    /**
+     * Deletes an {@link Competition} by its ID.
+     *
+     * @param id the ID of the {@link Competition} to delete
+     * @return the deleted {@link Competition}, or null if not found
+     */
     @Override
-    public Competition delete(Long aLong) {
+    public Competition delete(Long id) {
         return null;
     }
 

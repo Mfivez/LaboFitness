@@ -4,34 +4,34 @@ import be.labofitness.labo_fitness.bll.exception.alreadyExists.EmailAlreadyExist
 import be.labofitness.labo_fitness.bll.exception.doesntExists.DoesntExistException;
 import be.labofitness.labo_fitness.bll.exception.doesntExists.EmailDoesntExistException;
 import be.labofitness.labo_fitness.bll.exception.inscriptionClosed.InscriptionCloseException;
-import be.labofitness.labo_fitness.bll.model.request.client.CompetitionRegister.CompetitionRegisterRequest;
-import be.labofitness.labo_fitness.bll.model.request.client.TrainingSessionSubscription.TrainingSuscribRequest;
-import be.labofitness.labo_fitness.bll.model.request.client.makeAppointment.AcceptAppointmentPlanningRequest;
-import be.labofitness.labo_fitness.bll.model.request.client.makeAppointment.CancelAppointmentRequest;
-import be.labofitness.labo_fitness.bll.model.request.client.makeAppointment.MakeRequestForAppointmentRequest;
-import be.labofitness.labo_fitness.bll.model.request.client.manageAccount.ClientManageAccountRequest;
-import be.labofitness.labo_fitness.bll.model.request.planning.ClientPlanningRequest;
-import be.labofitness.labo_fitness.bll.model.request.user.getCoach.GetCoachesByNameRequest;
-import be.labofitness.labo_fitness.bll.model.request.user.getCoach.GetCoachesByRemoteRequest;
-import be.labofitness.labo_fitness.bll.model.request.user.getCoach.GetCoachesBySpecializationRequest;
-import be.labofitness.labo_fitness.bll.model.request.user.getPhysiotherapist.GetPhysioByNameRequest;
-import be.labofitness.labo_fitness.bll.model.request.user.getPhysiotherapist.GetPhysioBySpecializationRequest;
-import be.labofitness.labo_fitness.bll.model.request.user.getTrainingSession.GetTrainingSessionByRecommendedLvlRequest;
-import be.labofitness.labo_fitness.bll.model.request.user.getTrainingSession.GetTrainingSessionsByCoachNameRequest;
-import be.labofitness.labo_fitness.bll.model.request.user.getTrainingSession.GetTrainingSessionsByDurationRequest;
-import be.labofitness.labo_fitness.bll.model.request.user.getTrainingSession.GetTrainingSessionsByNameRequest;
-import be.labofitness.labo_fitness.bll.model.request.client.registerClient.ClientRegisterRequest;
-import be.labofitness.labo_fitness.bll.model.response.client.CompetitionRegister.CompetitionRegisterResponse;
-import be.labofitness.labo_fitness.bll.model.response.client.TrainingSessionSubscription.TrainingSuscribResponse;
-import be.labofitness.labo_fitness.bll.model.response.client.makeAppointment.AcceptAppointmentPlanningResponse;
-import be.labofitness.labo_fitness.bll.model.response.client.makeAppointment.CancelAppointmentResponse;
-import be.labofitness.labo_fitness.bll.model.response.client.makeAppointment.MakeRequestForAppointmentResponse;
-import be.labofitness.labo_fitness.bll.model.response.client.manageAccount.ClientManageAccountResponse;
-import be.labofitness.labo_fitness.bll.model.response.planning.PlanningResponse;
-import be.labofitness.labo_fitness.bll.model.response.user.getCoach.GetCoachesResponse;
-import be.labofitness.labo_fitness.bll.model.response.user.getPhysiotherapist.GetPhysioResponse;
-import be.labofitness.labo_fitness.bll.model.response.user.getTrainingSession.GetTrainingSessionResponse;
-import be.labofitness.labo_fitness.bll.model.response.user.register.RegisterResponse;
+import be.labofitness.labo_fitness.bll.model.client.CompetitionRegister.CompetitionRegisterRequest;
+import be.labofitness.labo_fitness.bll.model.client.TrainingSessionSubscription.TrainingSubscriptionRequest;
+import be.labofitness.labo_fitness.bll.model.client.makeAppointment.AcceptAppointmentPlanningRequest;
+import be.labofitness.labo_fitness.bll.model.client.makeAppointment.CancelAppointmentRequest;
+import be.labofitness.labo_fitness.bll.model.client.makeAppointment.MakeRequestForAppointmentRequest;
+import be.labofitness.labo_fitness.bll.model.client.manageAccount.ClientManageAccountRequest;
+import be.labofitness.labo_fitness.bll.model.planning.ClientPlanningRequest;
+import be.labofitness.labo_fitness.bll.model.user.getCoach.GetCoachesByNameRequest;
+import be.labofitness.labo_fitness.bll.model.user.getCoach.GetCoachesByRemoteRequest;
+import be.labofitness.labo_fitness.bll.model.user.getCoach.GetCoachesBySpecializationRequest;
+import be.labofitness.labo_fitness.bll.model.user.getPhysiotherapist.GetPhysioByNameRequest;
+import be.labofitness.labo_fitness.bll.model.user.getPhysiotherapist.GetPhysioBySpecializationRequest;
+import be.labofitness.labo_fitness.bll.model.user.getTrainingSession.GetTrainingSessionByRecommendedLvlRequest;
+import be.labofitness.labo_fitness.bll.model.user.getTrainingSession.GetTrainingSessionsByCoachNameRequest;
+import be.labofitness.labo_fitness.bll.model.user.getTrainingSession.GetTrainingSessionsByDurationRequest;
+import be.labofitness.labo_fitness.bll.model.user.getTrainingSession.GetTrainingSessionsByNameRequest;
+import be.labofitness.labo_fitness.bll.model.register.ClientRegisterRequest;
+import be.labofitness.labo_fitness.bll.model.client.CompetitionRegister.CompetitionRegisterResponse;
+import be.labofitness.labo_fitness.bll.model.client.TrainingSessionSubscription.TrainingSubscriptionResponse;
+import be.labofitness.labo_fitness.bll.model.client.makeAppointment.AcceptAppointmentPlanningResponse;
+import be.labofitness.labo_fitness.bll.model.client.makeAppointment.CancelAppointmentResponse;
+import be.labofitness.labo_fitness.bll.model.client.makeAppointment.MakeRequestForAppointmentResponse;
+import be.labofitness.labo_fitness.bll.model.client.manageAccount.ClientManageAccountResponse;
+import be.labofitness.labo_fitness.bll.model.planning.PlanningResponse;
+import be.labofitness.labo_fitness.bll.model.user.getCoach.GetCoachesResponse;
+import be.labofitness.labo_fitness.bll.model.user.getPhysiotherapist.GetPhysioResponse;
+import be.labofitness.labo_fitness.bll.model.user.getTrainingSession.GetTrainingSessionResponse;
+import be.labofitness.labo_fitness.bll.model.register.RegisterResponse;
 import be.labofitness.labo_fitness.bll.service.service.ClientService;
 import be.labofitness.labo_fitness.bll.service.service.CompetitionService;
 import be.labofitness.labo_fitness.bll.service.service.PlanningService;
@@ -39,24 +39,23 @@ import be.labofitness.labo_fitness.bll.service.service.RoleService;
 import be.labofitness.labo_fitness.bll.service.service.security.SecurityService;
 import be.labofitness.labo_fitness.dal.repository.*;
 import be.labofitness.labo_fitness.domain.entity.*;
-import be.labofitness.labo_fitness.domain.entity.base.Adress;
+import be.labofitness.labo_fitness.domain.entity.base.Address;
 import be.labofitness.labo_fitness.domain.enums.AppointmentStatus;
 import be.labofitness.labo_fitness.il.utils.LaboFitnessUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-
 import static be.labofitness.labo_fitness.il.utils.LaboFitnessUtil.getCurrentMethodeName;
 
 @Service
 @RequiredArgsConstructor
+@Service
 public class ClientServiceImpl  implements ClientService {
 
     private final ClientRepository clientRepository;
@@ -70,6 +69,8 @@ public class ClientServiceImpl  implements ClientService {
     private final SecurityService securityService;
     private final RoleService roleService;
     private final PlanningService planningService;
+
+    // region MANAGE ACCOUNT
 
     @Override
     @Transactional
@@ -88,6 +89,8 @@ public class ClientServiceImpl  implements ClientService {
         return ClientChangePasswordResponse.fromEntity(client, message);
     }
 
+    //endregion
+
     // region AUTHENTICATE
 
     @Transactional @Override
@@ -101,12 +104,12 @@ public class ClientServiceImpl  implements ClientService {
                 client.setWeight(request.weight());
                 client.setHeight(request.height());
                 client.setName(request.name());
-                client.setLast_name(request.lastName());
+                client.setLastname(request.lastName());
                 client.setBirthdate(LaboFitnessUtil.createNewDate(request.year(), request.month(), request.day()));
                 client.setEmail(request.email());
                 client.setPassword(passwordEncoder.encode(request.password()));
                 client.setGender(request.gender());
-                client.setAdress(new Adress(request.street(), request.number(), request.city(), request.zipCode()));
+                client.setAddress(new Address(request.street(), request.number(), request.city(), request.zipCode()));
                 client.setRoles(roleService.setRole(Set.of("USER", "CLIENT"), roleRepository));
         clientRepository.save(client);
 
@@ -123,10 +126,10 @@ public class ClientServiceImpl  implements ClientService {
 
         Client client = securityService.getAuthentication(Client.class);
         client.setName(request.name());
-        client.setLast_name(request.lastName());
+        client.setLastname(request.lastName());
         client.setEmail(request.email());
         client.setGender(request.gender());
-        client.setAdress(new Adress(request.street(), request.number(), request.city(), request.zipCode()));
+        client.setAddress(new Address(request.street(), request.number(), request.city(), request.zipCode()));
         client.setWeight(request.weight());
         client.setHeight(request.height());
         clientRepository.save(client);
@@ -138,32 +141,59 @@ public class ClientServiceImpl  implements ClientService {
 
     // region CLASSIC CRUD
 
+    /**
+     * Retrieves an {@link Client} by its ID.
+     *
+     * @param id the ID of the {@link Client} to retrieve
+     * @return the {@link Client} with the given ID
+     */
     @Override
-    public Client getOne(Long aLong) {
+    public Client getOne(Long id) {
         return null;
     }
 
+    /**
+     * Retrieves all {@link Client}.
+     *
+     * @return a list of all {@link Client}
+     */
     @Override
     public List<Client> getAll() {
-        return List.of();
+        return clientRepository.findAll();
     }
 
+    /**
+     * Creates a new {@link Client}.
+     *
+     * @param entity the {@link Client} to create
+     * @return the created {@link Client}
+     */
     @Override
     public Client create(Client entity) {
         return null;
-
     }
 
+    /**
+     * Updates an existing {@link Client}.
+     *
+     * @param entity the {@link Client} to update
+     * @return the updated {@link Client}
+     */
     @Override
     public Client update(Client entity) {
         return null;
     }
 
+    /**
+     * Deletes an {@link Client} by its ID.
+     *
+     * @param id the ID of the {@link Client} to delete
+     * @return the deleted {@link Client}, or null if not found
+     */
     @Override
-    public Client delete(Long aLong) {
+    public Client delete(Long id) {
         return null;
     }
-
 
     // endregion
 
@@ -314,7 +344,7 @@ public class ClientServiceImpl  implements ClientService {
     // region TRAINING SUBSCRIPTION
 
     @Override @Transactional
-    public TrainingSuscribResponse subscribeToOneTrainingSession(TrainingSuscribRequest request) {
+    public TrainingSubscriptionResponse subscribeToOneTrainingSession(TrainingSubscriptionRequest request) {
         String message;
         Client client = securityService.getAuthentication(Client.class);
 
@@ -336,7 +366,7 @@ public class ClientServiceImpl  implements ClientService {
             throw new InscriptionCloseException("Training session inscription closed");
         }
 
-        return new TrainingSuscribResponse(message);
+        return new TrainingSubscriptionResponse(message);
     }
 
     // endregion

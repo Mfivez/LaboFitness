@@ -6,7 +6,7 @@ import be.labofitness.labo_fitness.dal.repository.LocationRepository;
 import be.labofitness.labo_fitness.dal.repository.RoleRepository;
 import be.labofitness.labo_fitness.domain.entity.Coach;
 import be.labofitness.labo_fitness.domain.entity.LocationPlace;
-import be.labofitness.labo_fitness.domain.entity.base.Adress;
+import be.labofitness.labo_fitness.domain.entity.base.Address;
 import be.labofitness.labo_fitness.il.utils.LaboFitnessUtil;
 import be.labofitness.labo_fitness.il.utils.initializer.base.DataInitializer;
 import lombok.RequiredArgsConstructor;
@@ -38,10 +38,10 @@ public class CoachDataIni extends DataInitializer {
 
             Coach coach1 = new Coach();
             coach1.setName("Jeremy");
-            coach1.setLast_name("Doe");
+            coach1.setLastname("Doe");
             coach1.setEmail("jerem.doe@example.com");
             coach1.setPassword(passwordEncoder.encode("password"));
-            coach1.setAdress(new Adress("123 Street", "2", "City", "12345"));
+            coach1.setAddress(new Address("123 Street", "2", "City", "12345"));
             coach1.setSpecialization("Fitness");
             coach1.setPriceHour(50);
             coach1.setRoles((roleService.setRole(Set.of("USER", "COACH"), roleRepository)));
@@ -51,10 +51,10 @@ public class CoachDataIni extends DataInitializer {
 
             Coach coach2 = new Coach();
             coach2.setName("Yanis");
-            coach2.setLast_name("Smith");
+            coach2.setLastname("Smith");
             coach2.setEmail("Yanis.smith@example.com");
             coach2.setPassword(passwordEncoder.encode("password"));
-            coach2.setAdress(new Adress("456 Avenue", "2","Town", "67890"));
+            coach2.setAddress(new Address("456 Avenue", "2","Town", "67890"));
             coach2.setSpecialization("Yoga");
             coach2.setRemote(true);
             coach2.setPriceHour(60);

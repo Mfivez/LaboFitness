@@ -1,30 +1,21 @@
 package be.labofitness.labo_fitness.api.controller;
-
-import be.labofitness.labo_fitness.bll.model.request.user.getCoach.GetCoachesByNameRequest;
-import be.labofitness.labo_fitness.bll.model.request.user.getCoach.GetCoachesByRemoteRequest;
-import be.labofitness.labo_fitness.bll.model.request.user.getCoach.GetCoachesBySpecializationRequest;
-import be.labofitness.labo_fitness.bll.model.request.user.getPhysiotherapist.GetPhysioByNameRequest;
-import be.labofitness.labo_fitness.bll.model.request.user.getPhysiotherapist.GetPhysioBySpecializationRequest;
-import be.labofitness.labo_fitness.bll.model.request.user.getTrainingSession.GetTrainingSessionByRecommendedLvlRequest;
-import be.labofitness.labo_fitness.bll.model.request.user.getTrainingSession.GetTrainingSessionsByCoachNameRequest;
-import be.labofitness.labo_fitness.bll.model.request.user.getTrainingSession.GetTrainingSessionsByDurationRequest;
-import be.labofitness.labo_fitness.bll.model.request.user.getTrainingSession.GetTrainingSessionsByNameRequest;
-import be.labofitness.labo_fitness.bll.model.request.user.makeReport.MakeReportRequest;
-import be.labofitness.labo_fitness.bll.model.response.user.getReport.GetReportResponse;
-import be.labofitness.labo_fitness.bll.model.response.user.getTrainingSession.GetTrainingSessionResponse;
-import be.labofitness.labo_fitness.bll.model.response.user.getCoach.GetCoachesResponse;
-import be.labofitness.labo_fitness.bll.model.response.user.getPhysiotherapist.GetPhysioResponse;
-import be.labofitness.labo_fitness.bll.model.response.user.makeReport.ReportResponse;
+import be.labofitness.labo_fitness.bll.model.user.makeReport.MakeReportRequest;
+import be.labofitness.labo_fitness.bll.model.user.getReport.GetReportResponse;
+import be.labofitness.labo_fitness.bll.model.user.makeReport.ReportResponse;
 import be.labofitness.labo_fitness.bll.service.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 import java.util.Set;
 
+/**
+ * Controller for handling user-related requests.
+ * Provides endpoints for
+ * <p>1. {@code making reports}</p>
+ * <p>2. {@code retrieving reports}</p>
+ */
 @RestController
 @RequestMapping("/api/user")
 @RequiredArgsConstructor
@@ -34,110 +25,34 @@ public class UserController {
 
     // region REPORT
 
-    //region MAKE REPORT
-
-    @PreAuthorize("isAuthenticated() AND hasAnyAuthority('USER')")
+    /**
+     * Endpoint for making a report.
+     *
+     * <p>This endpoint is accessible to authenticated users.</p>
+     *
+     * @param request the {@link MakeReportRequest} containing report details
+     * @return a {@link ResponseEntity} containing a {@link ReportResponse}
+     */
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/make-report")
     public ResponseEntity<ReportResponse> makeReport(@Valid @ModelAttribute MakeReportRequest request) {
         return ResponseEntity.ok(userService.makeReport(request));
     }
 
-    //endregion
-
-    //region GET REPORT
-    //GetReportByIsValidateForAuthenticateUser
+    /**
+     * Endpoint for retrieving reports.
+     *
+     * <p>This endpoint is accessible to authenticated users.</p>
+     *
+     * @return a {@link ResponseEntity} containing a set of {@link GetReportResponse}
+     */
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/get-report")
-    @PreAuthorize("isAuthenticated() AND hasAnyAuthority('USER')")
     public ResponseEntity<Set<GetReportResponse>> getReportResponseByIsValidate() {
         return ResponseEntity.ok(userService.getValidReport());
     }
 
-
-
-
     // endregion
 
-    //region GET COACHES
 
-    @PreAuthorize("isAnonymous()")
-    @GetMapping("/coaches")
-    public ResponseEntity<List<GetCoachesResponse>> getAllCoaches() {
-        return ResponseEntity.ok(userService.getAllCoaches());
-    }
-
-    @PreAuthorize("isAnonymous()")
-    @GetMapping("/coaches-by-remote")
-    public ResponseEntity<List<GetCoachesResponse>> getAllCoachesByIsRemote(@ModelAttribute GetCoachesByRemoteRequest request) {
-        return ResponseEntity.ok(userService.getAllCoachesByIsRemote(request));
-    }
-
-    @PreAuthorize("isAnonymous()")
-    @GetMapping("/coaches-by-name")
-    public ResponseEntity<List<GetCoachesResponse>> getAllCoachesByName(@Valid @ModelAttribute GetCoachesByNameRequest request) {
-        return ResponseEntity.ok(userService.getAllCoachesByName(request));
-    }
-
-    @PreAuthorize("isAnonymous()")
-    @GetMapping("/coaches-by-spec")
-    public ResponseEntity<List<GetCoachesResponse>> getAllCoachesBySpecialization(@Valid @ModelAttribute GetCoachesBySpecializationRequest request) {
-        return ResponseEntity.ok(userService.getAllCoachesBySpecialization(request));
-    }
-
-    // endregion
-
-    //region GET PHYSIOTHERAPIST
-
-    @PreAuthorize("isAnonymous()")
-    @GetMapping("/physio")
-    public ResponseEntity<List<GetPhysioResponse>> getAllPhysio() {
-        return ResponseEntity.ok(userService.getAllPhysio());
-    }
-
-    @PreAuthorize("isAnonymous()")
-    @GetMapping("/physio-by-name")
-    public ResponseEntity<List<GetPhysioResponse>> getAllPhysioByName(@Valid @ModelAttribute GetPhysioByNameRequest request) {
-        return ResponseEntity.ok(userService.getPhysioByName(request));
-    }
-
-    @PreAuthorize("isAnonymous()")
-    @GetMapping("/physio-by-spec")
-    public ResponseEntity<List<GetPhysioResponse>> getAllPhysioBySpecialization(@Valid @ModelAttribute GetPhysioBySpecializationRequest request) {
-        return ResponseEntity.ok(userService.getPhysioBySpecialization(request));
-    }
-
-    // endregion
-
-    // region GET TRAINING SESSION
-
-    @GetMapping("/training-sessions")
-    @PreAuthorize("isAnonymous()")
-    public ResponseEntity<List<GetTrainingSessionResponse>> getAllTrainingSessions() {
-        return ResponseEntity.ok(userService.findAllTrainingSession());
-    }
-
-    @GetMapping("/training-sessions-by-lvl")
-    @PreAuthorize("isAnonymous()")
-    public ResponseEntity<List<GetTrainingSessionResponse>> getTrainingSessionsByRecommendedLvl(@Valid @ModelAttribute GetTrainingSessionByRecommendedLvlRequest request) {
-        return ResponseEntity.ok(userService.findTrainingSessionByRecommendedLvl(request));
-    }
-
-    @GetMapping("/training-sessions-by-duration")
-    @PreAuthorize("isAnonymous()")
-    public ResponseEntity<List<GetTrainingSessionResponse>> getTrainingSessionsByDuration(@Valid @ModelAttribute GetTrainingSessionsByDurationRequest request) {
-        return ResponseEntity.ok(userService.findTrainingSessionByDuration(request));
-    }
-
-    @GetMapping("/training-sessions-by-name")
-    @PreAuthorize("isAnonymous()")
-    public ResponseEntity<List<GetTrainingSessionResponse>> getTrainingSessionsByName(@Valid @ModelAttribute GetTrainingSessionsByNameRequest request) {
-        return ResponseEntity.ok(userService.findTrainingSessionByName(request));
-    }
-
-    @GetMapping("/training-sessions-by-coach-name")
-    @PreAuthorize("isAnonymous()")
-    public ResponseEntity<List<GetTrainingSessionResponse>> getTrainingSessionsByCoachName(@Valid @ModelAttribute GetTrainingSessionsByCoachNameRequest request) {
-        return ResponseEntity.ok(userService.findTrainingSessionByCoachName(request));
-    }
-
-    //endregion
 }

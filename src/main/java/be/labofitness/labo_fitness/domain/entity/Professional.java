@@ -1,32 +1,36 @@
 package be.labofitness.labo_fitness.domain.entity;
-
-import be.labofitness.labo_fitness.domain.entity.base.Adress;
-import com.fasterxml.jackson.annotation.JsonKey;
 import jakarta.persistence.*;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-@Entity
+/**
+ * Represents a {@code professional} entity in the system.
+ * <br>Extends the {@link User} class, inheriting its properties.
+ */
 @AllArgsConstructor
-@Table(name = "professionals")
-@Inheritance(strategy = InheritanceType.JOINED)
 @Getter @Setter @ToString
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+@Table(name = "professionals")
 public abstract class Professional extends User{
 
+    /**
+     * The specialization of the {@code professional}.
+     */
     @Column(name = "specialization")
     private String specialization;
 
-
+    /**
+     * The work schedule of the {@code professional}.
+     */
     @Column(name = "work_schedule", nullable = true)
     private String workSchedule;
 
-
     /**
-     * Pour cette relation, nous passons en unidirectionnelle, car on se moque de savoir depuis location place, à qui appartient le bâtiment.
+     * The set of {@link LocationPlace} associated with the professional.
+     * <br>It is marked as {@code FetchType.LAZY} to indicate that the locations are lazily loaded.
      */
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "professional_locations_places",
@@ -34,9 +38,12 @@ public abstract class Professional extends User{
                 inverseJoinColumns = @JoinColumn(name = "id_location_place"))
     private Set<LocationPlace> locationPlace;
 
-
-
+    /**
+     * Constructs a new {@code Professional} object.
+     * <br>Initializes the {@link LocationPlace} set to an empty HashSet.
+     */
     public Professional() {
         locationPlace = new HashSet<>();
     }
+
 }
