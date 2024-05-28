@@ -43,7 +43,7 @@ public class CompetitionDataIni extends DataInitializer {
             competition1.setEndDate(endDate);
             competition1.setCoach(coach);
             competition1.setSports(Set.of(sport, sport2));
-            competition1.setInscriptionIsOpen(true);
+            competition1.setInscriptionOpen(true);
             competition1.setCompetitionNameIdentifier(LaboFitnessUtil.CompetitionNameIdBuilder(name, startDate));
 
 

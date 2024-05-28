@@ -36,7 +36,7 @@ public class TrainingSessionDataIni extends DataInitializer {
             session1.setStartDate(LocalDateTime.now());
             session1.setEndDate(LocalDateTime.now().plusHours(1));
             session1.setDescription("This is session 1");
-            session1.setRecommended_level(RecommendedLevel.AMATEUR);
+            session1.setRecommendedLevel(RecommendedLevel.AMATEUR);
             session1.setCoach(coach);
 
             TrainingSession session2 = new TrainingSession();
@@ -44,7 +44,7 @@ public class TrainingSessionDataIni extends DataInitializer {
             session2.setStartDate(LocalDateTime.now().plusDays(1));
             session2.setEndDate(LocalDateTime.now().plusDays(1).plusHours(1));
             session2.setDescription("This is session 2");
-            session2.setRecommended_level(RecommendedLevel.GIGACHAD);
+            session2.setRecommendedLevel(RecommendedLevel.GIGACHAD);
             session2.setCoach(coach); // NULLABLE AND CREATE AN ATTRIBUTE CREATE IF THE SESSION IS JUST A FILE
 
             trainingSessionRepository.save(session1);

@@ -1,10 +1,7 @@
 package be.labofitness.labo_fitness.il.utils.initializer;
 
 import be.labofitness.labo_fitness.dal.repository.RoleRepository;
-import be.labofitness.labo_fitness.dal.repository.UserRepository;
 import be.labofitness.labo_fitness.domain.entity.Role;
-import be.labofitness.labo_fitness.domain.entity.User;
-import be.labofitness.labo_fitness.domain.entity.base.Adress;
 import be.labofitness.labo_fitness.il.utils.initializer.base.DataInitializer;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;

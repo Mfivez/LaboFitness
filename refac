@@ -1,0 +1,15 @@
+
+2.Clean Repo
+3.Clean Controller (isAuth)
+4.Clean ServiceImpl
+5.Clean Service
+
+
+******
+
+6.Javadoc
+7.Exception
+1. Validation
+8. ModelAttribute to RequestBody
+9. Create AnonymousController
+10. Remplace methods by specif

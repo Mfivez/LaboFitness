@@ -1,6 +1,4 @@
 package be.labofitness.labo_fitness.api.controller.advisor;
-
-
 import be.labofitness.labo_fitness.bll.exception.alreadyExists.EmailAlreadyExistsException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -13,11 +11,23 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * Controller advice class for global exception handling in the application.
+ * Uses {@code @ControllerAdvice} to capture and handle specific exceptions in a centralized manner.
+ */
 @Slf4j
 @ControllerAdvice
-
 public class ControllerAdvisor {
 
+    /**
+     * Handles exceptions of type EmailAlreadyExistsException.
+     *
+     * <p>This method captures EmailAlreadyExistsException, logs the error message,
+     * and returns an HTTP response with a 406 (Not Acceptable) status containing the error message.</p>
+     *
+     * @param error the {@link EmailAlreadyExistsException} thrown when the email already exists
+     * @return a {@link ResponseEntity} containing the error message with a 406 status
+     */
     @ExceptionHandler(EmailAlreadyExistsException.class)
     public ResponseEntity<String> handleRuntimeException(EmailAlreadyExistsException error){
         log.error(error.toString());
@@ -44,8 +54,6 @@ public class ControllerAdvisor {
                         FieldError::getField,
                         FieldError -> Optional.ofNullable(FieldError.getDefaultMessage()).orElse("Validator Error: DefaultMessage cannot be Null.")
                 ));
-
-
         return ResponseEntity.status(406).body(errors);
     }
 }

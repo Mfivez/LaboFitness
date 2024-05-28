@@ -1,12 +1,12 @@
 package be.labofitness.labo_fitness.bll.service.impl;
 
 import be.labofitness.labo_fitness.bll.exception.alreadyExists.EmailAlreadyExistsException;
-import be.labofitness.labo_fitness.bll.model.request.coach.ManageEventInscription.ManageEventInscriptionRequest;
-import be.labofitness.labo_fitness.bll.model.request.coach.manageAccount.CoachManageAccountRequest;
-import be.labofitness.labo_fitness.bll.model.request.planning.CoachPlanningRequest;
-import be.labofitness.labo_fitness.bll.model.response.coach.ManageEventInscription.ManageEventInscriptionResponse;
-import be.labofitness.labo_fitness.bll.model.response.coach.manageAccount.CoachManageAccountResponse;
-import be.labofitness.labo_fitness.bll.model.response.planning.PlanningResponse;
+import be.labofitness.labo_fitness.bll.model.coach.ManageEventInscription.ManageEventInscriptionRequest;
+import be.labofitness.labo_fitness.bll.model.coach.manageAccount.CoachManageAccountRequest;
+import be.labofitness.labo_fitness.bll.model.planning.CoachPlanningRequest;
+import be.labofitness.labo_fitness.bll.model.coach.ManageEventInscription.ManageEventInscriptionResponse;
+import be.labofitness.labo_fitness.bll.model.coach.manageAccount.CoachManageAccountResponse;
+import be.labofitness.labo_fitness.bll.model.planning.PlanningResponse;
 import be.labofitness.labo_fitness.bll.service.service.CoachService;
 import be.labofitness.labo_fitness.bll.service.service.PlanningService;
 import be.labofitness.labo_fitness.bll.service.service.security.SecurityService;
@@ -14,10 +14,11 @@ import be.labofitness.labo_fitness.dal.repository.CoachRepository;
 import be.labofitness.labo_fitness.dal.repository.CompetitionRepository;
 import be.labofitness.labo_fitness.dal.repository.TrainingSessionRepository;
 import be.labofitness.labo_fitness.dal.repository.UserRepository;
+import be.labofitness.labo_fitness.domain.entity.Client;
 import be.labofitness.labo_fitness.domain.entity.Coach;
 import be.labofitness.labo_fitness.domain.entity.Competition;
 import be.labofitness.labo_fitness.domain.entity.TrainingSession;
-import be.labofitness.labo_fitness.domain.entity.base.Adress;
+import be.labofitness.labo_fitness.domain.entity.base.Address;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -106,10 +107,10 @@ public class CoachServiceImpl implements CoachService {
 
         Coach coach = securityService.getAuthentication(Coach.class);
         coach.setName(request.name());
-        coach.setLast_name(request.lastName());
+        coach.setLastname(request.lastName());
         coach.setEmail(request.email());
         coach.setGender(request.gender());
-        coach.setAdress(new Adress(request.street(), request.number(), request.city(), request.zipCode()));
+        coach.setAddress(new Address(request.street(), request.number(), request.city(), request.zipCode()));
         coach.setRemote(request.isRemote());
         coach.setPriceHour(request.pricePerHour());
 
@@ -121,28 +122,57 @@ public class CoachServiceImpl implements CoachService {
 
     // region CLASSIC CRUD
 
+    /**
+     * Retrieves an {@link Coach} by its ID.
+     *
+     * @param id the ID of the {@link Coach} to retrieve
+     * @return the {@link Coach} with the given ID
+     */
     @Override
-    public Coach getOne(Long aLong) {
+    public Coach getOne(Long id) {
         return null;
     }
 
+    /**
+     * Retrieves all {@link Coach}.
+     *
+     * @return a list of all {@link Coach}
+     */
     @Override
     public List<Coach> getAll() {
-        return List.of();
+        return coachRepository.findAll();
     }
 
+    /**
+     * Creates a new {@link Coach}.
+     *
+     * @param entity the {@link Coach} to create
+     * @return the created {@link Coach}
+     */
     @Override
     public Coach create(Coach entity) {
         return null;
     }
 
+    /**
+     * Updates an existing {@link Coach}.
+     *
+     * @param entity the {@link Coach} to update
+     * @return the updated {@link Coach}
+     */
     @Override
     public Coach update(Coach entity) {
         return null;
     }
 
+    /**
+     * Deletes an {@link Coach} by its ID.
+     *
+     * @param id the ID of the {@link Coach} to delete
+     * @return the deleted {@link Coach}, or null if not found
+     */
     @Override
-    public Coach delete(Long aLong) {
+    public Coach delete(Long id) {
         return null;
     }
 
@@ -161,11 +191,11 @@ public class CoachServiceImpl implements CoachService {
         Competition competition = competitionRepository.findByCompetitionId(request.id())
                 .orElseThrow( () -> new IllegalArgumentException("Competition doesn't exist"));
 
-        if (competition.isInscriptionIsOpen() == request.state()) {
+        if (competition.isInscriptionOpen() == request.state()) {
             message = "Competition inscriptions already on " + request.state();
         }
         else {
-            competition.setInscriptionIsOpen(request.state());
+            competition.setInscriptionOpen(request.state());
             competitionRepository.save(competition);
             message = "Competition inscription status = " + request.state();
         }

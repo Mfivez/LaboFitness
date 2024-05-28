@@ -1,9 +1,9 @@
 package be.labofitness.labo_fitness.bll.service.impl;
 
-import be.labofitness.labo_fitness.bll.model.request.moderator.report.ModeratorUpdateReportIsApprovedStateRequest;
-import be.labofitness.labo_fitness.bll.model.request.moderator.report.ReportRequest;
-import be.labofitness.labo_fitness.bll.model.response.moderator.report.ModeratorReportUpdateIsApprovedStateResponse;
-import be.labofitness.labo_fitness.bll.model.response.moderator.report.ReportResponse;
+import be.labofitness.labo_fitness.bll.model.moderator.report.ModeratorUpdateReportIsApprovedStateRequest;
+import be.labofitness.labo_fitness.bll.model.moderator.report.ReportRequest;
+import be.labofitness.labo_fitness.bll.model.moderator.report.ModeratorReportUpdateIsApprovedStateResponse;
+import be.labofitness.labo_fitness.bll.model.moderator.report.ReportResponse;
 import be.labofitness.labo_fitness.bll.service.service.ModeratorService;
 import be.labofitness.labo_fitness.bll.specification.ReportSpecification;
 import be.labofitness.labo_fitness.dal.repository.ReportRepository;
@@ -17,8 +17,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service
 @RequiredArgsConstructor
+@Service
 public class ModeratorServiceImpl implements ModeratorService {
 
     private final ReportRepository reportRepository;

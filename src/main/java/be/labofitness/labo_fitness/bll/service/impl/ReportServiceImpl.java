@@ -11,13 +11,12 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Service
 @RequiredArgsConstructor
+@Service
 public class ReportServiceImpl implements ReportService {
 
     private final ReportRepository reportRepository;
 
-    // region CLASSIC CRUD
     @Override @Transactional
     public Report makeReportWithParams(User complainant, User reportedUser, String reportMessage) {
         Report report = new Report();
@@ -29,30 +28,63 @@ public class ReportServiceImpl implements ReportService {
         return reportRepository.save(report);
     }
 
+    // region CLASSIC CRUD
+
+    /**
+     * Retrieves an {@link Report} by its ID.
+     *
+     * @param id the ID of the {@link Report} to retrieve
+     * @return the {@link Report} with the given ID
+     */
     @Override
-    public Report delete(Long aLong) {
+    public Report getOne(Long id) {
         return null;
     }
 
+    /**
+     * Retrieves all {@link Report}.
+     *
+     * @return a list of all {@link Report}
+     */
     @Override
-    public Report update(Report entity) {
-        return null;
+    public List<Report> getAll() {
+        return reportRepository.findAll();
     }
 
+    /**
+     * Creates a new {@link Report}.
+     *
+     * @param entity the {@link Report} to create
+     * @return the created {@link Report}
+     */
     @Override
     public Report create(Report entity) {
         return null;
     }
 
+    /**
+     * Updates an existing {@link Report}.
+     *
+     * @param entity the {@link Report} to update
+     * @return the updated {@link Report}
+     */
     @Override
-    public List<Report> getAll() {
-        return List.of();
+    public Report update(Report entity) {
+        return null;
     }
 
+    /**
+     * Deletes an {@link Report} by its ID.
+     *
+     * @param id the ID of the {@link Report} to delete
+     * @return the deleted {@link Report}, or null if not found
+     */
     @Override
-    public Report getOne(Long aLong) {
+    public Report delete(Long id) {
         return null;
     }
 
     // endregion
+
 }
+
