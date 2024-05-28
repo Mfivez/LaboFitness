@@ -1,5 +1,4 @@
 package be.labofitness.labo_fitness.bll.service.impl;
-
 import be.labofitness.labo_fitness.bll.service.service.ReportService;
 import be.labofitness.labo_fitness.dal.repository.ReportRepository;
 import be.labofitness.labo_fitness.domain.entity.Report;
@@ -11,22 +10,37 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Implementation of the {@link ReportService} interface.
+ * <br>Provides methods to manage {@link Report} entities.
+ */
 @RequiredArgsConstructor
 @Service
 public class ReportServiceImpl implements ReportService {
 
     private final ReportRepository reportRepository;
 
+    //region MAKE REPORT
+
+    /**
+     * Creates a new {@link Report} with the specified parameters.
+     *
+     * @param complainant the user making the {@link Report}
+     * @param reportedUser the user being reported
+     * @param reportMessage the message describing the {@link Report}
+     */
     @Override @Transactional
-    public Report makeReportWithParams(User complainant, User reportedUser, String reportMessage) {
+    public void makeReportWithParams(User complainant, User reportedUser, String reportMessage) {
         Report report = new Report();
         report.setComplainant(complainant);
         report.setReportedUser(reportedUser);
         report.setDescription(reportMessage);
         report.setDate(LocalDateTime.now());
 
-        return reportRepository.save(report);
+        reportRepository.save(report);
     }
+
+    // endregion
 
     // region CLASSIC CRUD
 

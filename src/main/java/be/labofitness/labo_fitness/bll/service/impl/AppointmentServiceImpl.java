@@ -6,7 +6,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
-
+/**
+ * Implementation of the {@link AppointmentService} interface.
+ * <br>Provides CRUD operations for managing {@link Appointment} entities.
+ */
 @RequiredArgsConstructor
 @Service
 public class AppointmentServiceImpl implements AppointmentService {

@@ -1,14 +1,15 @@
 package be.labofitness.labo_fitness.bll.service.impl;
-
 import be.labofitness.labo_fitness.bll.service.service.CompetitionService;
 import be.labofitness.labo_fitness.dal.repository.CompetitionRepository;
-import be.labofitness.labo_fitness.domain.entity.Coach;
 import be.labofitness.labo_fitness.domain.entity.Competition;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
+/**
+ * Implementation of the {@link CompetitionService} interface.
+ * Provides CRUD operations for managing {@link Competition} entities.
+ */
 @RequiredArgsConstructor
 @Service
 public class CompetitionServiceImpl implements CompetitionService {
@@ -17,6 +18,13 @@ public class CompetitionServiceImpl implements CompetitionService {
 
     // region UTILS METHODS
 
+    /**
+     * Retrieves a {@link Competition} by its name ID.
+     *
+     * @param name the name ID of the {@link Competition} to retrieve
+     * @return the {@link Competition} with the given name ID
+     * @throws RuntimeException if the competition is not found
+     */
     @Override
     public Competition getCompetitionByCompetitionNameId(String name) {
         return competitionRepository.findByCompetitionNameId(name).orElseThrow(() -> new RuntimeException("Competition not found"));}

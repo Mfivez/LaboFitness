@@ -1,11 +1,9 @@
 package be.labofitness.labo_fitness.bll.service.impl;
-
 import be.labofitness.labo_fitness.bll.service.service.LocationService;
 import be.labofitness.labo_fitness.dal.repository.LocationRepository;
-import be.labofitness.labo_fitness.domain.entity.Competition;
+import be.labofitness.labo_fitness.domain.entity.LocationPlace;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import be.labofitness.labo_fitness.domain.entity.LocationPlace;
 import java.util.List;
 
 @RequiredArgsConstructor

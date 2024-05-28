@@ -1,11 +1,15 @@
 package be.labofitness.labo_fitness.bll.service.impl;
 import be.labofitness.labo_fitness.bll.service.service.TrainingSessionService;
 import be.labofitness.labo_fitness.dal.repository.TrainingSessionRepository;
+import be.labofitness.labo_fitness.domain.entity.TrainingSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import be.labofitness.labo_fitness.domain.entity.TrainingSession;
 import java.util.List;
 
+/**
+ * Implementation of the {@link TrainingSessionService} interface.
+ * <br>Provides methods to manage {@link TrainingSessionService}.
+ */
 @RequiredArgsConstructor
 @Service
 public class TrainingServiceImpl implements TrainingSessionService {
