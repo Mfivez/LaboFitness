@@ -1,4 +1,4 @@
-package be.labofitness.labo_fitness.bll.models.request.physiotherapist.manageAccount;
+package be.labofitness.labo_fitness.bll.model.request.physiotherapist.manageAccount;
 
 import be.labofitness.labo_fitness.domain.enums.Gender;
 import jakarta.validation.constraints.*;
@@ -40,8 +40,8 @@ public record PhysiotherapistManageAccountRequest(
         @Size(min = 3, message = "City zipcode must be at least 3 characters")
         String zipCode,
 
-        @NotNull(message = "error.physiotherapist.name.null")
+        @NotBlank(message = "error.physiotherapist.name.blank")
         @Size(min= 11, max = 11, message = "INAMI number must be eleven characters")
-        int inamiNumber
+        String inamiNumber
 ) {
 }

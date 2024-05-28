@@ -39,7 +39,7 @@ public class PhysiotherapistDataIni extends DataInitializer {
             physiotherapist1.setPassword(passwordEncoder.encode("password"));
             physiotherapist1.setAddress(new Address("123 Street", "2", "City", "12345"));
             physiotherapist1.setSpecialization("Kine");
-            physiotherapist1.setInamiNumber(1234568888);
+            physiotherapist1.setInamiNumber("1234568888");
             physiotherapist1.setRoles((roleService.setRole(Set.of("USER", "PHYSIOTHERAPIST"), roleRepository)));
             physiotherapist1.setWorkSchedule("Du Lundi au Vendredi 9h - 17h");
             physiotherapist1.setBirthdate(LocalDateTime.now());
@@ -51,7 +51,7 @@ public class PhysiotherapistDataIni extends DataInitializer {
             physiotherapist2.setPassword(passwordEncoder.encode("password"));
             physiotherapist2.setAddress(new Address("123 Street", "2", "City", "12345"));
             physiotherapist2.setSpecialization("Kine");
-            physiotherapist2.setInamiNumber(1234578888);
+            physiotherapist2.setInamiNumber("1234578888");
             physiotherapist2.setRoles((roleService.setRole(Set.of("USER", "PHYSIOTHERAPIST"), roleRepository)));
             physiotherapist2.setWorkSchedule("Du Lundi au Vendredi 9h - 17h");
             physiotherapist2.setBirthdate(LocalDateTime.now());

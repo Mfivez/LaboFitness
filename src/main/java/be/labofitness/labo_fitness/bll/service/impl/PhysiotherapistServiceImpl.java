@@ -1,29 +1,38 @@
 package be.labofitness.labo_fitness.bll.service.impl;
-
+import be.labofitness.labo_fitness.bll.exception.alreadyExists.EmailAlreadyExistsException;
+import be.labofitness.labo_fitness.bll.exception.notMatching.PasswordNotMatchingException;
 import be.labofitness.labo_fitness.bll.model.planning.PhysioPlanningRequest;
 import be.labofitness.labo_fitness.bll.model.planning.PlanningResponse;
+import be.labofitness.labo_fitness.bll.model.request.physiotherapist.manageAccount.PhysiotherapistManageAccountRequest;
+import be.labofitness.labo_fitness.bll.model.request.physiotherapist.manageAccount.changePassWord.PhysiotherapistChangePasswordRequest;
+import be.labofitness.labo_fitness.bll.model.response.physiotherapist.manageAccount.PhysiotherapistManageAccountResponse;
+import be.labofitness.labo_fitness.bll.model.response.physiotherapist.manageAccount.changePassword.PhysiotherapistChangePasswordResponse;
 import be.labofitness.labo_fitness.bll.service.service.PhysiotherapistService;
 import be.labofitness.labo_fitness.bll.service.service.PlanningService;
+import be.labofitness.labo_fitness.bll.service.service.security.SecurityService;
 import be.labofitness.labo_fitness.dal.repository.PhysiotherapistRepository;
+import be.labofitness.labo_fitness.dal.repository.UserRepository;
 import be.labofitness.labo_fitness.domain.entity.Appointment;
-import be.labofitness.labo_fitness.domain.entity.LocationPlace;
 import be.labofitness.labo_fitness.domain.entity.Physiotherapist;
+import be.labofitness.labo_fitness.domain.entity.base.Address;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.List;
-import static be.labofitness.labo_fitness.il.utils.LaboFitnessUtil.getCurrentMethodeName;
+//TODO METH
+//import static be.labofitness.labo_fitness.il.utils.LaboFitnessUtil.getCurrentMethodeName;
 
-@Service
 @RequiredArgsConstructor
 @Service
 public class PhysiotherapistServiceImpl implements PhysiotherapistService {
 
     private final PlanningService planningService;
-    private final PhysiotherapistRepository physiotherapistRepository;
-    private final PasswordEncoder  passwordEncoder;
     private final UserRepository userRepository;
+    private final PhysiotherapistRepository physiotherapistRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final SecurityService securityService;
 
     // region GET PLANNING
 
@@ -99,35 +108,48 @@ public class PhysiotherapistServiceImpl implements PhysiotherapistService {
 
     @Override
     @Transactional
+    /**
+     * Update an {@link Physiotherapist} account
+     * @param request of the {@link PhysiotherapistManageAccountRequest} to update
+     * @return response {@link PhysiotherapistManageAccountResponse} with a message
+     */
     public PhysiotherapistManageAccountResponse manageAccount(PhysiotherapistManageAccountRequest request) {
 
-        String message = getCurrentMethodeName();
+        String message = "getCurrentMethodeName()";
+        Physiotherapist physiotherapist = securityService.getAuthentication(Physiotherapist.class);
 
-        if(userRepository.existsByEmail(request.email())){
-            throw new EmailAlreadyExistsException("Email already exists");
+        if (!physiotherapist.getEmail().equals(request.email())) {
+            if (!userRepository.existsByEmail(request.email())) {  physiotherapist.setEmail(request.email());  }
+            else{
+                throw new PasswordNotMatchingException("Email already exists");
+            }
         }
-        Physiotherapist physiotherapist = LaboFitnessUtil.getAuthentication(Physiotherapist.class);
+
         physiotherapist.setName(request.name());
-        physiotherapist.setLast_name(request.lastName());
-        physiotherapist.setEmail(request.email());
+        physiotherapist.setLastname(request.lastName());
         physiotherapist.setGender(request.gender());
-        physiotherapist.setAdress(new Adress(request.street(), request.number(), request.city(), request.zipCode()));
-        physiotherapist.setInami_number(request.inamiNumber());
+        physiotherapist.setAddress(new Address(request.street(), request.number(), request.city(), request.zipCode()));
+        physiotherapist.setInamiNumber(request.inamiNumber());
 
         physiotherapistRepository.save(physiotherapist);
 
         return PhysiotherapistManageAccountResponse.fromEntity(physiotherapist,message);
     }
 
+    /**
+     * Update the password of an {@link Physiotherapist} account
+     * @param request of the {@link PhysiotherapistChangePasswordRequest} to update
+     * @return response {@link PhysiotherapistChangePasswordResponse} with a message
+     */
     @Override
     @Transactional
     public PhysiotherapistChangePasswordResponse changePassword(PhysiotherapistChangePasswordRequest request) {
 
-        String message = getCurrentMethodeName();
+        String message = "getCurrentMethodeName()";
 
-        Physiotherapist physiotherapist = LaboFitnessUtil.getAuthentication(Physiotherapist.class);
+        Physiotherapist physiotherapist = securityService.getAuthentication(Physiotherapist.class);
 
-        if(!passwordEncoder.encode(request.oldPassword()).equals(physiotherapistRepository.findPasswordByPhysiotherapistId(physiotherapist.getId()))){
+        if(!passwordEncoder.matches(request.oldPassword(),physiotherapist.getPassword())){
 
             throw new PasswordNotMatchingException("passwords are not matching");
         }

@@ -32,7 +32,7 @@ import java.util.Optional;
 public interface ClientRepository extends JpaRepository<Client, Long> {
 
 
-    //regon PASSWORD MANAGEMENT
+    //region PASSWORD MANAGEMENT
 
     @Query("SELECT c.password FROM Client c WHERE c.email ilike :email")
     String findPasswordByClientEmail(String email);
@@ -41,17 +41,7 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
     String findPasswordByClientId(Long id);
 
     //endregion
-
-
-    //region UTILS
-
-    @Query( "Select c " +
-            "from Client c " +
-            "where c.email ilike :email")
-    Optional<Client> findByEmail(String email);
-
-    //endregion
-
+    
     // region PERSONAL TRAINING SESSION
 
     /**

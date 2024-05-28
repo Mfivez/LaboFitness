@@ -7,7 +7,7 @@ import java.lang.annotation.Retention;
 
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-@Pattern(regexp = "^(?=.*[A-Z])(?=.*\\d)(?=.*[\\W_]).{5,}$")
+@Pattern(regexp = "^(?=.*[A-Z])(?=.*\\d)(?=.*[\\W_]).{5,}$", message = "password must be 5 characters 1 number, one upper case and one special symbol")
 @Retention(RUNTIME)
 @Constraint(validatedBy = {})
 public @interface CustomPasswordValidator {

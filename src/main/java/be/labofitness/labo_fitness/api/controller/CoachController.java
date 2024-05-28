@@ -5,6 +5,10 @@ import be.labofitness.labo_fitness.bll.model.planning.CoachPlanningRequest;
 import be.labofitness.labo_fitness.bll.model.coach.ManageEventInscription.ManageEventInscriptionResponse;
 import be.labofitness.labo_fitness.bll.model.coach.manageAccount.CoachManageAccountResponse;
 import be.labofitness.labo_fitness.bll.model.planning.PlanningResponse;
+import be.labofitness.labo_fitness.bll.model.request.client.manageAccount.changePassword.ClientChangePasswordRequest;
+import be.labofitness.labo_fitness.bll.model.request.coach.manageAccount.changePassword.CoachChangePasswordRequest;
+import be.labofitness.labo_fitness.bll.model.response.client.manageAccount.changePassword.ClientChangePasswordResponse;
+import be.labofitness.labo_fitness.bll.model.response.coach.manageAccount.changePassword.CoachChangePasswordResponse;
 import be.labofitness.labo_fitness.bll.service.service.CoachService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -56,12 +60,21 @@ public class CoachController {
      * @param request the {@link CoachManageAccountRequest} containing account management details
      * @return a {@link ResponseEntity} containing the {@link CoachManageAccountResponse}
      */
+    @PutMapping("/manage-account")
     @PreAuthorize("hasAuthority('COACH')")
-    @PostMapping("/manage-account")
     public ResponseEntity<CoachManageAccountResponse> coachManageAccount(@Valid @ModelAttribute CoachManageAccountRequest request) {
         return ResponseEntity.ok(coachService.manageAccount(request));
     }
 
+    /**
+     * Endpoint for changing a client's password.
+     *
+     * <p>This endpoint is accessible to authenticated users with the {@code CLIENT authority}. It handles account management requests
+     * and returns a {@link CoachChangePasswordResponse} containing the details of the managed account.</p>
+     *
+     * @param request the {@link CoachChangePasswordRequest} containing account management details
+     * @return a {@link ResponseEntity} containing the {@link CoachChangePasswordResponse}
+     */
     @PutMapping("/manage-account/password")
     @PreAuthorize("hasAuthority('COACH')")
     public ResponseEntity<CoachChangePasswordResponse> changePassword(@Valid @RequestBody CoachChangePasswordRequest request){

@@ -4,13 +4,18 @@ import be.labofitness.labo_fitness.bll.exception.alreadyExists.EmailAlreadyExist
 import be.labofitness.labo_fitness.bll.exception.doesntExists.DoesntExistException;
 import be.labofitness.labo_fitness.bll.exception.doesntExists.EmailDoesntExistException;
 import be.labofitness.labo_fitness.bll.exception.inscriptionClosed.InscriptionCloseException;
+import be.labofitness.labo_fitness.bll.exception.notMatching.PasswordNotMatchingException;
 import be.labofitness.labo_fitness.bll.model.client.CompetitionRegister.CompetitionRegisterRequest;
 import be.labofitness.labo_fitness.bll.model.client.TrainingSessionSubscription.TrainingSubscriptionRequest;
 import be.labofitness.labo_fitness.bll.model.client.makeAppointment.AcceptAppointmentPlanningRequest;
 import be.labofitness.labo_fitness.bll.model.client.makeAppointment.CancelAppointmentRequest;
 import be.labofitness.labo_fitness.bll.model.client.makeAppointment.MakeRequestForAppointmentRequest;
 import be.labofitness.labo_fitness.bll.model.client.manageAccount.ClientManageAccountRequest;
+import be.labofitness.labo_fitness.bll.model.coach.manageAccount.CoachManageAccountRequest;
+import be.labofitness.labo_fitness.bll.model.coach.manageAccount.CoachManageAccountResponse;
 import be.labofitness.labo_fitness.bll.model.planning.ClientPlanningRequest;
+import be.labofitness.labo_fitness.bll.model.request.client.manageAccount.changePassword.ClientChangePasswordRequest;
+import be.labofitness.labo_fitness.bll.model.response.client.manageAccount.changePassword.ClientChangePasswordResponse;
 import be.labofitness.labo_fitness.bll.model.user.getCoach.GetCoachesByNameRequest;
 import be.labofitness.labo_fitness.bll.model.user.getCoach.GetCoachesByRemoteRequest;
 import be.labofitness.labo_fitness.bll.model.user.getCoach.GetCoachesBySpecializationRequest;
@@ -51,9 +56,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import static be.labofitness.labo_fitness.il.utils.LaboFitnessUtil.getCurrentMethodeName;
+//TODO REFAIRE METH
+//import static be.labofitness.labo_fitness.il.utils.LaboFitnessUtil.getCurrentMethodeName;
 
-@Service
+
 @RequiredArgsConstructor
 @Service
 public class ClientServiceImpl  implements ClientService {
@@ -72,14 +78,50 @@ public class ClientServiceImpl  implements ClientService {
 
     // region MANAGE ACCOUNT
 
+    /**
+     * Update an {@link Client} account
+     * @param request of the {@link ClientManageAccountRequest} to update
+     * @return response {@link ClientManageAccountResponse} with a message
+     */
+    @Override
+    @Transactional
+    public ClientManageAccountResponse manageAccount(ClientManageAccountRequest request) {
+        String message  = "getCurrentMethodeName()";
+        Client client = securityService.getAuthentication(Client.class);
+
+        if (!client.getEmail().equals(request.email())) {
+            if (!userRepository.existsByEmail(request.email())) {  client.setEmail(request.email());  }
+            else{
+                throw new PasswordNotMatchingException("Email already exists");
+            }
+        }
+
+        client.setName(request.name());
+        client.setLastname(request.lastName());
+        client.setGender(request.gender());
+        client.setAddress(new Address(request.street(), request.number(), request.city(), request.zipCode()));
+        client.setWeight(request.weight());
+        client.setHeight(request.height());
+        clientRepository.save(client);
+
+        return ClientManageAccountResponse.fromEntity(client,message);
+    }
+
+
+    /**
+     * Update the password of an {@link Client} account
+     * @param request of the {@link ClientChangePasswordRequest} to update
+     * @return response {@link ClientChangePasswordResponse} with a message
+     */
     @Override
     @Transactional
     public ClientChangePasswordResponse changePassword(ClientChangePasswordRequest request) {
 
-        String message = getCurrentMethodeName();
+        String message = "getCurrentMethodeName()";
 
-        Client client = LaboFitnessUtil.getAuthentication(Client.class);
-        if(!passwordEncoder.encode(request.oldPassword()).equals(clientRepository.findPasswordByClientId(client.getId()))){
+        Client client = securityService.getAuthentication(Client.class);
+
+        if(!passwordEncoder.matches(request.oldPassword(), clientRepository.findPasswordByClientId(client.getId()))){
 
             throw new PasswordNotMatchingException("passwords are not matching");
         }
@@ -114,27 +156,6 @@ public class ClientServiceImpl  implements ClientService {
         clientRepository.save(client);
 
         return new RegisterResponse("Account created with success");
-    }
-
-    @Override @Transactional
-    public ClientManageAccountResponse manageAccount(ClientManageAccountRequest request) {
-
-        String message  = getCurrentMethodeName();
-
-        if(userRepository.existsByEmail(request.email())){
-            throw  new EmailAlreadyExistsException("Email already exists :" + request.email()); }
-
-        Client client = securityService.getAuthentication(Client.class);
-        client.setName(request.name());
-        client.setLastname(request.lastName());
-        client.setEmail(request.email());
-        client.setGender(request.gender());
-        client.setAddress(new Address(request.street(), request.number(), request.city(), request.zipCode()));
-        client.setWeight(request.weight());
-        client.setHeight(request.height());
-        clientRepository.save(client);
-
-        return ClientManageAccountResponse.fromEntity(client,message);
     }
 
     //endregion
