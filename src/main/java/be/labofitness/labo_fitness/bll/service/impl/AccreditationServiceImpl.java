@@ -1,5 +1,4 @@
 package be.labofitness.labo_fitness.bll.service.impl;
-
 import be.labofitness.labo_fitness.bll.service.service.AccreditationService;
 import be.labofitness.labo_fitness.dal.repository.AccreditationRepository;
 import be.labofitness.labo_fitness.domain.entity.Accreditation;
@@ -10,27 +9,24 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
+/**
+ * Implementation of the {@link AccreditationService} interface.
+ * <br>Provides methods to manage {@link Accreditation} entities.
+ */
 @RequiredArgsConstructor
+@Service
 public class AccreditationServiceImpl implements AccreditationService {
 
     private final AccreditationRepository accreditationRepository;
 
-    @Override
-    public Accreditation getOne(Long aLong) {
-        return null;
-    }
-
-    @Override
-    public List<Accreditation> getAll() {
-        return List.of();
-    }
-
-    @Override
-    public Accreditation create(Accreditation entity) {
-        return null;
-    }
-
+    /**
+     * Creates a new {@link Accreditation} with specified parameters.
+     *
+     * @param accreditationType the type of the {@link Accreditation}
+     * @param description       the description of the {@link Accreditation}
+     * @param pro               the professional associated with the {@link Accreditation}
+     * @return the created {@link Accreditation}
+     */
     @Override
     public Accreditation createWithParam(AccreditationType accreditationType, String description, Professional pro) {
         Accreditation accreditation = new Accreditation();
@@ -40,13 +36,61 @@ public class AccreditationServiceImpl implements AccreditationService {
         return accreditationRepository.save(accreditation);
     }
 
+    // region CLASSIC CRUD
+
+    /**
+     * Retrieves an {@link Accreditation} by its ID.
+     *
+     * @param id the ID of the {@link Accreditation} to retrieve
+     * @return the {@link Accreditation} with the given ID
+     */
+    @Override
+    public Accreditation getOne(Long id) {
+        return null;
+    }
+
+    /**
+     * Retrieves all {@link Accreditation}.
+     *
+     * @return a list of all {@link Accreditation}
+     */
+    @Override
+    public List<Accreditation> getAll() {
+        return null;
+    }
+
+    /**
+     * Creates a new {@link Accreditation}.
+     *
+     * @param entity the {@link Accreditation} to create
+     * @return the created {@link Accreditation}
+     */
+    @Override
+    public Accreditation create(Accreditation entity) {
+        return null;
+    }
+
+    /**
+     * Updates an existing {@link Accreditation}.
+     *
+     * @param entity the {@link Accreditation} to update
+     * @return the updated {@link Accreditation}
+     */
     @Override
     public Accreditation update(Accreditation entity) {
         return null;
     }
 
+    /**
+     * Deletes an {@link Accreditation} by its ID.
+     *
+     * @param id the ID of the {@link Accreditation} to delete
+     * @return the deleted {@link Accreditation}, or null if not found
+     */
     @Override
-    public Accreditation delete(Long aLong) {
+    public Accreditation delete(Long id) {
         return null;
     }
+
+    // endregion
 }

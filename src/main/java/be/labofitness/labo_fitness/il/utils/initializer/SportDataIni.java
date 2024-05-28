@@ -29,17 +29,17 @@ public class SportDataIni extends DataInitializer {
             Sport sport1 = new Sport();
             sport1.setName("Football");
             sport1.setDescription("A team sport played with a spherical ball between two teams of 11 players.");
-            sport1.setTypeSport(TypeSport.SPORTEQUIPE);
+            sport1.setTypeSport(TypeSport.TEAM_SPORT);
 
             Sport sport2 = new Sport();
             sport2.setName("Tennis");
             sport2.setDescription("A racket sport that can be played individually against a single opponent (singles) or between two teams of two players each (doubles).");
-            sport2.setTypeSport(TypeSport.SPORTSOLO);
+            sport2.setTypeSport(TypeSport.INDIVIDUAL_SPORT);
 
             Sport sport3 = new Sport();
             sport3.setName("Swimming");
             sport3.setDescription("The sport of propelling oneself through water using the limbs.");
-            sport3.setTypeSport(TypeSport.SPORTSOLO);
+            sport3.setTypeSport(TypeSport.INDIVIDUAL_SPORT);
 
             sportRepository.save(sport1);
             sportRepository.save(sport2);

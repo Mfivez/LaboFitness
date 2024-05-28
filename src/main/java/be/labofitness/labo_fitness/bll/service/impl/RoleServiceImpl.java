@@ -2,15 +2,20 @@ package be.labofitness.labo_fitness.bll.service.impl;
 
 import be.labofitness.labo_fitness.bll.service.service.RoleService;
 import be.labofitness.labo_fitness.dal.repository.RoleRepository;
+import be.labofitness.labo_fitness.domain.entity.Report;
 import be.labofitness.labo_fitness.domain.entity.Role;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 @Service
 public class RoleServiceImpl implements RoleService {
+
+    private final RoleRepository roleRepository;
 
     @Override
     public Set<Role> setRole(Set<String> roles, RoleRepository roleRepository) {
@@ -27,29 +32,62 @@ public class RoleServiceImpl implements RoleService {
                 }).collect(Collectors.toUnmodifiableSet());
     }
 
+    // region CLASSIC CRUD
+
+    /**
+     * Retrieves an {@link Role} by its ID.
+     *
+     * @param id the ID of the {@link Role} to retrieve
+     * @return the {@link Role} with the given ID
+     */
     @Override
-    public Role getOne(Long aLong) {
+    public Role getOne(Long id) {
         return null;
     }
 
+    /**
+     * Retrieves all {@link Role}.
+     *
+     * @return a list of all {@link Role}
+     */
     @Override
     public List<Role> getAll() {
-        return List.of();
+        return roleRepository.findAll();
     }
 
+    /**
+     * Creates a new {@link Role}.
+     *
+     * @param entity the {@link Role} to create
+     * @return the created {@link Role}
+     */
     @Override
     public Role create(Role entity) {
         return null;
     }
 
+    /**
+     * Updates an existing {@link Role}.
+     *
+     * @param entity the {@link Role} to update
+     * @return the updated {@link Role}
+     */
     @Override
     public Role update(Role entity) {
         return null;
     }
 
+    /**
+     * Deletes an {@link Role} by its ID.
+     *
+     * @param id the ID of the {@link Role} to delete
+     * @return the deleted {@link Role}, or null if not found
+     */
     @Override
-    public Role delete(Long aLong) {
+    public Role delete(Long id) {
         return null;
     }
+
+    // endregion
 
 }

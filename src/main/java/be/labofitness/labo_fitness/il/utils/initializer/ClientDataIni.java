@@ -2,7 +2,7 @@ package be.labofitness.labo_fitness.il.utils.initializer;
 import be.labofitness.labo_fitness.bll.service.service.RoleService;
 import be.labofitness.labo_fitness.dal.repository.*;
 import be.labofitness.labo_fitness.domain.entity.*;
-import be.labofitness.labo_fitness.domain.entity.base.Adress;
+import be.labofitness.labo_fitness.domain.entity.base.Address;
 import be.labofitness.labo_fitness.domain.enums.Goal;
 import be.labofitness.labo_fitness.il.utils.initializer.base.DataInitializer;
 import lombok.RequiredArgsConstructor;
@@ -37,10 +37,10 @@ public class ClientDataIni extends DataInitializer {
 
             Client client1 = new Client();
             client1.setName("John");
-            client1.setLast_name("Doe");
+            client1.setLastname("Doe");
             client1.setEmail("john.doe@example.com");
             client1.setPassword(passwordEncoder.encode("password"));
-            client1.setAdress(new Adress("123 Street",  "2", "City", "12345"));
+            client1.setAddress(new Address("123 Street",  "2", "City", "12345"));
             client1.setWeight(70);
             client1.setHeight(180);
             client1.setGoal(Goal.LEISURE_SPORT);
@@ -52,10 +52,10 @@ public class ClientDataIni extends DataInitializer {
 
             Client client2 = new Client();
             client2.setName("Jane");
-            client2.setLast_name("Smith");
+            client2.setLastname("Smith");
             client2.setEmail("jane.smith@example.com");
             client2.setPassword(passwordEncoder.encode("password"));
-            client2.setAdress(new Adress("456 Avenue", "2","Town", "67890"));
+            client2.setAddress(new Address("456 Avenue", "2","Town", "67890"));
             client2.setWeight(65);
             client2.setHeight(170);
             client2.setGoal(Goal.LIFESTYLE_IMPROVEMENT);

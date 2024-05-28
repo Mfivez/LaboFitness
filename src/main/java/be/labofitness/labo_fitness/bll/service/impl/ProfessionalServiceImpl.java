@@ -1,8 +1,8 @@
 package be.labofitness.labo_fitness.bll.service.impl;
 
 import be.labofitness.labo_fitness.bll.exception.alreadyExists.EmailAlreadyExistsException;
-import be.labofitness.labo_fitness.bll.model.request.professionnel.ProfessionalRegisterRequest;
-import be.labofitness.labo_fitness.bll.model.response.user.register.RegisterResponse;
+import be.labofitness.labo_fitness.bll.model.register.ProfessionalRegisterRequest;
+import be.labofitness.labo_fitness.bll.model.register.RegisterResponse;
 import be.labofitness.labo_fitness.bll.service.service.AccreditationService;
 import be.labofitness.labo_fitness.bll.service.service.ProfessionalService;
 import be.labofitness.labo_fitness.bll.service.service.RoleService;
@@ -16,10 +16,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Set;
 
-@Service
 @RequiredArgsConstructor
+@Service
 public class ProfessionalServiceImpl implements ProfessionalService{
-
 
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;  //TODO REFAC
@@ -28,7 +27,7 @@ public class ProfessionalServiceImpl implements ProfessionalService{
     private final RoleRepository roleRepository;  //TODO REFAC
     private final AccreditationService accreditationService;
     private final RoleService roleService;
-
+    private final ProfessionalRepository professionalRepository;
 
     @Override
     public RegisterResponse register(ProfessionalRegisterRequest request) {
@@ -41,7 +40,7 @@ public class ProfessionalServiceImpl implements ProfessionalService{
         if(request.role().equals("PHYSIOTHERAPIST")) {
             Physiotherapist physiotherapist = new Physiotherapist();
             physiotherapist.setName(request.name());
-            physiotherapist.setLast_name(request.lastName());
+            physiotherapist.setLastname(request.lastName());
             physiotherapist.setBirthdate(LaboFitnessUtil.createNewDate(request.year(), request.month(), request.day()));
             physiotherapist.setEmail(request.email());
             physiotherapist.setPassword(passwordEncoder.encode(request.password()));
@@ -52,7 +51,7 @@ public class ProfessionalServiceImpl implements ProfessionalService{
         else if(request.role().equals("COACH"))  {
             Coach coach = new Coach();
             coach.setName(request.name());
-            coach.setLast_name(request.lastName());
+            coach.setLastname(request.lastName());
             coach.setBirthdate(LaboFitnessUtil.createNewDate(request.year(), request.month(), request.day()));
             coach.setEmail(request.email());
             coach.setPassword(passwordEncoder.encode(request.password()));
@@ -66,28 +65,62 @@ public class ProfessionalServiceImpl implements ProfessionalService{
         return new RegisterResponse("Account created with success");
     }
 
+    // region CLASSIC CRUD
+
+    /**
+     * Retrieves an {@link Professional} by its ID.
+     *
+     * @param id the ID of the {@link Professional} to retrieve
+     * @return the {@link Professional} with the given ID
+     */
     @Override
-    public Professional getOne(Long aLong) {
+    public Physiotherapist getOne(Long id) {
         return null;
     }
 
+    /**
+     * Retrieves all {@link Professional}.
+     *
+     * @return a list of all {@link Professional}
+     */
     @Override
     public List<Professional> getAll() {
-        return List.of();
+        return professionalRepository.findAll();
     }
 
+    /**
+     * Creates a new {@link Professional}.
+     *
+     * @param entity the {@link Professional} to create
+     * @return the created {@link Professional}
+     */
     @Override
     public Professional create(Professional entity) {
         return null;
     }
 
+    /**
+     * Updates an existing {@link Professional}.
+     *
+     * @param entity the {@link Professional} to update
+     * @return the updated {@link Professional}
+     */
     @Override
     public Professional update(Professional entity) {
         return null;
     }
 
+    /**
+     * Deletes an {@link Professional} by its ID.
+     *
+     * @param id the ID of the {@link Professional} to delete
+     * @return the deleted {@link Professional}, or null if not found
+     */
     @Override
-    public Professional delete(Long aLong) {
+    public Professional delete(Long id) {
         return null;
     }
+
+    // endregion
+
 }

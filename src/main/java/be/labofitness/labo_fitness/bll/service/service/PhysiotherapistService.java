@@ -1,7 +1,7 @@
 package be.labofitness.labo_fitness.bll.service.service;
 
-import be.labofitness.labo_fitness.bll.model.request.planning.PhysioPlanningRequest;
-import be.labofitness.labo_fitness.bll.model.response.planning.PlanningResponse;
+import be.labofitness.labo_fitness.bll.model.planning.PhysioPlanningRequest;
+import be.labofitness.labo_fitness.bll.model.planning.PlanningResponse;
 import be.labofitness.labo_fitness.bll.service.base.CrudService;
 import be.labofitness.labo_fitness.domain.entity.Physiotherapist;
 

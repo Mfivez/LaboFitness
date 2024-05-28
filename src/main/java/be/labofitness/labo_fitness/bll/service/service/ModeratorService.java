@@ -1,9 +1,9 @@
 package be.labofitness.labo_fitness.bll.service.service;
 
-import be.labofitness.labo_fitness.bll.model.request.moderator.report.ReportRequest;
-import be.labofitness.labo_fitness.bll.model.request.moderator.report.ModeratorUpdateReportIsApprovedStateRequest;
-import be.labofitness.labo_fitness.bll.model.response.moderator.report.ReportResponse;
-import be.labofitness.labo_fitness.bll.model.response.moderator.report.ModeratorReportUpdateIsApprovedStateResponse;
+import be.labofitness.labo_fitness.bll.model.moderator.report.ReportRequest;
+import be.labofitness.labo_fitness.bll.model.moderator.report.ModeratorUpdateReportIsApprovedStateRequest;
+import be.labofitness.labo_fitness.bll.model.moderator.report.ReportResponse;
+import be.labofitness.labo_fitness.bll.model.moderator.report.ModeratorReportUpdateIsApprovedStateResponse;
 
 
 public interface ModeratorService {

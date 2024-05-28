@@ -1,8 +1,8 @@
 package be.labofitness.labo_fitness.bll.service.impl;
 
-import be.labofitness.labo_fitness.bll.model.request.planning.ClientPlanningRequest;
-import be.labofitness.labo_fitness.bll.model.request.planning.CoachPlanningRequest;
-import be.labofitness.labo_fitness.bll.model.request.planning.PhysioPlanningRequest;
+import be.labofitness.labo_fitness.bll.model.planning.ClientPlanningRequest;
+import be.labofitness.labo_fitness.bll.model.planning.CoachPlanningRequest;
+import be.labofitness.labo_fitness.bll.model.planning.PhysioPlanningRequest;
 import be.labofitness.labo_fitness.bll.service.service.PlanningService;
 import be.labofitness.labo_fitness.bll.service.service.security.SecurityService;
 import be.labofitness.labo_fitness.bll.specification.AppointmentSpecification;
@@ -16,8 +16,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
-@Service
 @RequiredArgsConstructor
+@Service
 public class PlanningServiceImpl implements PlanningService {
 
     private final ClientRepository clientRepository;  //TODO REFAC
