@@ -1,5 +1,4 @@
 package be.labofitness.labo_fitness.il.utils.initializer;
-
 import be.labofitness.labo_fitness.bll.service.service.RoleService;
 import be.labofitness.labo_fitness.dal.repository.PhysiotherapistRepository;
 import be.labofitness.labo_fitness.dal.repository.RoleRepository;
@@ -14,21 +13,28 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 import java.util.Set;
 
+/**
+ * Data initializer for populating the database with initial {@link Physiotherapist} data.
+ */
 @Component
 @RequiredArgsConstructor
 @Order(5)
 public class PhysiotherapistDataIni extends DataInitializer {
-
 
     private final PhysiotherapistRepository physiotherapistRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final RoleService roleService;
 
+    /**
+     * Populates the database with initial {@link Physiotherapist} data if no {@link Physiotherapist} records exist.
+     *
+     * @param args Command-line arguments.
+     * @throws Exception If an error occurs during data initialization.
+     */
     @Override
     public void run(String... args) throws Exception {
         super.run(args);
-
 
         if (physiotherapistRepository.count() == 0) {
 
@@ -58,7 +64,6 @@ public class PhysiotherapistDataIni extends DataInitializer {
 
             physiotherapistRepository.save(physiotherapist1);
             physiotherapistRepository.save(physiotherapist2);
-
         }
     }
 }

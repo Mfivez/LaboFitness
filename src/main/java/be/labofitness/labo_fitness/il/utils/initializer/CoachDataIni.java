@@ -1,5 +1,4 @@
 package be.labofitness.labo_fitness.il.utils.initializer;
-
 import be.labofitness.labo_fitness.bll.service.service.RoleService;
 import be.labofitness.labo_fitness.dal.repository.CoachRepository;
 import be.labofitness.labo_fitness.dal.repository.LocationRepository;
@@ -18,6 +17,9 @@ import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.Set;
 
+/**
+ * Data initializer for populating the database with initial {@link Coach} data.
+ */
 @Component
 @RequiredArgsConstructor
 @Order(4)
@@ -29,12 +31,17 @@ public class CoachDataIni extends DataInitializer {
     private final PasswordEncoder passwordEncoder;
     private final RoleService roleService;
 
+    /**
+     * Populates the database with initial {@link Coach} data if no {@link Coach} records exist.
+     *
+     * @param args Command-line arguments.
+     * @throws Exception If an error occurs during data initialization.
+     */
     @Override
     public void run(String... args) throws Exception {
         super.run(args);
         if (coachRepository.count() == 0) {
             LocationPlace coachLocationPlace = locationRepository.findById(1L).orElseThrow(RuntimeException::new);
-
 
             Coach coach1 = new Coach();
             coach1.setName("Jeremy");

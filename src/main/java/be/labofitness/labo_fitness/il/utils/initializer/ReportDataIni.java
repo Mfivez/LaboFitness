@@ -1,10 +1,10 @@
 package be.labofitness.labo_fitness.il.utils.initializer;
-
 import be.labofitness.labo_fitness.dal.repository.ReportRepository;
 import be.labofitness.labo_fitness.dal.repository.UserRepository;
 import be.labofitness.labo_fitness.domain.entity.Report;
 import be.labofitness.labo_fitness.domain.entity.User;
 import be.labofitness.labo_fitness.il.utils.initializer.base.DataInitializer;
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -12,18 +12,23 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Data initializer for populating the database with initial {@link Report} data.
+ */
 @Component
+@RequiredArgsConstructor
 @Order(11)
 public class ReportDataIni extends DataInitializer {
 
     private final ReportRepository reportRepository;
     private final UserRepository userRepository;
 
-    public ReportDataIni(ReportRepository reportRepository, UserRepository userRepository) {
-        this.reportRepository = reportRepository;
-        this.userRepository = userRepository;
-    }
-
+    /**
+     * Populates the database with initial {@link Report} data if no {@link Report} records exist.
+     *
+     * @param args Command-line arguments.
+     * @throws Exception If an error occurs during data initialization.
+     */
     @Override
     public void run(String... args) throws Exception {
         super.run(args);
@@ -33,7 +38,6 @@ public class ReportDataIni extends DataInitializer {
             if (users.size() < 2) {
                 throw new RuntimeException("Not enough users in the database to create reports.");
             }
-
             User complainant1 = users.get(0);
             User complainant2 = users.get(1);
 

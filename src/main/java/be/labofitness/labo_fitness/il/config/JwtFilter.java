@@ -1,5 +1,4 @@
 package be.labofitness.labo_fitness.il.config;
-
 import be.labofitness.labo_fitness.il.utils.JwtUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -8,6 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
@@ -15,6 +15,13 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+/**
+ * <p>Filter responsible for processing {@code JWT authentication}.</p>
+ * <p>This filter intercepts incoming requests and extracts {@code JWT tokens}
+ * from the {@code "Authorization" header}.</p>
+ * <p>It then validates the tokens using the {@link JwtUtil} class and sets
+ * the authenticated {@link User} in the {@code Spring Security context}.</p>
+ */
 @Component
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
@@ -22,17 +29,20 @@ public class JwtFilter extends OncePerRequestFilter {
     private final JwtUtil jwtUtil;
     private final UserDetailsService userService;
 
-
-    /* //TODO Retirer ça
-    *    @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) {
-        return request.getServletPath().startsWith("/api/auth/");
-    }
-    *
-    * Permet de d'empecher au filter de s'appliquer au chemin /api/auth/(du coup pas besoin du logout)
-    * */
-
-
+    /**
+     * <p>Overrides the {@code doFilterInternal} method to perform {@code JWT authentication}
+     * for each incoming request.</p>
+     * <p>Extracts the {@code JWT token} from the "Authorization" header and validates it.</p>
+     * <p>If the {@code token} is valid, it loads the {@code user details}  from the  {@code database}
+     * and sets the authenticated {@link User} in the {@code Security context}.</p>
+     * <p>Once the authentication is completed, the request is allowed to proceed down the filter chain.</p>
+     *
+     * @param request     the incoming HTTP request
+     * @param response    the HTTP response
+     * @param filterChain the filter chain
+     * @throws ServletException if an error occurs during the filter execution
+     * @throws IOException      if an I/O error occurs
+     */
     @Override
     protected void doFilterInternal(
             HttpServletRequest request,
@@ -53,7 +63,6 @@ public class JwtFilter extends OncePerRequestFilter {
                             user,
                             token,
                             user.getAuthorities()
-                            //authorities
                     );
                     SecurityContextHolder.getContext().setAuthentication(userPassAuthToken);
                 }

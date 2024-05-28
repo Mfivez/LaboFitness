@@ -1,5 +1,4 @@
 package be.labofitness.labo_fitness.il.utils.initializer;
-
 import be.labofitness.labo_fitness.dal.repository.CoachRepository;
 import be.labofitness.labo_fitness.dal.repository.TrainingSessionRepository;
 import be.labofitness.labo_fitness.domain.entity.Coach;
@@ -12,21 +11,26 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 
+/**
+ * Data initializer for populating the database with initial {@link TrainingSession} data.
+ */
 @Component
 @RequiredArgsConstructor
 @Order(8)
 public class TrainingSessionDataIni extends DataInitializer {
 
-
     private final TrainingSessionRepository trainingSessionRepository;
     private final CoachRepository coachRepository;
 
-
+    /**
+     * Populates the database with initial {@link TrainingSession} data if no {@link TrainingSession} records exist.
+     *
+     * @param args Command-line arguments.
+     * @throws Exception If an error occurs during data initialization.
+     */
     @Override
     public void run(String... args) throws Exception {
         super.run(args);
-
-
         if (trainingSessionRepository.count() == 0) {
 
             Coach coach = coachRepository.findById(1L).orElseThrow();
@@ -49,7 +53,6 @@ public class TrainingSessionDataIni extends DataInitializer {
 
             trainingSessionRepository.save(session1);
             trainingSessionRepository.save(session2);
-
         }
     }
 
