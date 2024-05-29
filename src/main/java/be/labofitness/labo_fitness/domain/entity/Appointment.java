@@ -106,4 +106,13 @@ public class Appointment extends BaseEntity<Long> {
         this.appointmentStatus = AppointmentStatus.NOT_PLANNED; // TODO Ajouter autre chose que NO_RESPONSE (NEW PARAM)
     }
 
+    public Appointment(Client client, Physiotherapist physiotherapist, String reason, AppointmentStatus appointmentStatus) {
+        this.client = client;
+        this.reasonOfAppointment = reason;
+        this.appointmentStatus = appointmentStatus;
+        this.physiotherapist = physiotherapist;
+        this.isCancel = false;
+        this.IsPlanned = false;
+    }
+
 }

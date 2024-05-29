@@ -2,7 +2,10 @@ package be.labofitness.labo_fitness.bll.service.impl;
 import be.labofitness.labo_fitness.bll.service.service.AppointmentService;
 import be.labofitness.labo_fitness.dal.repository.AppointmentRepository;
 import be.labofitness.labo_fitness.domain.entity.Appointment;
+import be.labofitness.labo_fitness.domain.entity.Client;
+import be.labofitness.labo_fitness.domain.enums.AppointmentStatus;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -47,7 +50,7 @@ public class AppointmentServiceImpl implements AppointmentService {
      */
     @Override
     public Appointment create(Appointment entity) {
-        return null;
+        return appointmentRepository.save(entity);
     }
 
     /**
@@ -58,7 +61,7 @@ public class AppointmentServiceImpl implements AppointmentService {
      */
     @Override
     public Appointment update(Appointment entity) {
-        return null;
+        return appointmentRepository.save(entity);
     }
 
     /**
@@ -73,5 +76,27 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     // endregion
+
+    // region UTILS
+
+    @Override
+    public Long getPendingRequestsCount(Client client) {
+        return appointmentRepository.countByClientAndAppointmentStatus(client, AppointmentStatus.PENDING);
+    }
+
+    @Override
+    public boolean ExistByReason(Client client, String reason) {
+        return appointmentRepository.existsByClientAndReasonOfAppointmentAndAppointmentStatus(client, reason, AppointmentStatus.PENDING);
+    }
+
+    // endregion
+
+    // region SPECIFICATION
+
+    public List<Appointment> findBySpecification(Specification<Appointment> specification) {
+        return appointmentRepository.findAll(specification);
+    }
+
+    //endregion
 
 }

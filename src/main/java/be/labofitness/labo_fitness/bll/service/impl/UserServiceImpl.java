@@ -1,5 +1,5 @@
 package be.labofitness.labo_fitness.bll.service.impl;
-import be.labofitness.labo_fitness.bll.exception.doesntExists.EmailDoesntExistException;
+import be.labofitness.labo_fitness.bll.exception.Exist.DoesntExistException;
 import be.labofitness.labo_fitness.bll.model.login.UserLoginRequest;
 import be.labofitness.labo_fitness.bll.model.login.UserLoginResponse;
 import be.labofitness.labo_fitness.bll.model.user.getReport.GetReportResponse;
@@ -33,12 +33,17 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final JwtUtil jwtUtil;
     private final ReportService reportService;
     private final SecurityService securityService;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
 
     // region UTILS FUNCTIONS
+
+    @Override
+    public boolean checkEmail(String email) {
+        return userRepository.existsByEmail(email);
+    }
 
     /**
      * Loads a {@link User} by their email.
@@ -85,15 +90,15 @@ public class UserServiceImpl implements UserService {
      *
      * @param request the request containing the details of the {@link Report}
      * @return the {@link ReportResponse} containing the result of the {@link Report} creation
-     * @throws EmailDoesntExistException if the reported {@link User}'s email does not exist
+     * @throws DoesntExistException if the reported {@link User}'s email does not exist
      */
     @Override @Transactional
     public ReportResponse makeReport(MakeReportRequest request) {
         User complainant = securityService.getAuthentication(User.class);
 
         User reportedUser =  userRepository.findByEmail(request.reportedUserEmail())
-                .orElseThrow(() -> new EmailDoesntExistException(
-                        "L'email " + request.reportedUserEmail() + " n'existe pas"));
+                .orElseThrow(() -> new DoesntExistException(
+                        "Email doesn't exist: " + request.reportedUserEmail()));
 
         reportService.makeReportWithParams(complainant, reportedUser, request.report());
 
@@ -130,6 +135,19 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getOne(Long id) {
         return null;
+    }
+
+    /**
+     * Retrieves an {@link User} by its email.
+     *
+     * @param email the email of the {@link User} to retrieve
+     * @return the {@link User} with the given email
+     */
+    @Override
+    public User getOneByEmail(String email) {
+        return userRepository.findByEmail(email).orElseThrow(
+                () -> new DoesntExistException("Email doesn't exist: " + email)
+        );
     }
 
     /**

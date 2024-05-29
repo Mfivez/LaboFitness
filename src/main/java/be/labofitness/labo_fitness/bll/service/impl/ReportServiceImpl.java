@@ -1,10 +1,12 @@
 package be.labofitness.labo_fitness.bll.service.impl;
+import be.labofitness.labo_fitness.bll.exception.Exist.DoesntExistException;
 import be.labofitness.labo_fitness.bll.service.service.ReportService;
 import be.labofitness.labo_fitness.dal.repository.ReportRepository;
 import be.labofitness.labo_fitness.domain.entity.Report;
 import be.labofitness.labo_fitness.domain.entity.User;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -52,8 +54,10 @@ public class ReportServiceImpl implements ReportService {
      */
     @Override
     public Report getOne(Long id) {
-        return null;
+        return reportRepository.findById(id)
+                .orElseThrow(() -> new DoesntExistException("reportId doesn't exist:" + id));
     }
+
 
     /**
      * Retrieves all {@link Report}.
@@ -84,7 +88,7 @@ public class ReportServiceImpl implements ReportService {
      */
     @Override
     public Report update(Report entity) {
-        return null;
+        return reportRepository.save(entity);
     }
 
     /**
@@ -100,5 +104,12 @@ public class ReportServiceImpl implements ReportService {
 
     // endregion
 
+    // region SPECIFICATION
+
+    public List<Report> getReportsBySpecification(Specification<Report> specification) {
+        return reportRepository.findAll(specification);
+    }
+
+    //endregion
 }
 

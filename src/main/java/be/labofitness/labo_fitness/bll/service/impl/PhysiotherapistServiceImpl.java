@@ -1,5 +1,6 @@
 package be.labofitness.labo_fitness.bll.service.impl;
-import be.labofitness.labo_fitness.bll.exception.notMatching.PasswordNotMatchingException;
+import be.labofitness.labo_fitness.bll.exception.Exist.DoesntExistException;
+import be.labofitness.labo_fitness.bll.exception.notMatching.NotMatchingException;
 import be.labofitness.labo_fitness.bll.model.planning.PhysioPlanningRequest;
 import be.labofitness.labo_fitness.bll.model.planning.PlanningResponse;
 import be.labofitness.labo_fitness.bll.model.request.physiotherapist.manageAccount.PhysiotherapistManageAccountRequest;
@@ -18,7 +19,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,11 +33,13 @@ import java.util.stream.Collectors;
 @Service
 public class PhysiotherapistServiceImpl implements PhysiotherapistService {
 
-    private final PlanningService planningService;
-    private final UserRepository userRepository;
-    private final PhysiotherapistRepository physiotherapistRepository;
     private final PasswordEncoder passwordEncoder;
+    private final PlanningService planningService;
     private final SecurityService securityService;
+    private final UserRepository userRepository; //TODO REFAC
+    private final PhysiotherapistRepository physiotherapistRepository;
+
+
 
     // region GET PLANNING
 
@@ -71,6 +73,18 @@ public class PhysiotherapistServiceImpl implements PhysiotherapistService {
     }
 
     /**
+     * Retrieves an {@link Physiotherapist} by its email.
+     *
+     * @param email the email of the {@link Physiotherapist} to retrieve
+     * @return the {@link Physiotherapist} with the given email
+     */
+    @Override
+    public Physiotherapist getOneByEmail(String email) {
+        return physiotherapistRepository.findByEmail(email).orElseThrow(
+                () -> new DoesntExistException("Email doesn't exist: " + email));
+    }
+
+    /**
      * Retrieves all {@link Physiotherapist}.
      *
      * @return a list of all {@link Physiotherapist}
@@ -88,7 +102,7 @@ public class PhysiotherapistServiceImpl implements PhysiotherapistService {
      */
     @Override
     public Physiotherapist create(Physiotherapist entity) {
-        return null;
+        return physiotherapistRepository.save(entity);
     }
 
     /**
@@ -117,13 +131,13 @@ public class PhysiotherapistServiceImpl implements PhysiotherapistService {
 
     // region MANAGE ACCOUNT
 
-    @Override
-    @Transactional
     /**
      * Update an {@link Physiotherapist} account
      * @param request of the {@link PhysiotherapistManageAccountRequest} to update
      * @return response {@link PhysiotherapistManageAccountResponse} with a message
      */
+    @Override
+    @Transactional
     public PhysiotherapistManageAccountResponse manageAccount(PhysiotherapistManageAccountRequest request) {
 
         String message = "getCurrentMethodeName()";
@@ -132,7 +146,7 @@ public class PhysiotherapistServiceImpl implements PhysiotherapistService {
         if (!physiotherapist.getEmail().equals(request.email())) {
             if (!userRepository.existsByEmail(request.email())) {  physiotherapist.setEmail(request.email());  }
             else{
-                throw new PasswordNotMatchingException("Email already exists");
+                throw new NotMatchingException("Email already exists");
             }
         }
 
@@ -162,7 +176,7 @@ public class PhysiotherapistServiceImpl implements PhysiotherapistService {
 
         if(!passwordEncoder.matches(request.oldPassword(),physiotherapist.getPassword())){
 
-            throw new PasswordNotMatchingException("passwords are not matching");
+            throw new NotMatchingException("passwords are not matching");
         }
 
         physiotherapist.setPassword(passwordEncoder.encode(request.newPassword()));

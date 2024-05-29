@@ -229,4 +229,10 @@ public interface ClientService  extends CrudService<Client, Long> {
 
     // endregion
 
+    //region CRUD SERVICE
+
+    Client getOneByEmail(String email);
+
+    //endregion
+
 }

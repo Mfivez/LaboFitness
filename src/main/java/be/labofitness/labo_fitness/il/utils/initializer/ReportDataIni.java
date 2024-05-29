@@ -1,4 +1,5 @@
 package be.labofitness.labo_fitness.il.utils.initializer;
+import be.labofitness.labo_fitness.bll.exception.Exist.DoesntExistException;
 import be.labofitness.labo_fitness.dal.repository.ReportRepository;
 import be.labofitness.labo_fitness.dal.repository.UserRepository;
 import be.labofitness.labo_fitness.domain.entity.Report;
@@ -36,7 +37,7 @@ public class ReportDataIni extends DataInitializer {
         if (reportRepository.count() == 0) {
             List<User> users = userRepository.findAll();
             if (users.size() < 2) {
-                throw new RuntimeException("Not enough users in the database to create reports.");
+                throw new DoesntExistException("Not enough users in the database to create reports. 2 users needed.");
             }
             User complainant1 = users.get(0);
             User complainant2 = users.get(1);

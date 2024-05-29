@@ -1,8 +1,9 @@
 package be.labofitness.labo_fitness.bll.service.impl;
+import be.labofitness.labo_fitness.bll.exception.Exist.DoesntExistException;
 import be.labofitness.labo_fitness.bll.model.planning.ClientPlanningRequest;
 import be.labofitness.labo_fitness.bll.model.planning.CoachPlanningRequest;
 import be.labofitness.labo_fitness.bll.model.planning.PhysioPlanningRequest;
-import be.labofitness.labo_fitness.bll.service.service.PlanningService;
+import be.labofitness.labo_fitness.bll.service.service.*;
 import be.labofitness.labo_fitness.bll.service.service.security.SecurityService;
 import be.labofitness.labo_fitness.bll.specification.AppointmentSpecification;
 import be.labofitness.labo_fitness.bll.specification.CompetitionSpecification;
@@ -30,13 +31,13 @@ import java.util.List;
 @Service
 public class PlanningServiceImpl implements PlanningService {
 
-    private final ClientRepository clientRepository;  //TODO REFAC
-    private final AppointmentRepository appointmentRepository;  //TODO REFAC
-    private final TrainingSessionRepository trainingSessionRepository;  //TODO REFAC
+    private final ClientRepository clientRepository;
+    private final CoachRepository coachRepository;
+    private final PhysiotherapistRepository physiotherapistRepository;
+    private final AppointmentService appointmentService;
+    private final TrainingSessionService trainingService;
     private final SecurityService securityService;
-    private final PhysiotherapistRepository physiotherapistRepository;  //TODO REFAC
-    private final CoachRepository coachRepository;  //TODO REFAC
-    private final CompetitionRepository competitionRepository;  //TODO REFAC
+    private final CompetitionService competitionService;
 
     //region CLIENT
 
@@ -54,14 +55,15 @@ public class PlanningServiceImpl implements PlanningService {
 
         if (request.physiotherapistMail() != null && !request.physiotherapistMail().isEmpty()) {
             spec = spec.and(AppointmentSpecification.hasPhysiotherapist(
-                    physiotherapistRepository.findByEmail(request.physiotherapistMail())
-                    .orElseThrow( () -> new IllegalArgumentException("Physio doesn't exist")).getId()));  }
+                    physiotherapistRepository.findByEmail(request.physiotherapistMail()).orElseThrow(
+                            () -> new DoesntExistException("Physiotherapist mail doesn't exist: " + request.physiotherapistMail()))
+                            .getId()));  }
 
         spec = appointmentSpecificationHasName(spec, request.name());
         spec = appointmentSpecificationHasStartDateAfter(spec, request.startDate());
         spec = appointmentSpecificationHasEndDateAfter(spec, request.endDate());
 
-        return appointmentRepository.findAll(spec);
+        return appointmentService.findBySpecification(spec);
     }
 
     /**
@@ -77,8 +79,11 @@ public class PlanningServiceImpl implements PlanningService {
 
         if (request.coachMail() != null && !request.coachMail().isEmpty()) {
             spec = spec.and(CompetitionSpecification.hasCoach(
-                    coachRepository.findByEmail(request.coachMail())
-                            .orElseThrow( () -> new IllegalArgumentException("Coach doesn't exist")).getId()));  }
+                    coachRepository.findByEmail(request.coachMail()).orElseThrow(
+                            () -> new RuntimeException("pas trouvé")
+                    ).getId())
+            );
+        }
 
         if (request.sports() != null && !request.sports().isEmpty()) {
             for (String sport : request.sports()) { spec = spec.and(CompetitionSpecification.hasSport(sport)); } }
@@ -95,7 +100,8 @@ public class PlanningServiceImpl implements PlanningService {
         if (request.endDate() != null) {
             spec = spec.and(CompetitionSpecification.hasEndDateBefore(request.endDate()));  }
 
-        return competitionRepository.findAll(spec);
+
+        return competitionService.getCompetitionBySpecification(spec);
     }
 
     /**
@@ -118,7 +124,7 @@ public class PlanningServiceImpl implements PlanningService {
         spec = trainingSpecificationHasStartDateAfter(spec, request.startDate());
         spec = trainingSpecificationHasEndDateBefore(spec, request.endDate());
 
-        return trainingSessionRepository.findAll(spec);
+        return trainingService.findBySpecifications(spec);
     }
 
     // endregion
@@ -146,7 +152,7 @@ public class PlanningServiceImpl implements PlanningService {
         spec = appointmentSpecificationHasStartDateAfter(spec, request.startDate());
         spec = appointmentSpecificationHasEndDateAfter(spec, request.endDate());
 
-        return appointmentRepository.findAll(spec);
+        return appointmentService.findBySpecification(spec);
     }
 
     // endregion
@@ -181,7 +187,7 @@ public class PlanningServiceImpl implements PlanningService {
         if (request.endDate() != null) {
             spec = spec.and(CompetitionSpecification.hasEndDateBefore(request.endDate()));  }
 
-        return competitionRepository.findAll(spec);
+        return competitionService.getCompetitionBySpecification(spec);
     }
 
     /**
@@ -204,7 +210,7 @@ public class PlanningServiceImpl implements PlanningService {
         spec = trainingSpecificationHasStartDateAfter(spec, request.startDate());
         spec = trainingSpecificationHasEndDateBefore(spec, request.endDate());
 
-        return trainingSessionRepository.findAll(spec);
+        return trainingService.findBySpecifications(spec);
     }
 
     // endregion

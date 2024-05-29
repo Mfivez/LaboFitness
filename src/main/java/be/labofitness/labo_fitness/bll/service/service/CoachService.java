@@ -70,4 +70,10 @@ public interface CoachService  extends CrudService<Coach, Long> {
 
     // endregion
 
+    // region CLASSIC CRUD
+
+    Coach getOneByEmail(String email);
+
+    //endregion
+
 }

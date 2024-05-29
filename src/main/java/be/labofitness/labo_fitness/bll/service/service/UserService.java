@@ -51,4 +51,12 @@ public interface UserService extends CrudService<User, Long> , UserDetailsServic
 
     // endregion
 
+    // region UTIL FUNCTION
+
+    boolean checkEmail(String email);
+
+    User getOneByEmail(String email);
+
+    // endregion
+
 }

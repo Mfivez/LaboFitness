@@ -1,8 +1,9 @@
 package be.labofitness.labo_fitness.bll.service.service;
 import be.labofitness.labo_fitness.bll.service.base.CrudService;
 import be.labofitness.labo_fitness.domain.entity.Competition;
-import be.labofitness.labo_fitness.domain.entity.LocationPlace;
-import org.springframework.stereotype.Service;
+import org.springframework.data.jpa.domain.Specification;
+
+import java.util.List;
 
 /**
  * Service interface for managing {@link Competition}.
@@ -21,5 +22,11 @@ public interface CompetitionService  extends CrudService<Competition, Long>  {
     Competition getCompetitionByCompetitionNameId(String name);
 
     // endregion
+
+    // region SPECIFICATION
+
+    List<Competition> getCompetitionBySpecification(Specification<Competition> specification);
+
+    //endregion
 
 }
