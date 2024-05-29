@@ -1,10 +1,8 @@
 package be.labofitness.labo_fitness.bll.service.impl;
-import be.labofitness.labo_fitness.bll.exception.alreadyExists.EmailAlreadyExistsException;
+import be.labofitness.labo_fitness.bll.exception.Exist.AlreadyExistException;
 import be.labofitness.labo_fitness.bll.model.register.ProfessionalRegisterRequest;
 import be.labofitness.labo_fitness.bll.model.register.RegisterResponse;
-import be.labofitness.labo_fitness.bll.service.service.AccreditationService;
-import be.labofitness.labo_fitness.bll.service.service.ProfessionalService;
-import be.labofitness.labo_fitness.bll.service.service.RoleService;
+import be.labofitness.labo_fitness.bll.service.service.*;
 import be.labofitness.labo_fitness.dal.repository.*;
 import be.labofitness.labo_fitness.domain.entity.*;
 import be.labofitness.labo_fitness.il.utils.LaboFitnessUtil;
@@ -24,14 +22,13 @@ import java.util.Set;
 @Service
 public class ProfessionalServiceImpl implements ProfessionalService{
 
-    private final PasswordEncoder passwordEncoder;
-    private final UserRepository userRepository;  //TODO REFAC
-    private final PhysiotherapistRepository physiotherapistRepository;  //TODO REFAC
-    private final CoachRepository coachRepository; //TODO REFAC
-    private final RoleRepository roleRepository;  //TODO REFAC
-    private final AccreditationService accreditationService;
-    private final RoleService roleService;
     private final ProfessionalRepository professionalRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final UserService userService;
+    private final PhysiotherapistService physiotherapistService;
+    private final CoachService coachService;
+    private final RoleService roleService;
+    private final AccreditationService accreditationService;
 
     // region REGISTER
 
@@ -40,13 +37,13 @@ public class ProfessionalServiceImpl implements ProfessionalService{
      *
      * @param request the {@link Professional} registration request
      * @return a {@link RegisterResponse} indicating the success of the registration
-     * @throws EmailAlreadyExistsException if the email already exists
+     * @throws AlreadyExistException if the email already exists
      */
     @Override
     public RegisterResponse register(ProfessionalRegisterRequest request) {
 
-        if(userRepository.existsByEmail(request.email())) {
-            throw new EmailAlreadyExistsException("email already exists : " + request.email());
+        if(userService.checkEmail(request.email())) {
+            throw new AlreadyExistException("email already exists : " + request.email());
         }
 
         if(request.role().equals("PHYSIOTHERAPIST")) {
@@ -56,8 +53,8 @@ public class ProfessionalServiceImpl implements ProfessionalService{
             physiotherapist.setBirthdate(LaboFitnessUtil.createNewDate(request.year(), request.month(), request.day()));
             physiotherapist.setEmail(request.email());
             physiotherapist.setPassword(passwordEncoder.encode(request.password()));
-            physiotherapist.setRoles(roleService.setRole(Set.of("USER", "PHYSIOTHERAPIST"),roleRepository));
-            physiotherapistRepository.save(physiotherapist);
+            physiotherapist.setRoles(roleService.setRole(Set.of("USER", "PHYSIOTHERAPIST")));
+            physiotherapistService.create(physiotherapist);
             accreditationService.createWithParam(request.accreditation(), request.accreditationDescription(), physiotherapist);
             }
         else if(request.role().equals("COACH"))  {
@@ -67,8 +64,8 @@ public class ProfessionalServiceImpl implements ProfessionalService{
             coach.setBirthdate(LaboFitnessUtil.createNewDate(request.year(), request.month(), request.day()));
             coach.setEmail(request.email());
             coach.setPassword(passwordEncoder.encode(request.password()));
-            coach.setRoles(roleService.setRole(Set.of("USER", "COACH"),roleRepository));
-            coachRepository.save(coach);
+            coach.setRoles(roleService.setRole(Set.of("USER", "COACH")));
+            coachService.create(coach);
             accreditationService.createWithParam(request.accreditation(), request.accreditationDescription(), coach);
         }
 

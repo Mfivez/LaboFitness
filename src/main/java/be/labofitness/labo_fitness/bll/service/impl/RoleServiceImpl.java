@@ -1,4 +1,5 @@
 package be.labofitness.labo_fitness.bll.service.impl;
+import be.labofitness.labo_fitness.bll.exception.Exist.DoesntExistException;
 import be.labofitness.labo_fitness.bll.service.service.RoleService;
 import be.labofitness.labo_fitness.dal.repository.RoleRepository;
 import be.labofitness.labo_fitness.domain.entity.Role;
@@ -23,21 +24,20 @@ public class RoleServiceImpl implements RoleService {
      * Sets the {@link Role} for a user based on a set of {@link Role} names.
      *
      * @param roles a set of {@link Role} names
-     * @param roleRepository the repository to find {@link Role}
      * @return a set of {@link Role} entities
      */
     @Override
-    public Set<Role> setRole(Set<String> roles, RoleRepository roleRepository) {
+    public Set<Role> setRole(Set<String> roles) {
         //TODO REFACTO -> JUST TRY CATCH WITH FILTER AND DELETE SWITCH
         return roles.stream()
                 .map(role -> switch (role) {
-                    case "USER" -> roleRepository.findByName("USER").orElseThrow(RuntimeException::new);
-                    case "CLIENT" -> roleRepository.findByName("CLIENT").orElseThrow(RuntimeException::new);
-                    case "PHYSIOTHERAPIST" -> roleRepository.findByName("PHYSIOTHERAPIST").orElseThrow(RuntimeException::new);
-                    case "COACH" -> roleRepository.findByName("COACH").orElseThrow(RuntimeException::new);
-                    case "MODERATOR" -> roleRepository.findByName("MODERATOR").orElseThrow(RuntimeException::new);
-                    case "ADMIN" -> roleRepository.findByName("ADMIN").orElseThrow(RuntimeException::new);
-                    default -> throw new IllegalArgumentException("Invalid role: " + role);
+                    case "USER" -> roleRepository.findByName("USER").orElseThrow(() -> new DoesntExistException("Role name doesn't exist: USER"));
+                    case "CLIENT" -> roleRepository.findByName("CLIENT").orElseThrow(() -> new DoesntExistException("Role name doesn't exist: CLIENT"));
+                    case "PHYSIOTHERAPIST" -> roleRepository.findByName("PHYSIOTHERAPIST").orElseThrow(() -> new DoesntExistException("Role name doesn't exist: PHYSIOTHERAPIST"));
+                    case "COACH" -> roleRepository.findByName("COACH").orElseThrow(() -> new DoesntExistException("Role name doesn't exist: COACH"));
+                    case "MODERATOR" -> roleRepository.findByName("MODERATOR").orElseThrow(() -> new DoesntExistException("Role name doesn't exist: MODERATOR"));
+                    case "ADMIN" -> roleRepository.findByName("ADMIN").orElseThrow(() -> new DoesntExistException("Role name doesn't exist: ADMIN"));
+                    default -> throw new DoesntExistException("Role name doesn't exist: " + role);
                 }).collect(Collectors.toUnmodifiableSet());
     }
 

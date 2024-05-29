@@ -2,6 +2,9 @@ package be.labofitness.labo_fitness.bll.service.service;
 import be.labofitness.labo_fitness.bll.service.base.CrudService;
 import be.labofitness.labo_fitness.domain.entity.Report;
 import be.labofitness.labo_fitness.domain.entity.User;
+import org.springframework.data.jpa.domain.Specification;
+
+import java.util.List;
 
 /**
  * Service interface for managing {@link Report}.
@@ -17,5 +20,7 @@ public interface ReportService  extends CrudService<Report, Long> {
      * @param reportMessage the message describing the {@link Report}
      */
     void makeReportWithParams(User complainant, User reportedUser, String reportMessage);
+
+    List<Report> getReportsBySpecification(Specification<Report> specification);
 
 }

@@ -1,8 +1,8 @@
 package be.labofitness.labo_fitness.il.utils.initializer;
+import be.labofitness.labo_fitness.bll.exception.Exist.DoesntExistException;
 import be.labofitness.labo_fitness.bll.service.service.RoleService;
 import be.labofitness.labo_fitness.dal.repository.CoachRepository;
 import be.labofitness.labo_fitness.dal.repository.LocationRepository;
-import be.labofitness.labo_fitness.dal.repository.RoleRepository;
 import be.labofitness.labo_fitness.domain.entity.Coach;
 import be.labofitness.labo_fitness.domain.entity.LocationPlace;
 import be.labofitness.labo_fitness.domain.entity.base.Address;
@@ -25,7 +25,6 @@ import java.util.Set;
 @Order(4)
 public class CoachDataIni extends DataInitializer {
 
-    private final RoleRepository roleRepository;
     private final CoachRepository coachRepository;
     private final LocationRepository locationRepository;
     private final PasswordEncoder passwordEncoder;
@@ -41,7 +40,9 @@ public class CoachDataIni extends DataInitializer {
     public void run(String... args) throws Exception {
         super.run(args);
         if (coachRepository.count() == 0) {
-            LocationPlace coachLocationPlace = locationRepository.findById(1L).orElseThrow(RuntimeException::new);
+            LocationPlace coachLocationPlace = locationRepository.findById(1L).orElseThrow(
+                    () -> new DoesntExistException("Coach Location Place Id doesn't not exist: " + 1L)
+            );
 
             Coach coach1 = new Coach();
             coach1.setName("Jeremy");
@@ -51,7 +52,7 @@ public class CoachDataIni extends DataInitializer {
             coach1.setAddress(new Address("123 Street", "2", "City", "12345"));
             coach1.setSpecialization("Fitness");
             coach1.setPriceHour(50);
-            coach1.setRoles((roleService.setRole(Set.of("USER", "COACH"), roleRepository)));
+            coach1.setRoles((roleService.setRole(Set.of("USER", "COACH"))));
             coach1.setLocationPlace(Set.of(coachLocationPlace));
             coach1.setWorkSchedule("Du Lundi au Vendredi 9h - 17h");
             coach1.setBirthdate(LocalDateTime.now());
@@ -65,7 +66,7 @@ public class CoachDataIni extends DataInitializer {
             coach2.setSpecialization("Yoga");
             coach2.setRemote(true);
             coach2.setPriceHour(60);
-            coach2.setRoles((roleService.setRole(Set.of("USER", "COACH"), roleRepository)));
+            coach2.setRoles((roleService.setRole(Set.of("USER", "COACH"))));
             coach2.setLocationPlace(Set.of(coachLocationPlace));
             coach2.setWorkSchedule("Du Lundi au Vendredi 9h - 17h");
             coach2.setBirthdate(LaboFitnessUtil.createNewDate(2000, Month.JANUARY, 12));

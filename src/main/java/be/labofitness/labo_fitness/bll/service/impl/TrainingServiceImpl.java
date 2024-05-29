@@ -1,8 +1,10 @@
 package be.labofitness.labo_fitness.bll.service.impl;
+import be.labofitness.labo_fitness.bll.exception.Exist.DoesntExistException;
 import be.labofitness.labo_fitness.bll.service.service.TrainingSessionService;
 import be.labofitness.labo_fitness.dal.repository.TrainingSessionRepository;
 import be.labofitness.labo_fitness.domain.entity.TrainingSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -26,7 +28,9 @@ public class TrainingServiceImpl implements TrainingSessionService {
      */
     @Override
     public TrainingSession getOne(Long id) {
-        return null;
+        return trainingSessionRepository.findById(id).orElseThrow(
+                () -> new DoesntExistException("Training session with id " + id + " does not exist")
+        );
     }
 
     /**
@@ -58,7 +62,7 @@ public class TrainingServiceImpl implements TrainingSessionService {
      */
     @Override
     public TrainingSession update(TrainingSession entity) {
-        return null;
+        return trainingSessionRepository.save(entity);
     }
 
     /**
@@ -73,5 +77,14 @@ public class TrainingServiceImpl implements TrainingSessionService {
     }
 
     // endregion
+
+    // region SPECIFICATION
+
+    @Override
+    public List<TrainingSession> findBySpecifications(Specification<TrainingSession> specification) {
+        return trainingSessionRepository.findAll(specification);
+    }
+
+    //endregion
 
 }

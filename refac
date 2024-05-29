@@ -1,9 +1,8 @@
 
-2.Clean Repo
-3.Clean Controller (isAuth)
-4.Clean ServiceImpl
-5.Clean Service
-
+2.Clean Repo OK
+3.Clean Controller (isAuth) OK
+4.Clean ServiceImpl OK
+5.Clean Service OK
 
 ******
 
@@ -11,6 +10,7 @@
 7.Exception
 1. Validation
 8. ModelAttribute to RequestBody
-9. Create AnonymousController
+9. Create AnonymousController OK
 10. Remplace methods by specif
 11. Transactional
+12. Crud

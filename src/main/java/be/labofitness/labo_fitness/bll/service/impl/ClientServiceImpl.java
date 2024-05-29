@@ -1,9 +1,8 @@
 package be.labofitness.labo_fitness.bll.service.impl;
-import be.labofitness.labo_fitness.bll.exception.alreadyExists.EmailAlreadyExistsException;
-import be.labofitness.labo_fitness.bll.exception.doesntExists.DoesntExistException;
-import be.labofitness.labo_fitness.bll.exception.doesntExists.EmailDoesntExistException;
-import be.labofitness.labo_fitness.bll.exception.inscriptionClosed.InscriptionCloseException;
-import be.labofitness.labo_fitness.bll.exception.notMatching.PasswordNotMatchingException;
+import be.labofitness.labo_fitness.bll.exception.Exist.AlreadyExistException;
+import be.labofitness.labo_fitness.bll.exception.Unauthorize.UnauthorizedException;
+import be.labofitness.labo_fitness.bll.exception.inscriptionClosed.EventCloseException;
+import be.labofitness.labo_fitness.bll.exception.notMatching.NotMatchingException;
 import be.labofitness.labo_fitness.bll.model.client.CompetitionRegister.CompetitionRegisterRequest;
 import be.labofitness.labo_fitness.bll.model.client.CompetitionRegister.CompetitionRegisterResponse;
 import be.labofitness.labo_fitness.bll.model.client.TrainingSessionSubscription.TrainingSubscriptionRequest;
@@ -25,10 +24,7 @@ import be.labofitness.labo_fitness.bll.model.user.getPhysiotherapist.GetPhysioBy
 import be.labofitness.labo_fitness.bll.model.user.getPhysiotherapist.GetPhysioBySpecializationRequest;
 import be.labofitness.labo_fitness.bll.model.user.getPhysiotherapist.GetPhysioResponse;
 import be.labofitness.labo_fitness.bll.model.user.getTrainingSession.*;
-import be.labofitness.labo_fitness.bll.service.service.ClientService;
-import be.labofitness.labo_fitness.bll.service.service.CompetitionService;
-import be.labofitness.labo_fitness.bll.service.service.PlanningService;
-import be.labofitness.labo_fitness.bll.service.service.RoleService;
+import be.labofitness.labo_fitness.bll.service.service.*;
 import be.labofitness.labo_fitness.bll.service.service.security.SecurityService;
 import be.labofitness.labo_fitness.dal.repository.*;
 import be.labofitness.labo_fitness.domain.entity.*;
@@ -58,16 +54,18 @@ import java.util.stream.Collectors;
 public class ClientServiceImpl  implements ClientService {
 
     private final ClientRepository clientRepository;
+
     private final PasswordEncoder passwordEncoder;
-    private final UserRepository userRepository; //TODO REFAC
-    private final RoleRepository roleRepository; //TODO REFAC
-    private final CompetitionService competitionService;
-    private final TrainingSessionRepository trainingSessionRepository; //TODO REFAC
-    private final PhysiotherapistRepository physiotherapistRepository; //TODO REFAC
-    private final AppointmentRepository appointmentRepository; //TODO REFAC
+    private final UserService userService;
     private final SecurityService securityService;
     private final RoleService roleService;
     private final PlanningService planningService;
+    private final CompetitionService competitionService;
+    private final TrainingSessionService trainingService;
+    private final PhysiotherapistService physiotherapistService;
+    private final AppointmentService appointmentService;
+    private final UserRepository userRepository; //TODO REFAC
+
 
     // region MANAGE ACCOUNT
 
@@ -76,7 +74,7 @@ public class ClientServiceImpl  implements ClientService {
      *
      * @param request the account management request
      * @return the account management response
-     * @throws EmailAlreadyExistsException if the email already exists
+     * @throws AlreadyExistException if the email already exists
      */
     @Override
     @Transactional
@@ -87,7 +85,7 @@ public class ClientServiceImpl  implements ClientService {
         if (!client.getEmail().equals(request.email())) {
             if (!userRepository.existsByEmail(request.email())) {  client.setEmail(request.email());  }
             else{
-                throw new PasswordNotMatchingException("Email already exists");
+                throw new AlreadyExistException("email already exists : " + request.email());
             }
         }
 
@@ -118,7 +116,7 @@ public class ClientServiceImpl  implements ClientService {
 
         if(!passwordEncoder.matches(request.oldPassword(), clientRepository.findPasswordByClientId(client.getId()))){
 
-            throw new PasswordNotMatchingException("passwords are not matching");
+            throw new NotMatchingException("Wrong password");
         }
         client.setPassword(passwordEncoder.encode(request.newPassword()));
         clientRepository.save(client);
@@ -135,14 +133,13 @@ public class ClientServiceImpl  implements ClientService {
      *
      * @param request the registration request
      * @return the registration response
-     * @throws EmailAlreadyExistsException if the email already exists
+     * @throws AlreadyExistException if the email already exists
      */
     @Transactional @Override
     public RegisterResponse register(ClientRegisterRequest request) {
 
-        if(userRepository.existsByEmail(request.email())) {
-            throw new EmailAlreadyExistsException("email already exists : " + request.email());
-        }
+        if (userService.checkEmail(request.email())) {
+            throw new AlreadyExistException("email already exists : " + request.email());  }
 
         Client client = new Client ();
                 client.setWeight(request.weight());
@@ -154,7 +151,7 @@ public class ClientServiceImpl  implements ClientService {
                 client.setPassword(passwordEncoder.encode(request.password()));
                 client.setGender(request.gender());
                 client.setAddress(new Address(request.street(), request.number(), request.city(), request.zipCode()));
-                client.setRoles(roleService.setRole(Set.of("USER", "CLIENT"), roleRepository));
+                client.setRoles(roleService.setRole(Set.of("USER", "CLIENT")));
         clientRepository.save(client);
 
         return new RegisterResponse("Account created with success");
@@ -411,10 +408,7 @@ public class ClientServiceImpl  implements ClientService {
     public TrainingSubscriptionResponse subscribeToOneTrainingSession(TrainingSubscriptionRequest request) {
         String message;
         Client client = securityService.getAuthentication(Client.class);
-
-        TrainingSession training = trainingSessionRepository.findTrainingSessionById(request.id()).orElseThrow(
-                () -> new DoesntExistException("Training not found")
-        );
+        TrainingSession training = trainingService.getOne(request.id());
 
         if (client.getTrainingSessions().stream().anyMatch(trainingSession -> training.getId().equals(trainingSession.getId()))) {
             message = "You're already registered to the training named : " + training.getName() + " !";
@@ -427,7 +421,7 @@ public class ClientServiceImpl  implements ClientService {
                     " du " + LaboFitnessUtil.DateToStringFormatDayMonthValueYear(training.getStartDate()) + " with success !";
             }
         else {
-            throw new InscriptionCloseException("Training session inscription closed");
+            throw new EventCloseException("Training session inscription closed");
         }
 
         return new TrainingSubscriptionResponse(message);
@@ -578,32 +572,20 @@ public class ClientServiceImpl  implements ClientService {
      */
     @Override @Transactional
     public MakeRequestForAppointmentResponse makeRequestForAppointment(MakeRequestForAppointmentRequest request) {
-        Client client = securityService.getAuthentication(Client.class);
-        Physiotherapist physiotherapist = physiotherapistRepository.findByEmail(request.physiotherapistEmail())
-                .orElseThrow(() -> new EmailDoesntExistException(
-                        "Email not found"));
-
-        long pendingRequestsCount = appointmentRepository.countByClientAndAppointmentStatus(client, AppointmentStatus.PENDING);
-
-        if (pendingRequestsCount >= 3) {
+        if (appointmentService.getPendingRequestsCount(securityService.getAuthentication(Client.class)) >= 3) {
             throw new IllegalStateException("Too many pending appointment requests");
         }
-
-        Appointment appointment = new Appointment();
-        appointment.setClient(client);
-        appointment.setReasonOfAppointment(request.reasonOfAppointment());
-
-        boolean duplicateReasonExists = appointmentRepository.existsByClientAndReasonOfAppointmentAndAppointmentStatus(
-                client,
-                request.reasonOfAppointment(),
-                AppointmentStatus.PENDING);
-
-        if (duplicateReasonExists) {
+        if (appointmentService.ExistByReason(securityService.getAuthentication(Client.class), request.reasonOfAppointment())) {
             throw new IllegalStateException("That pending appointment reason already exist");
         }
-        appointment.setAppointmentStatus(AppointmentStatus.PENDING);
-        appointment.setPhysiotherapist(physiotherapist);
-        appointmentRepository.save(appointment);
+
+        appointmentService.create(
+                new Appointment(
+                        securityService.getAuthentication(Client.class),
+                        physiotherapistService.getOneByEmail(request.physiotherapistEmail()),
+                        request.reasonOfAppointment(),
+                        AppointmentStatus.PENDING)
+        );
 
         return new MakeRequestForAppointmentResponse("Request for appointment sent");
     }
@@ -617,23 +599,23 @@ public class ClientServiceImpl  implements ClientService {
      */
     @Override @Transactional
     public AcceptAppointmentPlanningResponse acceptAppointmentPlanning(AcceptAppointmentPlanningRequest request) {
-        Appointment appointment = clientRepository.getAppointmentById(  request.id()  );
         String message ;
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime appointmentDate = appointment.getStartDate();
-        appointment.setAppointmentStatusResponseDescription(request.description());
-        if (now.isAfter(appointmentDate)) {
+        Appointment appointment = clientRepository.getAppointmentById(request.id());
+
+        if (LocalDateTime.now().isAfter(appointment.getStartDate())) {
             message = "You can't accept an appointment already passed";
             return new AcceptAppointmentPlanningResponse(message);
         }
         if (appointment.getStartDate() == null) {
             throw new IllegalStateException("Appointment date is not yet defined");
         }
-        appointment.setAppointmentStatus(request.status());
         if (request.status() == AppointmentStatus.REFUSED) {
             appointment.setStartDate(null);
         }
-        appointmentRepository.save(appointment);
+
+        appointment.setAppointmentStatusResponseDescription(request.description());
+        appointment.setAppointmentStatus(request.status());
+        appointmentService.update(appointment);
 
         return new AcceptAppointmentPlanningResponse("Response to appointment sent to physiotherapist");
     }
@@ -648,24 +630,25 @@ public class ClientServiceImpl  implements ClientService {
     public CancelAppointmentResponse cancelAppointment(CancelAppointmentRequest request) {
         Appointment appointment = clientRepository.getAppointmentById( request.id() );
         String message ;
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime appointmentDate = appointment.getStartDate();
-        if (now.isAfter(appointmentDate)){
-            message = "You can't cancel an appointment already passed";
-            return new CancelAppointmentResponse(message);
+
+        if (request.isCancel()) {
+            appointment.setAppointmentStatus(AppointmentStatus.CANCELLED);
         }
-        if (!now.isAfter(appointmentDate.minusDays(1))) {
+
+        if (LocalDateTime.now().isAfter(appointment.getStartDate())){
+            throw new UnauthorizedException("You can't cancel an appointment already passed: " + appointment.getStartDate());
+        }
+
+        if (!LocalDateTime.now().isAfter(appointment.getStartDate().minusDays(1))) {
             appointment.setPrice(0);
             message = "Appointment cancelled with success";
         }
         else {
             message = "You can cancel but you have to pay the price of the appointment : " + appointment.getPrice();
         }
+
         appointment.setCancel( request.isCancel() );
-        if (request.isCancel()) {
-            appointment.setAppointmentStatus(AppointmentStatus.CANCELLED);
-        }
-        appointmentRepository.save(appointment);
+        appointmentService.update(appointment);
 
         return new CancelAppointmentResponse(message);
     }
@@ -683,6 +666,18 @@ public class ClientServiceImpl  implements ClientService {
     @Override
     public Client getOne(Long id) {
         return null;
+    }
+
+    /**
+     * Retrieves an {@link Client} by its mail.
+     *
+     * @param mail the ID of the {@link Client} to retrieve
+     * @return the {@link Client} with the given mail
+     */
+    @Override
+    public Client getOneByEmail(String mail)  {
+        return clientRepository.findByEmail(mail)
+                .orElseThrow( () -> new IllegalArgumentException("Client doesn't exist"));
     }
 
     /**

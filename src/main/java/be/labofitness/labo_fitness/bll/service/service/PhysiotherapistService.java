@@ -35,7 +35,7 @@ public interface PhysiotherapistService extends CrudService<Physiotherapist, Lon
      * @param request the manage account request
      * @return the manage account response
      */
-    public PhysiotherapistManageAccountResponse manageAccount(PhysiotherapistManageAccountRequest request);
+    PhysiotherapistManageAccountResponse manageAccount(PhysiotherapistManageAccountRequest request);
 
     /**
      * Changes the password of a {@link Physiotherapist} based on the provided request.
@@ -43,8 +43,14 @@ public interface PhysiotherapistService extends CrudService<Physiotherapist, Lon
      * @param request the change password request
      * @return the change password response
      */
-    public PhysiotherapistChangePasswordResponse changePassword(PhysiotherapistChangePasswordRequest request);
+    PhysiotherapistChangePasswordResponse changePassword(PhysiotherapistChangePasswordRequest request);
 
     // endregion
+
+    //region UTILS
+
+    Physiotherapist getOneByEmail(String email);
+
+    //endregion
 
 }

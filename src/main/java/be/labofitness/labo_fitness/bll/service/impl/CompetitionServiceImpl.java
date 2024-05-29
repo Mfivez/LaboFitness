@@ -1,8 +1,10 @@
 package be.labofitness.labo_fitness.bll.service.impl;
+import be.labofitness.labo_fitness.bll.exception.Exist.DoesntExistException;
 import be.labofitness.labo_fitness.bll.service.service.CompetitionService;
 import be.labofitness.labo_fitness.dal.repository.CompetitionRepository;
 import be.labofitness.labo_fitness.domain.entity.Competition;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -23,11 +25,13 @@ public class CompetitionServiceImpl implements CompetitionService {
      *
      * @param name the name ID of the {@link Competition} to retrieve
      * @return the {@link Competition} with the given name ID
-     * @throws RuntimeException if the competition is not found
+     * @throws DoesntExistException if the competition is not found
      */
     @Override
     public Competition getCompetitionByCompetitionNameId(String name) {
-        return competitionRepository.findByCompetitionNameId(name).orElseThrow(() -> new RuntimeException("Competition not found"));}
+        return competitionRepository.findByCompetitionNameId(name).orElseThrow(
+                () -> new DoesntExistException("Competition doesn't exist: " + name ));
+    }
 
     // endregion
 
@@ -41,7 +45,8 @@ public class CompetitionServiceImpl implements CompetitionService {
      */
     @Override
     public Competition getOne(Long id) {
-        return null;
+        return competitionRepository.findByCompetitionId(id)
+                .orElseThrow( () -> new DoesntExistException("competitionId doesn't exist: " + id));
     }
 
     /**
@@ -73,7 +78,7 @@ public class CompetitionServiceImpl implements CompetitionService {
      */
     @Override
     public Competition update(Competition entity) {
-        return null;
+        return competitionRepository.save(entity);
     }
 
     /**
@@ -88,5 +93,14 @@ public class CompetitionServiceImpl implements CompetitionService {
     }
 
     // endregion
+
+    // region SPECIFICATION
+
+    @Override
+    public List<Competition> getCompetitionBySpecification(Specification<Competition> specification) {
+        return competitionRepository.findAll(specification);
+    }
+
+    //endregion
 
 }

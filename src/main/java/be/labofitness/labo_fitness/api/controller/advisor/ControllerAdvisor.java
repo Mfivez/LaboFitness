@@ -1,12 +1,11 @@
 package be.labofitness.labo_fitness.api.controller.advisor;
-import be.labofitness.labo_fitness.bll.exception.alreadyExists.EmailAlreadyExistsException;
+import be.labofitness.labo_fitness.bll.exception.LaboFitnessException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -20,18 +19,17 @@ import java.util.stream.Collectors;
 public class ControllerAdvisor {
 
     /**
-     * Handles exceptions of type EmailAlreadyExistsException.
+     * <p>Handles exceptions of type {@link LaboFitnessException}.</p>
+     * <p>This method captures {@link LaboFitnessException}, logs the error message,
+     * and returns an HTTP response with a status containing the error message.</p>
      *
-     * <p>This method captures EmailAlreadyExistsException, logs the error message,
-     * and returns an HTTP response with a 406 (Not Acceptable) status containing the error message.</p>
-     *
-     * @param error the {@link EmailAlreadyExistsException} thrown when the email already exists
-     * @return a {@link ResponseEntity} containing the error message with a 406 status
+     * @param error the {@link LaboFitnessException} thrown when the email already exists
+     * @return a {@link ResponseEntity} containing the error message with a status
      */
-    @ExceptionHandler(EmailAlreadyExistsException.class)
-    public ResponseEntity<String> handleRuntimeException(EmailAlreadyExistsException error){
+    @ExceptionHandler(LaboFitnessException.class)
+    public ResponseEntity<String> handleRuntimeException(LaboFitnessException error){
         log.error(error.toString());
-        return ResponseEntity.status(406).body(error.getMessage());
+        return ResponseEntity.status(error.getStatus()).body(error.getMessage());
     }
 
     /**
@@ -56,4 +54,5 @@ public class ControllerAdvisor {
                 ));
         return ResponseEntity.status(406).body(errors);
     }
+
 }

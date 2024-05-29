@@ -1,5 +1,8 @@
 package be.labofitness.labo_fitness.bll.service.impl;
-import be.labofitness.labo_fitness.bll.exception.notMatching.PasswordNotMatchingException;
+import be.labofitness.labo_fitness.bll.exception.Exist.AlreadyExistException;
+import be.labofitness.labo_fitness.bll.exception.Exist.DoesntExistException;
+import be.labofitness.labo_fitness.bll.exception.Unauthorize.UnauthorizedException;
+import be.labofitness.labo_fitness.bll.exception.notMatching.NotMatchingException;
 import be.labofitness.labo_fitness.bll.model.coach.ManageEventInscription.ManageEventInscriptionRequest;
 import be.labofitness.labo_fitness.bll.model.coach.ManageEventInscription.ManageEventInscriptionResponse;
 import be.labofitness.labo_fitness.bll.model.coach.manageAccount.CoachManageAccountRequest;
@@ -9,11 +12,11 @@ import be.labofitness.labo_fitness.bll.model.planning.PlanningResponse;
 import be.labofitness.labo_fitness.bll.model.request.coach.manageAccount.changePassword.CoachChangePasswordRequest;
 import be.labofitness.labo_fitness.bll.model.response.coach.manageAccount.changePassword.CoachChangePasswordResponse;
 import be.labofitness.labo_fitness.bll.service.service.CoachService;
+import be.labofitness.labo_fitness.bll.service.service.CompetitionService;
 import be.labofitness.labo_fitness.bll.service.service.PlanningService;
+import be.labofitness.labo_fitness.bll.service.service.TrainingSessionService;
 import be.labofitness.labo_fitness.bll.service.service.security.SecurityService;
 import be.labofitness.labo_fitness.dal.repository.CoachRepository;
-import be.labofitness.labo_fitness.dal.repository.CompetitionRepository;
-import be.labofitness.labo_fitness.dal.repository.TrainingSessionRepository;
 import be.labofitness.labo_fitness.dal.repository.UserRepository;
 import be.labofitness.labo_fitness.domain.entity.Coach;
 import be.labofitness.labo_fitness.domain.entity.Competition;
@@ -40,13 +43,13 @@ import java.util.stream.Collectors;
 //TODO REFACT IL FAUDRAIT QUE LES IMPL DE SERVICE N'APPELLENT QUE DES SERVICES ET PAS DES REPOS
 public class CoachServiceImpl implements CoachService {
 
-    private final UserRepository userRepository;  //TODO REFAC
     private final CoachRepository coachRepository;
     private final SecurityService securityService;
     private final PlanningService planningService;
-    private final CompetitionRepository competitionRepository;  //TODO REFAC
-    private final TrainingSessionRepository trainingSessionRepository;
-    private final PasswordEncoder passwordEncoder;//TODO REFAC
+    private final PasswordEncoder passwordEncoder;
+    private final CompetitionService competitionService;
+    private final TrainingSessionService trainingService;
+    private final UserRepository userRepository;  //TODO REFAC
 
     // region PLANNING
 
@@ -150,7 +153,7 @@ public class CoachServiceImpl implements CoachService {
         if (!coach.getEmail().equals(request.email())) {
             if (!userRepository.existsByEmail(request.email())) {  coach.setEmail(request.email());  }
             else{
-                throw new PasswordNotMatchingException("Email already exists");
+                throw new AlreadyExistException("Email: " + request.email() + " already exists");
             }
         }
         coach.setName(request.name());
@@ -180,7 +183,7 @@ public class CoachServiceImpl implements CoachService {
 
         if(!passwordEncoder.matches(request.oldPassword(),coach.getPassword())){
 
-            throw new PasswordNotMatchingException("passwords are not matching");
+            throw new NotMatchingException("wrong password");
         }
         coach.setPassword(passwordEncoder.encode(request.newPassword()));
         coachRepository.save(coach);
@@ -204,6 +207,12 @@ public class CoachServiceImpl implements CoachService {
         return null;
     }
 
+    @Override
+    public Coach getOneByEmail(String email) {
+        return coachRepository.findByEmail(email)
+                .orElseThrow( () -> new DoesntExistException("Mail doesn't exist: " + email));
+    }
+
     /**
      * Retrieves all {@link Coach}.
      *
@@ -222,7 +231,7 @@ public class CoachServiceImpl implements CoachService {
      */
     @Override
     public Coach create(Coach entity) {
-        return null;
+        return coachRepository.save(entity);
     }
 
     /**
@@ -256,25 +265,25 @@ public class CoachServiceImpl implements CoachService {
      *
      * @param request The request containing the {@link Competition} ID and the desired state.
      * @return A {@link ManageEventInscriptionResponse} indicating the result of the operation.
-     * @throws RuntimeException If attempting to modify a {@link Competition} created by another {@link Coach}.
+     * @throws UnauthorizedException If attempting to modify a {@link Competition} created by another {@link Coach}.
      */
     @Override @Transactional
     public ManageEventInscriptionResponse manageCompetitionInscription(ManageEventInscriptionRequest request) {
-        List<Competition> competitions = coachRepository.findPersonalCompetitionById(securityService.getAuthentication(Coach.class).getId());
         String message;
+        List<Competition> competitions = coachRepository.findPersonalCompetitionById(securityService.getAuthentication(Coach.class).getId());
+
         if (competitions.stream().map(Competition::getId).noneMatch(id -> id.equals(request.id()))) {
-            throw new RuntimeException("You can't modify a competition created by another coach");
+            throw new UnauthorizedException("You're not allowed to modify a competition created by an another coach");
         }
 
-        Competition competition = competitionRepository.findByCompetitionId(request.id())
-                .orElseThrow( () -> new IllegalArgumentException("Competition doesn't exist"));
+        Competition competition = competitionService.getOne(request.id());
 
         if (competition.isInscriptionOpen() == request.state()) {
             message = "Competition inscriptions already on " + request.state();
         }
         else {
             competition.setInscriptionOpen(request.state());
-            competitionRepository.save(competition);
+            competitionService.update(competition);
             message = "Competition inscription status = " + request.state();
         }
 
@@ -286,25 +295,24 @@ public class CoachServiceImpl implements CoachService {
      *
      * @param request The request containing the {@link TrainingSession} ID and the desired state.
      * @return A {@link ManageEventInscriptionResponse} indicating the result of the operation.
-     * @throws RuntimeException If attempting to modify a training session created by another {@link Coach}.
+     * @throws UnauthorizedException If attempting to modify a training session created by another {@link Coach}.
      */
     @Override
     public ManageEventInscriptionResponse manageTrainingInscription(ManageEventInscriptionRequest request) {
         List<Competition> competitions = coachRepository.findPersonalCompetitionById(securityService.getAuthentication(Coach.class).getId());
+        TrainingSession training = trainingService.getOne(request.id());
         String message;
-        if (competitions.stream().map(Competition::getId).noneMatch(id -> id.equals(request.id()))) {
-            throw new RuntimeException("You can't modify a training created by another coach");
-        }
 
-        TrainingSession training = trainingSessionRepository.findTrainingSessionById(request.id())
-                .orElseThrow( () -> new IllegalArgumentException("training doesn't exist"));
+        if (competitions.stream().map(Competition::getId).noneMatch(id -> id.equals(request.id()))) {
+            throw new UnauthorizedException("You can't modify a training created by another coach: " + request.id());
+        }
 
         if (training.isInscriptionOpen() == request.state()) {
             message = "Training inscriptions already on " + request.state() ;
         }
         else {
             training.setInscriptionOpen(request.state());
-            trainingSessionRepository.save(training);
+            trainingService.update(training);
             message = "Training inscription status = " + request.state();
         }
 

@@ -1,12 +1,12 @@
 package be.labofitness.labo_fitness.bll.service.impl;
+import be.labofitness.labo_fitness.bll.model.moderator.report.ModeratorReportUpdateIsApprovedStateResponse;
 import be.labofitness.labo_fitness.bll.model.moderator.report.ModeratorUpdateReportIsApprovedStateRequest;
 import be.labofitness.labo_fitness.bll.model.moderator.report.ReportRequest;
-import be.labofitness.labo_fitness.bll.model.moderator.report.ModeratorReportUpdateIsApprovedStateResponse;
 import be.labofitness.labo_fitness.bll.model.moderator.report.ReportResponse;
 import be.labofitness.labo_fitness.bll.service.service.ModeratorService;
+import be.labofitness.labo_fitness.bll.service.service.ReportService;
+import be.labofitness.labo_fitness.bll.service.service.UserService;
 import be.labofitness.labo_fitness.bll.specification.ReportSpecification;
-import be.labofitness.labo_fitness.dal.repository.ReportRepository;
-import be.labofitness.labo_fitness.dal.repository.UserRepository;
 import be.labofitness.labo_fitness.domain.entity.Report;
 import be.labofitness.labo_fitness.domain.entity.User;
 import lombok.RequiredArgsConstructor;
@@ -24,8 +24,8 @@ import java.util.stream.Collectors;
 @Service
 public class ModeratorServiceImpl implements ModeratorService {
 
-    private final ReportRepository reportRepository;
-    private final UserRepository userRepository;
+    private final ReportService reportService;
+    private final UserService userService;
 
     /**
      * Retrieves {@link Report} based on the provided criteria.
@@ -43,7 +43,7 @@ public class ModeratorServiceImpl implements ModeratorService {
         spec = getSpecificationReportedUserMail(spec, request.reportedUserMail());
         spec = getSpecificationComplainantMail(spec, request.complainantMail());
 
-        List<Report> reports = reportRepository.findAll(spec);
+        List<Report> reports =reportService.getReportsBySpecification(spec);
         List<String> reportedUserEmail = reports.stream().map(Report::getReportedUser).map(User::getEmail).collect(Collectors.toList());
         List<String> complainantUserEmail = reports.stream().map(Report::getComplainant).map(User::getEmail).collect(Collectors.toList());
         List<String> description = reports.stream().map(Report::getDescription).collect(Collectors.toList());
@@ -112,11 +112,7 @@ public class ModeratorServiceImpl implements ModeratorService {
      */
     private Specification<Report> getSpecificationReportedUserMail(Specification<Report> spec, String mail) {
         if (mail != null && !mail.isEmpty()) {
-            spec = spec.and(ReportSpecification.hasReportedUser(
-                    userRepository.findByEmail(mail)
-                            .orElseThrow(() -> new IllegalArgumentException("User doesn't exist"))
-                            .getId()
-            ));
+            spec = spec.and(ReportSpecification.hasReportedUser(userService.getOneByEmail(mail).getId()));
         }
         return spec;
     }
@@ -131,11 +127,7 @@ public class ModeratorServiceImpl implements ModeratorService {
      */
     private Specification<Report> getSpecificationComplainantMail(Specification<Report> spec, String mail) {
         if (mail != null && !mail.isEmpty()) {
-            spec = spec.and(ReportSpecification.hasComplainant(
-                    userRepository.findByEmail(mail)
-                            .orElseThrow(() -> new IllegalArgumentException("User doesn't exist"))
-                            .getId()
-            ));
+            spec = spec.and(ReportSpecification.hasComplainant( userService.getOneByEmail(mail).getId()));
         }
         return spec;
     }
@@ -151,15 +143,14 @@ public class ModeratorServiceImpl implements ModeratorService {
     @Override
     public ModeratorReportUpdateIsApprovedStateResponse moderatorUpdateIsApproved(ModeratorUpdateReportIsApprovedStateRequest request) {
         String message;
-        Report report = reportRepository.findById(request.reportId())
-                                        .orElseThrow(() -> new IllegalArgumentException("Report doesn't exist"));
+        Report report = reportService.getOne(request.reportId());
 
         if (report.isApproved() == request.isApprovedState()) {
             message = "Report approved statement is already " + request.isApprovedState();
         }
         else {
             report.setApproved(request.isApprovedState());
-            reportRepository.save(report);
+            reportService.update(report);
             message = "Report approved statement is now " + request.isApprovedState();
         }
 
