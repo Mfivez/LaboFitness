@@ -1,8 +1,8 @@
 package be.labofitness.labo_fitness.bll.exception;
-
 import be.labofitness.labo_fitness.LaboFitnessApplication;
 import be.labofitness.labo_fitness.il.utils.CPrinter;
 import lombok.Getter;
+
 
 /**
  * {@code Custom exception} class for the {@link LaboFitnessApplication}.
@@ -98,4 +98,5 @@ public class LaboFitnessException extends RuntimeException {
                 elem.getLineNumber(),
                 this.getMessage());
     }
+
 }

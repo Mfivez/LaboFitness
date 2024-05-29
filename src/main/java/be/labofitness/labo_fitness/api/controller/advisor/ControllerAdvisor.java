@@ -1,11 +1,16 @@
 package be.labofitness.labo_fitness.api.controller.advisor;
 import be.labofitness.labo_fitness.bll.exception.LaboFitnessException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -33,26 +38,18 @@ public class ControllerAdvisor {
     }
 
     /**
-     * Handles MethodArgumentNotValidException thrown when validation on an argument annotated with {@code @Valid } fails.
+     * Handles method argument validation exceptions.
+     * {@link MethodArgumentNotValidException}
      *
-     *
-     * <p>This method logs the exception and collects all validation errors into a map where the key is the field name
-     * and the value is the default error message. If the default message is null, a generic error message is used.</p>
-     *
-     * @param error the {@link MethodArgumentNotValidException} containing validation errors
-     * @return a {@link ResponseEntity} containing a map of field names and their corresponding error messages, with an HTTP status of 406 (Not Acceptable)
+     * @param error The {@code MethodArgumentNotValidException} to handle.
+     * @return A {@code ResponseEntity} with a status code of 406 (Not Acceptable) and a body containing a list of validation errors.
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, String>> handleMethodArgumentNotValidException(final MethodArgumentNotValidException error){
-        log.error(error.toString());
-
-        Map<String, String> errors = error.getBindingResult().getFieldErrors()
-                .stream()
-                .collect(Collectors.toMap(
-                        FieldError::getField,
-                        FieldError -> Optional.ofNullable(FieldError.getDefaultMessage()).orElse("Validator Error: DefaultMessage cannot be Null.")
-                ));
-        return ResponseEntity.status(406).body(errors);
+    public ResponseEntity<Map<String, List<String>>> handleValidationErrors(MethodArgumentNotValidException error) {
+        Map<String, List<String>> errorResponse = new HashMap<>();
+        errorResponse.put("errors", error.getBindingResult().getFieldErrors()
+                .stream().map(FieldError::getDefaultMessage).collect(Collectors.toList()));
+        return ResponseEntity.status(406).body(errorResponse);
     }
 
 }
