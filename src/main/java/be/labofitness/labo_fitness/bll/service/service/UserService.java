@@ -1,12 +1,12 @@
 package be.labofitness.labo_fitness.bll.service.service;
 import be.labofitness.labo_fitness.bll.model.login.UserLoginRequest;
-import be.labofitness.labo_fitness.bll.model.user.makeReport.MakeReportRequest;
-import be.labofitness.labo_fitness.bll.model.user.getReport.GetReportResponse;
 import be.labofitness.labo_fitness.bll.model.login.UserLoginResponse;
+import be.labofitness.labo_fitness.bll.model.user.getReport.GetReportResponse;
+import be.labofitness.labo_fitness.bll.model.user.makeReport.MakeReportRequest;
 import be.labofitness.labo_fitness.bll.model.user.makeReport.ReportResponse;
 import be.labofitness.labo_fitness.bll.service.base.CrudService;
-import be.labofitness.labo_fitness.domain.entity.User;
 import be.labofitness.labo_fitness.domain.entity.Report;
+import be.labofitness.labo_fitness.domain.entity.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.Set;
@@ -51,12 +51,20 @@ public interface UserService extends CrudService<User, Long> , UserDetailsServic
 
     // endregion
 
-    // region UTIL FUNCTION
+    //region UTILS
 
-    boolean checkEmail(String email);
+    boolean emailUpdateIfValid(String email, String newEmail);
 
     User getOneByEmail(String email);
 
-    // endregion
+    User updateAccountStatus(User user, boolean status);
+
+    User updateEmailStatus(User user, boolean status);
+
+    User anonymizeUser(User user);
+
+    boolean checkEmail(String email);
+
+    //endregion
 
 }

@@ -1,4 +1,4 @@
-package be.labofitness.labo_fitness.bll.model.response.physiotherapist.manageAccount;
+package be.labofitness.labo_fitness.bll.model.physiotherapist.manageAccount;
 
 import be.labofitness.labo_fitness.domain.entity.Physiotherapist;
 

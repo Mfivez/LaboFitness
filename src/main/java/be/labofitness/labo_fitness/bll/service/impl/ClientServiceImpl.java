@@ -10,12 +10,12 @@ import be.labofitness.labo_fitness.bll.model.client.TrainingSessionSubscription.
 import be.labofitness.labo_fitness.bll.model.client.makeAppointment.*;
 import be.labofitness.labo_fitness.bll.model.client.manageAccount.ClientManageAccountRequest;
 import be.labofitness.labo_fitness.bll.model.client.manageAccount.ClientManageAccountResponse;
+import be.labofitness.labo_fitness.bll.model.client.manageAccount.changePassword.ClientChangePasswordRequest;
+import be.labofitness.labo_fitness.bll.model.client.manageAccount.changePassword.ClientChangePasswordResponse;
 import be.labofitness.labo_fitness.bll.model.planning.ClientPlanningRequest;
 import be.labofitness.labo_fitness.bll.model.planning.PlanningResponse;
 import be.labofitness.labo_fitness.bll.model.register.ClientRegisterRequest;
 import be.labofitness.labo_fitness.bll.model.register.RegisterResponse;
-import be.labofitness.labo_fitness.bll.model.request.client.manageAccount.changePassword.ClientChangePasswordRequest;
-import be.labofitness.labo_fitness.bll.model.response.client.manageAccount.changePassword.ClientChangePasswordResponse;
 import be.labofitness.labo_fitness.bll.model.user.getCoach.GetCoachesByNameRequest;
 import be.labofitness.labo_fitness.bll.model.user.getCoach.GetCoachesByRemoteRequest;
 import be.labofitness.labo_fitness.bll.model.user.getCoach.GetCoachesBySpecializationRequest;
@@ -26,7 +26,7 @@ import be.labofitness.labo_fitness.bll.model.user.getPhysiotherapist.GetPhysioRe
 import be.labofitness.labo_fitness.bll.model.user.getTrainingSession.*;
 import be.labofitness.labo_fitness.bll.service.service.*;
 import be.labofitness.labo_fitness.bll.service.service.security.SecurityService;
-import be.labofitness.labo_fitness.dal.repository.*;
+import be.labofitness.labo_fitness.dal.repository.ClientRepository;
 import be.labofitness.labo_fitness.domain.entity.*;
 import be.labofitness.labo_fitness.domain.entity.base.Address;
 import be.labofitness.labo_fitness.domain.enums.AppointmentStatus;
@@ -54,7 +54,6 @@ import java.util.stream.Collectors;
 public class ClientServiceImpl  implements ClientService {
 
     private final ClientRepository clientRepository;
-
     private final PasswordEncoder passwordEncoder;
     private final UserService userService;
     private final SecurityService securityService;
@@ -64,7 +63,6 @@ public class ClientServiceImpl  implements ClientService {
     private final TrainingSessionService trainingService;
     private final PhysiotherapistService physiotherapistService;
     private final AppointmentService appointmentService;
-    private final UserRepository userRepository; //TODO REFAC
 
 
     // region MANAGE ACCOUNT
@@ -82,12 +80,7 @@ public class ClientServiceImpl  implements ClientService {
         String message  = "getCurrentMethodeName()";
         Client client = securityService.getAuthentication(Client.class);
 
-        if (!client.getEmail().equals(request.email())) {
-            if (!userRepository.existsByEmail(request.email())) {  client.setEmail(request.email());  }
-            else{
-                throw new AlreadyExistException("email already exists : " + request.email());
-            }
-        }
+        if (userService.emailUpdateIfValid(client.getEmail(), request.email())) {  client.setEmail(request.email());  }
 
         client.setName(request.name());
         client.setLastname(request.lastName());

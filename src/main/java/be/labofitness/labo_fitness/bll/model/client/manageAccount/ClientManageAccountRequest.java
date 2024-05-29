@@ -1,6 +1,7 @@
 package be.labofitness.labo_fitness.bll.model.client.manageAccount;
 
 import be.labofitness.labo_fitness.domain.enums.Gender;
+import be.labofitness.labo_fitness.il.utils.JwtUtil;
 import be.labofitness.labo_fitness.il.utils.annotations.extendedEmailvalidator.CustomEmailValidator;
 import be.labofitness.labo_fitness.il.utils.annotations.validatorsMessage.ValidatorMessageCustom;
 import be.labofitness.labo_fitness.il.utils.annotations.validatorsMessage.ValidatorUtils;
@@ -8,6 +9,7 @@ import jakarta.validation.constraints.*;
 import static be.labofitness.labo_fitness.il.utils.annotations.validatorsMessage.ValidatorUtils.*;
 
 public record ClientManageAccountRequest (
+
 
         @NotBlank(message = "error.client.name.blank")
         @ValidatorMessageCustom(entity = "client", field = "name", min = 3)
