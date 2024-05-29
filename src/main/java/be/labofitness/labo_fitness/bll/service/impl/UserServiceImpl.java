@@ -1,16 +1,23 @@
 package be.labofitness.labo_fitness.bll.service.impl;
+import be.labofitness.labo_fitness.bll.exception.Exist.AlreadyExistException;
 import be.labofitness.labo_fitness.bll.exception.Exist.DoesntExistException;
 import be.labofitness.labo_fitness.bll.model.login.UserLoginRequest;
 import be.labofitness.labo_fitness.bll.model.login.UserLoginResponse;
 import be.labofitness.labo_fitness.bll.model.user.getReport.GetReportResponse;
 import be.labofitness.labo_fitness.bll.model.user.makeReport.MakeReportRequest;
 import be.labofitness.labo_fitness.bll.model.user.makeReport.ReportResponse;
+import be.labofitness.labo_fitness.bll.service.service.CoachService;
+import be.labofitness.labo_fitness.bll.service.service.PhysiotherapistService;
 import be.labofitness.labo_fitness.bll.service.service.ReportService;
 import be.labofitness.labo_fitness.bll.service.service.UserService;
 import be.labofitness.labo_fitness.bll.service.service.security.SecurityService;
+import be.labofitness.labo_fitness.dal.repository.CoachRepository;
 import be.labofitness.labo_fitness.dal.repository.UserRepository;
+import be.labofitness.labo_fitness.domain.entity.Coach;
+import be.labofitness.labo_fitness.domain.entity.Physiotherapist;
 import be.labofitness.labo_fitness.domain.entity.Report;
 import be.labofitness.labo_fitness.domain.entity.User;
+import be.labofitness.labo_fitness.domain.enums.Gender;
 import be.labofitness.labo_fitness.il.utils.JwtUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -19,10 +26,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
+
+import static be.labofitness.labo_fitness.il.utils.Anonymizer.genereteRandomString;
 
 /**
  * Implementation of the {@link UserService} interface.
@@ -36,6 +46,8 @@ public class UserServiceImpl implements UserService {
     private final ReportService reportService;
     private final SecurityService securityService;
     private final PasswordEncoder passwordEncoder;
+    private final PhysiotherapistService physiotherapistService;
+    private final CoachService coachService;
     private final JwtUtil jwtUtil;
 
     // region UTILS FUNCTIONS
@@ -51,11 +63,23 @@ public class UserServiceImpl implements UserService {
      * @param email the email of the {@link User} to load
      * @return the {@link UserDetails} of the {@link User}
      * @throws UsernameNotFoundException if the {@link User} is not found
+     * @throws AlreadyExistException if the {@code mail} already exists
      */
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         return userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException(email));
     }
+
+    @Override
+    public boolean emailUpdateIfValid(String email, String newEmail){
+        boolean isValid = false;
+        if(!email.equals(newEmail)){
+            if(!userRepository.existsByEmail(newEmail)){  isValid =true;  }
+            else{  throw new AlreadyExistException("email already exists: " + newEmail); }
+        }
+        return isValid;
+    }
+
     // endregion
 
     // region LOGIN
@@ -134,7 +158,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public User getOne(Long id) {
-        return null;
+        return userRepository.findById(id).orElseThrow(() -> new DoesntExistException("user id : "+ id + " doesn't exists"));
     }
 
     /**
@@ -146,8 +170,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getOneByEmail(String email) {
         return userRepository.findByEmail(email).orElseThrow(
-                () -> new DoesntExistException("Email doesn't exist: " + email)
-        );
+                () -> new DoesntExistException("User doesn't exist"));
     }
 
     /**
@@ -180,6 +203,45 @@ public class UserServiceImpl implements UserService {
     @Override
     public User update(User entity) {
         return null;
+    }
+
+    @Override
+    public User updateAccountStatus(User user, boolean status) {
+        user.setActive(status);
+        return userRepository.save(user);
+    }
+
+    @Override
+    public User updateEmailStatus(User user, boolean status){
+        user.setMailActive(status);
+        return userRepository.save(user);
+    }
+
+    @Override
+    public User anonymizeUser(User user){
+
+        if(user.getRoles().stream().anyMatch(role -> role.getName().equals("PHYSIOTHERAPIST"))){
+            Physiotherapist physio = physiotherapistService.getOneByEmail(user.getEmail());
+            physio.setInamiNumber(genereteRandomString(physio.getInamiNumber()));
+            physiotherapistService.update(physio);
+        }
+
+        if(user.getRoles().stream().anyMatch( role -> role.getName().equals("COACH"))){
+            Coach coach = coachService.getOneByEmail(user.getEmail());
+            coach.setRemote(false);
+            coach.setPriceHour(0);
+            coachService.update(coach);
+        }
+
+        user.setName(genereteRandomString(user.getName()));
+        user.setLastname(genereteRandomString(user.getLastname()));
+        user.setEmail(UUID.randomUUID().toString());
+        user.setMailActive(false);
+        user.setActive(false);
+        user.setBirthdate(LocalDateTime.now());
+        user.setGender(Gender.UNDEFINED);
+
+        return userRepository.save(user);
     }
 
     /**

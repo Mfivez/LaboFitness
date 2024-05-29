@@ -1,6 +1,7 @@
 package be.labofitness.labo_fitness.bll.model.coach.manageAccount;
 
 import be.labofitness.labo_fitness.domain.enums.Gender;
+import be.labofitness.labo_fitness.il.utils.annotations.extendedEmailvalidator.CustomEmailValidator;
 import be.labofitness.labo_fitness.il.utils.annotations.validatorsMessage.ValidatorMessageCustom;
 import jakarta.validation.constraints.*;
 
@@ -17,7 +18,7 @@ public record CoachManageAccountRequest(
 
 
         @NotBlank(message = "error.coach.email.blank")
-        @Email
+        @CustomEmailValidator
         String email,
 
 

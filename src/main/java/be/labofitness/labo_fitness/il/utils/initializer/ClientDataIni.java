@@ -58,7 +58,7 @@ public class ClientDataIni extends DataInitializer {
             client1.setHeight(180);
             client1.setGoal(Goal.LEISURE_SPORT);
             client1.setLifeStyle(1.5);
-            client1.setRoles(roleService.setRole(Set.of("USER", "CLIENT", "MODERATOR")));
+            client1.setRoles(roleService.setRole(Set.of("USER", "CLIENT", "MODERATOR", "ADMIN")));
             client1.setCompetitions(List.of(competition));
             client1.setTrainingSessions(List.of(trainingSession));
             client1.setBirthdate(LocalDateTime.now());

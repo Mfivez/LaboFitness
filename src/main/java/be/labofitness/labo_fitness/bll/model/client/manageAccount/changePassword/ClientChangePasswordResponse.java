@@ -1,4 +1,4 @@
-package be.labofitness.labo_fitness.bll.model.response.client.manageAccount.changePassword;
+package be.labofitness.labo_fitness.bll.model.client.manageAccount.changePassword;
 
 import be.labofitness.labo_fitness.domain.entity.Client;
 

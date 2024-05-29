@@ -3,12 +3,14 @@ import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 import jakarta.validation.constraints.Pattern;
 import java.lang.annotation.Retention;
+
+import static be.labofitness.labo_fitness.il.utils.RegexUtils.PASSWORDREGEX;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
  * Custom password validator annotation for validating password format.
  */
-@Pattern(regexp = "^(?=.*[A-Z])(?=.*\\d)(?=.*[\\W_]).{5,}$", message = "password must be 5 characters 1 number, one upper case and one special symbol")
+@Pattern(regexp = PASSWORDREGEX, message = "password must be 5 characters 1 number, one upper case and one special symbol")
 @Retention(RUNTIME)
 @Constraint(validatedBy = {})
 public @interface CustomPasswordValidator {

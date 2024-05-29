@@ -1,7 +1,10 @@
-package be.labofitness.labo_fitness.bll.model.request.physiotherapist.manageAccount;
+package be.labofitness.labo_fitness.bll.model.physiotherapist.manageAccount;
 
 import be.labofitness.labo_fitness.domain.enums.Gender;
-import jakarta.validation.constraints.*;
+import be.labofitness.labo_fitness.il.utils.annotations.extendedEmailvalidator.CustomEmailValidator;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 public record PhysiotherapistManageAccountRequest(
 
@@ -9,24 +12,19 @@ public record PhysiotherapistManageAccountRequest(
         @Size(min= 3, message = "Coach name must be at least 3 characters long")
         String name,
 
-
         @NotBlank(message = "error.physiotherapist.lastName.blank" )
         @Size(min = 3, message = "Coach last name must be at least 3 characters long")
         String lastName,
 
-
         @NotBlank(message = "error.physiotherapist.email.blank")
-        @Email
+        @CustomEmailValidator
         String email,
 
-
         Gender gender,
-
 
         @NotBlank(message = "error.physiotherapist.street.blank")
         @Size(min = 4, message = "Street name must be at least 4 characters long")
         String street,
-
 
         @NotBlank(message = "error.physiotherapist.number.blank")
         @Size(min = 1, message = "Street number must be at least 1 character")
