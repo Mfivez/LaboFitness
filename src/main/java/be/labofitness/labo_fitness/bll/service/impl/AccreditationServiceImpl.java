@@ -1,4 +1,5 @@
 package be.labofitness.labo_fitness.bll.service.impl;
+import be.labofitness.labo_fitness.bll.exception.Exist.DoesntExistException;
 import be.labofitness.labo_fitness.bll.service.service.AccreditationService;
 import be.labofitness.labo_fitness.dal.repository.AccreditationRepository;
 import be.labofitness.labo_fitness.domain.entity.Accreditation;
@@ -46,7 +47,9 @@ public class AccreditationServiceImpl implements AccreditationService {
      */
     @Override
     public Accreditation getOne(Long id) {
-        return null;
+        return accreditationRepository.findById(id).orElseThrow(
+                () -> new DoesntExistException("Accreditation with id " + id + " does not exist")
+        );
     }
 
     /**
@@ -56,7 +59,7 @@ public class AccreditationServiceImpl implements AccreditationService {
      */
     @Override
     public List<Accreditation> getAll() {
-        return null;
+        return accreditationRepository.findAll();
     }
 
     /**
@@ -67,7 +70,7 @@ public class AccreditationServiceImpl implements AccreditationService {
      */
     @Override
     public Accreditation create(Accreditation entity) {
-        return null;
+        return accreditationRepository.save(entity);
     }
 
     /**
@@ -78,7 +81,7 @@ public class AccreditationServiceImpl implements AccreditationService {
      */
     @Override
     public Accreditation update(Accreditation entity) {
-        return null;
+        return accreditationRepository.save(entity);
     }
 
     /**
