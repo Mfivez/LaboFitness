@@ -3,10 +3,10 @@ package be.labofitness.labo_fitness.il.utils.annotations.ValidatorRole;
 import be.labofitness.labo_fitness.dal.repository.RoleRepository;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-import java.util.Arrays;
+
 import java.util.List;
 
-public class RoleValidator implements ConstraintValidator<CustomRoleValidator, String> {
+public class RoleValidator implements ConstraintValidator<RoleValid, String> {
 
     private final List<String> roleValid; //Arrays.asList("USER", "CLIENT", "PHYSIOTHERAPIST", "MODERATOR", "COACH", "ADMIN");
     private final RoleRepository repository;
@@ -17,7 +17,7 @@ public class RoleValidator implements ConstraintValidator<CustomRoleValidator, S
     }
 
     @Override
-    public void initialize(CustomRoleValidator constraintAnnotation) {
+    public void initialize(RoleValid constraintAnnotation) {
 
     }
 

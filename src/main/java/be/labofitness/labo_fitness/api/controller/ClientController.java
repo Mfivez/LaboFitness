@@ -192,7 +192,7 @@ public class ClientController {
      */
     @PreAuthorize("hasAuthority('CLIENT')")
     @GetMapping("/personal-coaches-by-remote")
-    public ResponseEntity<List<GetCoachesResponse>> getAllPersonalCoachesByIsRemote(@ModelAttribute GetCoachesByRemoteRequest request) {
+    public ResponseEntity<List<GetCoachesResponse>> getAllPersonalCoachesByIsRemote(@Valid @ModelAttribute GetCoachesByRemoteRequest request) {
         return ResponseEntity.ok(clientService.getAllPersonalCoachesByIsRemote(request));
     }
 
@@ -327,7 +327,7 @@ public class ClientController {
      */
     @PreAuthorize("hasAuthority('CLIENT')")
     @GetMapping("/Planning")
-    public ResponseEntity<PlanningResponse> getPlanningWithSpecifications(@ModelAttribute ClientPlanningRequest request) {
+    public ResponseEntity<PlanningResponse> getPlanningWithSpecifications(@Valid @ModelAttribute ClientPlanningRequest request) {
         return ResponseEntity.ok(clientService.getPlanning(request));
     }
 
@@ -346,7 +346,7 @@ public class ClientController {
      */
     @PreAuthorize("hasAuthority('CLIENT')")
     @PostMapping("/make-request-appointment")
-    public ResponseEntity<MakeRequestForAppointmentResponse> makeARequestForAppointment(@RequestBody MakeRequestForAppointmentRequest request) {
+    public ResponseEntity<MakeRequestForAppointmentResponse> makeARequestForAppointment(@Valid @RequestBody MakeRequestForAppointmentRequest request) {
         return ResponseEntity.ok(clientService.makeRequestForAppointment(request));
     }
 
@@ -361,7 +361,7 @@ public class ClientController {
      */
     @PreAuthorize("hasAuthority('CLIENT')")
     @PutMapping("/accept-appointment-planning")
-    public ResponseEntity<AcceptAppointmentPlanningResponse> makeARequestForAppointment(@RequestBody AcceptAppointmentPlanningRequest request) {
+    public ResponseEntity<AcceptAppointmentPlanningResponse> makeARequestForAppointment(@Valid @RequestBody AcceptAppointmentPlanningRequest request) {
         return ResponseEntity.ok(clientService.acceptAppointmentPlanning(request));
     }
 
@@ -376,7 +376,7 @@ public class ClientController {
      */
     @PreAuthorize("hasAuthority('CLIENT')")
     @PutMapping("/cancel-appointment")
-    public ResponseEntity<CancelAppointmentResponse> makeARequestForAppointment(@RequestBody CancelAppointmentRequest request) {
+    public ResponseEntity<CancelAppointmentResponse> makeARequestForAppointment(@Valid @RequestBody CancelAppointmentRequest request) {
         return ResponseEntity.ok(clientService.cancelAppointment(request));
     }
 

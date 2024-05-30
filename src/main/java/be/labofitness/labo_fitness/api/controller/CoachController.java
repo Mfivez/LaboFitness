@@ -43,7 +43,7 @@ public class CoachController {
      */
     @PreAuthorize("hasAuthority('COACH')")
     @GetMapping("/planning")
-    public ResponseEntity<PlanningResponse> getPlanning(@ModelAttribute CoachPlanningRequest request) {
+    public ResponseEntity<PlanningResponse> getPlanning(@Valid @ModelAttribute CoachPlanningRequest request) {
         return ResponseEntity.ok(coachService.getPlanning(request));
     }
 

@@ -1,11 +1,22 @@
 package be.labofitness.labo_fitness.bll.model.user.getTrainingSession;
-
 import be.labofitness.labo_fitness.domain.entity.TrainingSession;
 import be.labofitness.labo_fitness.domain.enums.RecommendedLevel;
 import lombok.Data;
-
 import java.time.LocalDateTime;
 
+/**
+ * Represents the response model for retrieving training sessions.
+ * <p>
+ * This class encapsulates various details such as name, start date, end date, description,
+ * recommended level, coach name, coach last name, and coach email of training sessions.
+ * </p>
+ *
+ * <p>Example usage:</p>
+ * <pre>{@code
+ * TrainingSession trainingSession = new TrainingSession();
+ * GetTrainingSessionResponse response = GetTrainingSessionResponse.fromEntity(trainingSession);
+ * }</pre>
+ */
 @Data
 public class GetTrainingSessionResponse {
     private String name;
@@ -28,6 +39,12 @@ public class GetTrainingSessionResponse {
         this.coach_mail = coach_mail;
     }
 
+    /**
+     * Constructs a {@code GetTrainingSessionResponse} object from a {@link TrainingSession} entity.
+     *
+     * @param trainingSession The training session entity.
+     * @return A new {@code GetTrainingSessionResponse} object.
+     */
     public static GetTrainingSessionResponse fromEntity(TrainingSession trainingSession) {
         return new GetTrainingSessionResponse(
                 trainingSession.getName(),

@@ -13,14 +13,14 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = CustomFieldValidator.class)
 @Target( { ElementType.FIELD, ElementType.PARAMETER })
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ValidatorMessageCustom {
+public @interface StringValid {
 
     /**
      * Specifies the default error message for {@code validation failure}.
      *
      * @return The default error message.
      */
-    String message() default "Invalid Field";
+    String message() default "Invalid Field: ";
 
     /**
      * Specifies the {@code validation groups} targeted for this {@code constraint}.
@@ -56,5 +56,7 @@ public @interface ValidatorMessageCustom {
      * @return The minimum value required for the {@code field}.
      */
     int min();
+
+
 
 }

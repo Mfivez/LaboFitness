@@ -55,6 +55,17 @@ public class RoleServiceImpl implements RoleService {
     }
 
     /**
+     * Retrieves an {@link Role} by its name.
+     *
+     * @param name the name of the {@link Role} to retrieve
+     * @return the {@link Role} with the given name
+     */
+    @Override
+    public Role getOneByName(String name) {
+        return null;
+    }
+
+    /**
      * Retrieves all {@link Role}.
      *
      * @return a list of all {@link Role}

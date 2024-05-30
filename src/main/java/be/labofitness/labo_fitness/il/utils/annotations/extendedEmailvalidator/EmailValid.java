@@ -5,7 +5,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
 import java.lang.annotation.*;
 
-import static be.labofitness.labo_fitness.il.utils.RegexUtils.EMAILREGEX;
+import static be.labofitness.labo_fitness.il.utils.RegexUtils.EMAIL_REGEX;
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
@@ -13,12 +13,12 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * Custom email validator annotation for validating email format.
  */
 @Email(message = "Email is not correct")
-@Pattern(regexp = EMAILREGEX,
+@Pattern(regexp = EMAIL_REGEX,
         message = "Email format is not correct")
 @Target( { METHOD, FIELD, ANNOTATION_TYPE })
 @Retention(RUNTIME)
 @Constraint(validatedBy = {})
-public @interface CustomEmailValidator{
+public @interface EmailValid {
 
     /**
      * Message to be displayed when validation fails.
