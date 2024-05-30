@@ -27,7 +27,7 @@ public record UserLoginRequest(
         String email,
 
         @NotNull(message = "error.login.password.blank")
-        @PasswordValid
+        //@PasswordValid testing
         String password
 
 ) {

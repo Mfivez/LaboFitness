@@ -16,12 +16,15 @@ import be.labofitness.labo_fitness.bll.specification.CompetitionSpecification;
 import be.labofitness.labo_fitness.dal.repository.UserRepository;
 import be.labofitness.labo_fitness.domain.entity.Role;
 import be.labofitness.labo_fitness.domain.entity.User;
+import be.labofitness.labo_fitness.il.utils.LaboFitnessUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static be.labofitness.labo_fitness.il.utils.LaboFitnessUtil.getCurrentMethodName;
 
 /**
  * Service implementation for managing administrative operations related to {@link User}.
@@ -80,10 +83,9 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public AdminManageAccountStatusResponse manageAccountStatus(AdminManageAccountStatusRequest request) {
-        //TODO METH
         return AdminManageAccountStatusResponse.fromEntity(userService.updateAccountStatus(
                 userService.getOneByEmail(request.email()), request.isActive()),
-                "successfully"
+                getCurrentMethodName()
         );
     }
 
@@ -92,7 +94,7 @@ public class AdminServiceImpl implements AdminService {
     {
         return AdminManageEmailStatusResponse.fromEntity(userService.updateEmailStatus(
                 userService.getOneByEmail(request.email()), request.emailActive()),
-                "successfully"
+                getCurrentMethodName()
         );
     }
 
@@ -101,7 +103,7 @@ public class AdminServiceImpl implements AdminService {
 
         return AdminAnonymizeUserResponse.fromEntity(userService.anonymizeUser(
                 userService.getOneByEmail(request.email())),
-                "successfully"
+                getCurrentMethodName()
         );
     }
 
