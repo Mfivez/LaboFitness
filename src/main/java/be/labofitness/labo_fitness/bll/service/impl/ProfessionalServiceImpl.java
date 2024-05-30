@@ -1,15 +1,27 @@
 package be.labofitness.labo_fitness.bll.service.impl;
 import be.labofitness.labo_fitness.bll.exception.Exist.AlreadyExistException;
+import be.labofitness.labo_fitness.bll.exception.Unauthorize.UnauthorizedException;
 import be.labofitness.labo_fitness.bll.model.register.ProfessionalRegisterRequest;
 import be.labofitness.labo_fitness.bll.model.register.RegisterResponse;
 import be.labofitness.labo_fitness.bll.service.service.*;
+import be.labofitness.labo_fitness.bll.model.professionnel.manageLocation.ProfessionalAddLocationPlaceRequest;
+import be.labofitness.labo_fitness.bll.model.professionnel.manageLocation.ProfessionalUpdateLocationPlaceRequest;
+import be.labofitness.labo_fitness.bll.model.professionnel.manageLocation.ProfessionalAddLocationPlaceResponse;
+import be.labofitness.labo_fitness.bll.model.professionnel.manageLocation.ProfessionalUpdateLocationPlaceResponse;
+import be.labofitness.labo_fitness.bll.service.service.AccreditationService;
+import be.labofitness.labo_fitness.bll.service.service.ProfessionalService;
+import be.labofitness.labo_fitness.bll.service.service.RoleService;
+import be.labofitness.labo_fitness.bll.service.service.security.SecurityService;
 import be.labofitness.labo_fitness.dal.repository.*;
 import be.labofitness.labo_fitness.domain.entity.*;
+import be.labofitness.labo_fitness.domain.entity.base.Address;
 import be.labofitness.labo_fitness.il.utils.LaboFitnessUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -29,6 +41,8 @@ public class ProfessionalServiceImpl implements ProfessionalService{
     private final CoachService coachService;
     private final RoleService roleService;
     private final AccreditationService accreditationService;
+    private final SecurityService securityService;
+    private final LocationService locationService;
 
     // region REGISTER
 
@@ -128,6 +142,44 @@ public class ProfessionalServiceImpl implements ProfessionalService{
     @Override
     public Professional delete(Long id) {
         return null;
+    }
+
+    // endregion
+
+    // region LOCATION PLACE
+
+    @Override @Transactional
+    public ProfessionalAddLocationPlaceResponse addLocationPlace(ProfessionalAddLocationPlaceRequest request) {
+        Professional professional = securityService.getAuthentication(Professional.class);
+
+        Address address = new Address(request.street(), request.number(), request.city(), request.zipCode());
+        LocationPlace locationPlace = locationService.addLocationPlace(address);
+
+
+        professional.getLocationPlace().add(locationPlace);
+        professionalRepository.save(professional);
+
+        return new ProfessionalAddLocationPlaceResponse("Location place added successfully");
+    }
+
+    @Override @Transactional
+    public ProfessionalUpdateLocationPlaceResponse updateLocationPlace(ProfessionalUpdateLocationPlaceRequest request) {
+        LocationPlace locationPlace = locationService.getOne(request.locationId());
+
+        if (securityService.getAuthentication(Professional.class).getLocationPlace().stream().anyMatch(loc -> loc.equals(locationPlace))) {
+            throw new UnauthorizedException("You're not allowed to update the location place" +
+                    locationPlace.getAddress().getStreet() + " " +
+                    locationPlace.getAddress().getNumber() + " " +
+                    locationPlace.getAddress().getCity() + " " +
+                    locationPlace.getAddress().getZipcode() +
+                    "because this is not your professional address"
+            );
+        }
+
+        locationPlace.setAddress(  new Address(  request.street(), request.number(), request.city(), request.zipCode()  )  );
+        locationService.update(locationPlace);
+
+        return new ProfessionalUpdateLocationPlaceResponse("Location place updated successfully");
     }
 
     // endregion

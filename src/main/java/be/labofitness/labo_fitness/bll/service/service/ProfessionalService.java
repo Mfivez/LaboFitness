@@ -1,6 +1,10 @@
 package be.labofitness.labo_fitness.bll.service.service;
 import be.labofitness.labo_fitness.bll.model.register.ProfessionalRegisterRequest;
 import be.labofitness.labo_fitness.bll.model.register.RegisterResponse;
+import be.labofitness.labo_fitness.bll.model.professionnel.manageLocation.ProfessionalAddLocationPlaceRequest;
+import be.labofitness.labo_fitness.bll.model.professionnel.manageLocation.ProfessionalUpdateLocationPlaceRequest;
+import be.labofitness.labo_fitness.bll.model.professionnel.manageLocation.ProfessionalAddLocationPlaceResponse;
+import be.labofitness.labo_fitness.bll.model.professionnel.manageLocation.ProfessionalUpdateLocationPlaceResponse;
 import be.labofitness.labo_fitness.bll.service.base.CrudService;
 import be.labofitness.labo_fitness.domain.entity.Professional;
 
@@ -17,5 +21,12 @@ public interface ProfessionalService extends CrudService<Professional, Long> {
      * @return the response indicating the registration result
      */
     RegisterResponse register(ProfessionalRegisterRequest request);
+
+    // region LOCATION PLACE
+
+    ProfessionalAddLocationPlaceResponse addLocationPlace(ProfessionalAddLocationPlaceRequest request);
+
+    ProfessionalUpdateLocationPlaceResponse updateLocationPlace(ProfessionalUpdateLocationPlaceRequest request);
+
 
 }

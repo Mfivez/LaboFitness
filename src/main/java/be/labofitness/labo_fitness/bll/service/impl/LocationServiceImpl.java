@@ -1,7 +1,9 @@
 package be.labofitness.labo_fitness.bll.service.impl;
+import be.labofitness.labo_fitness.bll.exception.Exist.DoesntExistException;
 import be.labofitness.labo_fitness.bll.service.service.LocationService;
 import be.labofitness.labo_fitness.dal.repository.LocationRepository;
 import be.labofitness.labo_fitness.domain.entity.LocationPlace;
+import be.labofitness.labo_fitness.domain.entity.base.Address;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -22,7 +24,9 @@ public class LocationServiceImpl implements LocationService {
      */
     @Override
     public LocationPlace getOne(Long id) {
-        return null;
+        return locationRepository.findById(id).orElseThrow(
+                () -> new DoesntExistException("location with id " + id + " does not exist")
+        );
     }
 
     /**
@@ -54,7 +58,7 @@ public class LocationServiceImpl implements LocationService {
      */
     @Override
     public LocationPlace update(LocationPlace entity) {
-        return null;
+        return locationRepository.save(entity);
     }
 
     /**
@@ -69,5 +73,16 @@ public class LocationServiceImpl implements LocationService {
     }
 
     // endregion
+
+    @Override
+    public LocationPlace addLocationPlace(Address address) {
+        LocationPlace locationPlace = new LocationPlace(address);
+        return locationRepository.save(locationPlace);
+    }
+
+    @Override
+    public LocationPlace updateLocationPlace(LocationPlace locationPlace) {
+        return locationRepository.save(locationPlace);
+    }
 
 }
