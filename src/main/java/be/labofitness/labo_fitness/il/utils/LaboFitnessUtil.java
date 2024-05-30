@@ -87,4 +87,15 @@ public class LaboFitnessUtil {
         return date.isAfter(startDate) && date.isBefore(endDate);
     }
 
+
+
+    /**
+     * Uses the CurrentThread to get the method name
+     *
+     * @return String with the method name
+     */
+    public static String getCurrentMethodName(){
+        return Thread.currentThread().getStackTrace()[2].getMethodName();
+    }
+
 }

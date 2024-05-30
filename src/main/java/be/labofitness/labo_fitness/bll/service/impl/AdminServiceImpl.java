@@ -83,7 +83,7 @@ public class AdminServiceImpl implements AdminService {
         //TODO METH
         return AdminManageAccountStatusResponse.fromEntity(userService.updateAccountStatus(
                 userService.getOneByEmail(request.email()), request.isActive()),
-                "getcurrentmethod"
+                "successfully"
         );
     }
 
@@ -92,7 +92,7 @@ public class AdminServiceImpl implements AdminService {
     {
         return AdminManageEmailStatusResponse.fromEntity(userService.updateEmailStatus(
                 userService.getOneByEmail(request.email()), request.emailActive()),
-                "getcurrrentmethod"
+                "successfully"
         );
     }
 
@@ -101,7 +101,7 @@ public class AdminServiceImpl implements AdminService {
 
         return AdminAnonymizeUserResponse.fromEntity(userService.anonymizeUser(
                 userService.getOneByEmail(request.email())),
-                "getcurrentmethod"
+                "successfully"
         );
     }
 

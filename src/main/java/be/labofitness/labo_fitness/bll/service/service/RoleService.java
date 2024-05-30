@@ -18,4 +18,7 @@ public interface RoleService  extends CrudService<Role, Long> {
      */
     Set<Role> setRole(Set<String> roles);
 
+
+    Role getOneByName(String name);
+
 }

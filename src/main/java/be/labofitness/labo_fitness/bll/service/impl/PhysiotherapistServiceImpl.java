@@ -15,6 +15,7 @@ import be.labofitness.labo_fitness.dal.repository.UserRepository;
 import be.labofitness.labo_fitness.domain.entity.Appointment;
 import be.labofitness.labo_fitness.domain.entity.Physiotherapist;
 import be.labofitness.labo_fitness.domain.entity.base.Address;
+import be.labofitness.labo_fitness.il.utils.LaboFitnessUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static be.labofitness.labo_fitness.il.utils.LaboFitnessUtil.getCurrentMethodName;
 
 //TODO METH
 //import static be.labofitness.labo_fitness.il.utils.LaboFitnessUtil.getCurrentMethodeName;
@@ -142,7 +145,6 @@ public class PhysiotherapistServiceImpl implements PhysiotherapistService {
     @Transactional
     public PhysiotherapistManageAccountResponse manageAccount(PhysiotherapistManageAccountRequest request) {
 
-        String message = "getCurrentMethodeName()";
         Physiotherapist physiotherapist = securityService.getAuthentication(Physiotherapist.class);
 
         if (!physiotherapist.getEmail().equals(request.email())) {
@@ -160,7 +162,7 @@ public class PhysiotherapistServiceImpl implements PhysiotherapistService {
 
         physiotherapistRepository.save(physiotherapist);
 
-        return PhysiotherapistManageAccountResponse.fromEntity(physiotherapist,message);
+        return PhysiotherapistManageAccountResponse.fromEntity(physiotherapist, getCurrentMethodName());
     }
 
     /**
@@ -172,7 +174,6 @@ public class PhysiotherapistServiceImpl implements PhysiotherapistService {
     @Transactional
     public PhysiotherapistChangePasswordResponse changePassword(PhysiotherapistChangePasswordRequest request) {
 
-        String message = "getCurrentMethodeName()";
 
         Physiotherapist physiotherapist = securityService.getAuthentication(Physiotherapist.class);
 
@@ -184,7 +185,7 @@ public class PhysiotherapistServiceImpl implements PhysiotherapistService {
         physiotherapist.setPassword(passwordEncoder.encode(request.newPassword()));
         physiotherapistRepository.save(physiotherapist);
 
-        return PhysiotherapistChangePasswordResponse.fromEntity(physiotherapist,message);
+        return PhysiotherapistChangePasswordResponse.fromEntity(physiotherapist,getCurrentMethodName());
     }
 
     // endregion
