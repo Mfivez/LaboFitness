@@ -109,5 +109,4 @@ public class RoleServiceImpl implements RoleService {
     }
 
     // endregion
-
 }

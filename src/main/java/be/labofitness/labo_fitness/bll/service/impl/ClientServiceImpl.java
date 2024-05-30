@@ -130,7 +130,6 @@ public class ClientServiceImpl  implements ClientService {
         if (userService.checkEmail(request.email())) {
             throw new AlreadyExistException("email already exists : " + request.email());  }
 
-
         Client client = new Client ();
                 client.setWeight(request.weight());
                 client.setHeight(request.height());
