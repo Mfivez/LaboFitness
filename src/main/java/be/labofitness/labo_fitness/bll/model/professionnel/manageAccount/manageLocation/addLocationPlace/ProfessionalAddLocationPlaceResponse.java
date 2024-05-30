@@ -1,4 +1,4 @@
-package be.labofitness.labo_fitness.bll.model.professionnel.manageLocation;
+package be.labofitness.labo_fitness.bll.model.professionnel.manageAccount.manageLocation.addLocationPlace;
 
 /**
  * Represents the response model for adding a new location for a professional.

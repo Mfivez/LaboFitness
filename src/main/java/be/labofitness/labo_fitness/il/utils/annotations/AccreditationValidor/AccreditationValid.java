@@ -13,7 +13,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Target(ElementType.FIELD)
 public @interface AccreditationValid {
 
-    String message() default "Gender must be a valid gender type";
+    String message() default "accreditation must be a valid accreditation type";
 
     Class<?>[] groups() default {};
 

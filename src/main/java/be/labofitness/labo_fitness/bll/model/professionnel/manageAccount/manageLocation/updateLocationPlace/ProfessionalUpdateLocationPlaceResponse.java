@@ -1,4 +1,4 @@
-package be.labofitness.labo_fitness.bll.model.professionnel.manageLocation;
+package be.labofitness.labo_fitness.bll.model.professionnel.manageAccount.manageLocation.updateLocationPlace;
 
 /**
  * Represents the response model for updating the location details of a professional.

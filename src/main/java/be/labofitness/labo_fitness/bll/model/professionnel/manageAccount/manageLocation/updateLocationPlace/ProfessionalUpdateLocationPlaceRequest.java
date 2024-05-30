@@ -1,4 +1,4 @@
-package be.labofitness.labo_fitness.bll.model.professionnel.manageLocation;
+package be.labofitness.labo_fitness.bll.model.professionnel.manageAccount.manageLocation.updateLocationPlace;
 import be.labofitness.labo_fitness.il.utils.annotations.validatorsMessage.StringValid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;

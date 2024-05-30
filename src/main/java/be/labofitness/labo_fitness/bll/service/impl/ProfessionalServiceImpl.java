@@ -1,13 +1,17 @@
 package be.labofitness.labo_fitness.bll.service.impl;
 import be.labofitness.labo_fitness.bll.exception.Exist.AlreadyExistException;
 import be.labofitness.labo_fitness.bll.exception.Unauthorize.UnauthorizedException;
+import be.labofitness.labo_fitness.bll.model.professionnel.manageAccount.manageAccreditation.addAccredition.ProfessionalAddAccreditationRequest;
+import be.labofitness.labo_fitness.bll.model.professionnel.manageAccount.manageAccreditation.addAccredition.ProfessionalAddAccreditationResponse;
+import be.labofitness.labo_fitness.bll.model.professionnel.manageAccount.manageAccreditation.updateAccreditation.ProfessionalUpdateAccreditationRequest;
+import be.labofitness.labo_fitness.bll.model.professionnel.manageAccount.manageAccreditation.updateAccreditation.ProfessionalUpdateAccreditationResponse;
 import be.labofitness.labo_fitness.bll.model.register.ProfessionalRegisterRequest;
 import be.labofitness.labo_fitness.bll.model.register.RegisterResponse;
 import be.labofitness.labo_fitness.bll.service.service.*;
-import be.labofitness.labo_fitness.bll.model.professionnel.manageLocation.ProfessionalAddLocationPlaceRequest;
-import be.labofitness.labo_fitness.bll.model.professionnel.manageLocation.ProfessionalUpdateLocationPlaceRequest;
-import be.labofitness.labo_fitness.bll.model.professionnel.manageLocation.ProfessionalAddLocationPlaceResponse;
-import be.labofitness.labo_fitness.bll.model.professionnel.manageLocation.ProfessionalUpdateLocationPlaceResponse;
+import be.labofitness.labo_fitness.bll.model.professionnel.manageAccount.manageLocation.addLocationPlace.ProfessionalAddLocationPlaceRequest;
+import be.labofitness.labo_fitness.bll.model.professionnel.manageAccount.manageLocation.updateLocationPlace.ProfessionalUpdateLocationPlaceRequest;
+import be.labofitness.labo_fitness.bll.model.professionnel.manageAccount.manageLocation.addLocationPlace.ProfessionalAddLocationPlaceResponse;
+import be.labofitness.labo_fitness.bll.model.professionnel.manageAccount.manageLocation.updateLocationPlace.ProfessionalUpdateLocationPlaceResponse;
 import be.labofitness.labo_fitness.bll.service.service.AccreditationService;
 import be.labofitness.labo_fitness.bll.service.service.ProfessionalService;
 import be.labofitness.labo_fitness.bll.service.service.RoleService;
@@ -21,9 +25,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import static be.labofitness.labo_fitness.il.utils.LaboFitnessUtil.getCurrentMethodName;
+
 
 /**
  * Implementation of the {@link ProfessionalService} interface.
@@ -101,6 +107,8 @@ public class ProfessionalServiceImpl implements ProfessionalService{
         return null;
     }
 
+
+
     /**
      * Retrieves all {@link Professional}.
      *
@@ -146,7 +154,7 @@ public class ProfessionalServiceImpl implements ProfessionalService{
 
     // endregion
 
-    // region LOCATION PLACE
+    // region MANAGE ACCOUNT
 
     @Override @Transactional
     public ProfessionalAddLocationPlaceResponse addLocationPlace(ProfessionalAddLocationPlaceRequest request) {
@@ -180,6 +188,49 @@ public class ProfessionalServiceImpl implements ProfessionalService{
         locationService.update(locationPlace);
 
         return new ProfessionalUpdateLocationPlaceResponse("Location place updated successfully");
+    }
+
+
+    /**
+     * Registers a new {@link Accreditation} for a  {@link Professional}) based on the provided request.
+     *
+     * @param request the {@link Professional} registration request
+     * @return a {@link ProfessionalAddAccreditationResponse} indicating the success of the registration
+     */
+    @Override
+    @Transactional
+    public ProfessionalAddAccreditationResponse addAccreditation(ProfessionalAddAccreditationRequest request){
+
+        Professional professional = securityService.getAuthentication(Professional.class);
+        Accreditation accreditation = new Accreditation();
+
+        accreditation.setType(request.accreditationType());
+        accreditation.setDescription(request.description());
+        accreditation.setProfessional(professional);
+        accreditationService.create(accreditation);
+
+        return ProfessionalAddAccreditationResponse.fromEntity(accreditation,getCurrentMethodName());
+    }
+
+    /**
+     * update an already existing {@link Accreditation} for a  {@link Professional}) based on the provided request.
+     *
+     * @param request the {@link Professional} registration request
+     * @return a {@link ProfessionalUpdateAccreditationResponse} indicating the success of the registration
+     */
+    @Override
+    @Transactional
+    public ProfessionalUpdateAccreditationResponse updateAccreditation (ProfessionalUpdateAccreditationRequest request){
+
+        Professional professional = securityService.getAuthentication(Professional.class);
+        Accreditation accreditation = accreditationService.getOne(request.accreditationId());
+
+        if(!professional.getId().equals(accreditation.getProfessional().getId())){
+            throw new UnauthorizedException("You are not authorized to update that Accreditation because it's not yours");
+        }
+        accreditation.setDescription(request.description());
+        accreditationService.update(accreditation);
+        return ProfessionalUpdateAccreditationResponse.fromEntity(getCurrentMethodName(),accreditation);
     }
 
     // endregion
