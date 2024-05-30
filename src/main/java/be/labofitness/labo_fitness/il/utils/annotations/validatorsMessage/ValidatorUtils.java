@@ -8,7 +8,7 @@ import static be.labofitness.labo_fitness.il.utils.annotations.validatorsMessage
 /**
  * Utility class providing helper methods for {@code validation messages}.
  */
-public class ValidatorUtils {
+public abstract class ValidatorUtils {
 
     /**
      * Static final Constant for the {@link Role} in the {@code validators}

@@ -62,7 +62,7 @@ public class AnonymousController {
      */
     @PreAuthorize("isAnonymous()")
     @GetMapping("/coaches-by-remote")
-    public ResponseEntity<List<GetCoachesResponse>> getAllCoachesByIsRemote(@ModelAttribute GetCoachesByRemoteRequest request) {
+    public ResponseEntity<List<GetCoachesResponse>> getAllCoachesByIsRemote(@Valid @ModelAttribute GetCoachesByRemoteRequest request) {
         return ResponseEntity.ok(anonymousService.getAllCoachesByIsRemote(request));
     }
 

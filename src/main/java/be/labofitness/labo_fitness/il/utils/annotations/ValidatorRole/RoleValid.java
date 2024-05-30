@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = RoleValidator.class)
 @Target( { ElementType.FIELD, ElementType.PARAMETER })
-public @interface CustomRoleValidator {
+public @interface RoleValid {
 
     String message() default "not valid";
 

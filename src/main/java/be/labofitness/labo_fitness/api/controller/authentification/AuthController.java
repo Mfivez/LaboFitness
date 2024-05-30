@@ -41,7 +41,7 @@ public class AuthController {
      */
     @PreAuthorize("isAnonymous()")
     @PostMapping("/login")
-    public ResponseEntity<UserLoginResponse> login(@ModelAttribute UserLoginRequest request) {
+    public ResponseEntity<UserLoginResponse> login(@Valid @ModelAttribute UserLoginRequest request) {
         return ResponseEntity.ok(userService.login(request));
     }
 

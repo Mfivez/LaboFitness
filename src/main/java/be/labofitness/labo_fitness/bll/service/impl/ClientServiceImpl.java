@@ -35,15 +35,12 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-//TODO REFAIRE METH
-//import static be.labofitness.labo_fitness.il.utils.LaboFitnessUtil.getCurrentMethodeName;
+import static be.labofitness.labo_fitness.il.utils.LaboFitnessUtil.getCurrentMethodName;
 
 /**
  * Implementation of the {@link ClientService} interface.
@@ -133,15 +130,16 @@ public class ClientServiceImpl  implements ClientService {
         if (userService.checkEmail(request.email())) {
             throw new AlreadyExistException("email already exists : " + request.email());  }
 
+
         Client client = new Client ();
                 client.setWeight(request.weight());
                 client.setHeight(request.height());
                 client.setName(request.name());
                 client.setLastname(request.lastName());
-                client.setBirthdate(LaboFitnessUtil.createNewDate(request.year(), request.month(), request.day()));
+                client.setBirthdate(LaboFitnessUtil.createNewDate(request.year(), LaboFitnessUtil.getMonthEnumFormat(request.month()) , request.day()));
                 client.setEmail(request.email());
                 client.setPassword(passwordEncoder.encode(request.password()));
-                client.setGender(request.gender());
+                if (request.gender() != null) {  client.setGender(request.gender());  }
                 client.setAddress(new Address(request.street(), request.number(), request.city(), request.zipCode()));
                 client.setRoles(roleService.setRole(Set.of("USER", "CLIENT")));
         clientRepository.save(client);

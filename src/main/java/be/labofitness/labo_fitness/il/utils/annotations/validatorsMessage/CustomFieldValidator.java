@@ -7,7 +7,7 @@ import java.lang.reflect.Field;
 /**
  * {@code Custom field validator} for validating field values based on {@code constraints} provided in {@code annotations}.
  */
-public class CustomFieldValidator implements ConstraintValidator<ValidatorMessageCustom, String> {
+public class CustomFieldValidator implements ConstraintValidator<StringValid, String> {
 
     private String entity;
     private String field;
@@ -19,7 +19,7 @@ public class CustomFieldValidator implements ConstraintValidator<ValidatorMessag
      * @param constraintAnnotation The annotation instance containing validation parameters.
      */
     @Override
-    public void initialize(ValidatorMessageCustom constraintAnnotation) {
+    public void initialize(StringValid constraintAnnotation) {
         this.entity = constraintAnnotation.entity();
         this.field = constraintAnnotation.field();
         this.minimalValue = constraintAnnotation.min();
@@ -29,21 +29,19 @@ public class CustomFieldValidator implements ConstraintValidator<ValidatorMessag
      * Validates the field value against the {@code specified constraints}.
      *
      * @param value                     The value of the {@code field} to be validated.
-     * @param constraintValidatorContext The context in which the {@code constraint} is evaluated.
+     * @param cvc The context in which the {@code constraint} is evaluated.
      * @return                          True if the {@code field value} is valid, otherwise false.
      */
     @Override
-    public boolean isValid(String value, ConstraintValidatorContext constraintValidatorContext) {
-        if ( value == null){
-            return false;
-        }
+    public boolean isValid(String value, ConstraintValidatorContext cvc) {
+        if ( value == null){  return true;  }
 
         boolean isValid = value.length() >= minimalValue;
 
         if(!isValid){
-            constraintValidatorContext.disableDefaultConstraintViolation();
-            constraintValidatorContext.buildConstraintViolationWithTemplate(
-                    ValidatorUtils.validatorMessage(entity, field, minimalValue)
+            cvc.disableDefaultConstraintViolation();
+            cvc.buildConstraintViolationWithTemplate(
+                    cvc.getDefaultConstraintMessageTemplate() + ValidatorUtils.validatorMessage(entity, field, minimalValue)
             ).addConstraintViolation();
         }
 

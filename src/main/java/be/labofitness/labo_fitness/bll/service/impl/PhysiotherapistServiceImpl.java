@@ -3,10 +3,10 @@ import be.labofitness.labo_fitness.bll.exception.Exist.DoesntExistException;
 import be.labofitness.labo_fitness.bll.exception.notMatching.NotMatchingException;
 import be.labofitness.labo_fitness.bll.model.physiotherapist.manageAccount.PhysiotherapistManageAccountRequest;
 import be.labofitness.labo_fitness.bll.model.physiotherapist.manageAccount.PhysiotherapistManageAccountResponse;
+import be.labofitness.labo_fitness.bll.model.physiotherapist.manageAccount.changePassWord.PhysiotherapistChangePasswordRequest;
 import be.labofitness.labo_fitness.bll.model.physiotherapist.manageAccount.changePassWord.PhysiotherapistChangePasswordResponse;
 import be.labofitness.labo_fitness.bll.model.planning.PhysioPlanningRequest;
 import be.labofitness.labo_fitness.bll.model.planning.PlanningResponse;
-import be.labofitness.labo_fitness.bll.model.request.physiotherapist.manageAccount.changePassWord.PhysiotherapistChangePasswordRequest;
 import be.labofitness.labo_fitness.bll.service.service.PhysiotherapistService;
 import be.labofitness.labo_fitness.bll.service.service.PlanningService;
 import be.labofitness.labo_fitness.bll.service.service.security.SecurityService;
@@ -15,19 +15,13 @@ import be.labofitness.labo_fitness.dal.repository.UserRepository;
 import be.labofitness.labo_fitness.domain.entity.Appointment;
 import be.labofitness.labo_fitness.domain.entity.Physiotherapist;
 import be.labofitness.labo_fitness.domain.entity.base.Address;
-import be.labofitness.labo_fitness.il.utils.LaboFitnessUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 import java.util.stream.Collectors;
-
 import static be.labofitness.labo_fitness.il.utils.LaboFitnessUtil.getCurrentMethodName;
-
-//TODO METH
-//import static be.labofitness.labo_fitness.il.utils.LaboFitnessUtil.getCurrentMethodeName;
 
 /**
  * Implementation of the {@link PhysiotherapistService} interface.

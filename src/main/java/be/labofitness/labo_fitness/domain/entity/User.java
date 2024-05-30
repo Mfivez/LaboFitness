@@ -54,7 +54,7 @@ public abstract class User extends BaseEntity<Long> implements UserDetails {
     /**
      * The {@link Gender} of the {@code user}.
      */
-    @Column(name = "gender",nullable = true)
+    @Column(name = "gender",nullable = false)
     @Enumerated(EnumType.STRING)
     private Gender gender;
 

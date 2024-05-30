@@ -4,6 +4,7 @@ import be.labofitness.labo_fitness.bll.model.moderator.report.ModeratorUpdateRep
 import be.labofitness.labo_fitness.bll.model.moderator.report.ReportResponse;
 import be.labofitness.labo_fitness.bll.model.moderator.report.ModeratorReportUpdateIsApprovedStateResponse;
 import be.labofitness.labo_fitness.bll.service.service.ModeratorService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -35,7 +36,7 @@ public class ModeratorController {
      */
     @PreAuthorize("hasAuthority('MODERATOR')")
     @GetMapping("/report")
-    public ResponseEntity<ReportResponse> getReportsWithSpecif(@ModelAttribute ReportRequest request) {
+    public ResponseEntity<ReportResponse> getReportsWithSpecif(@Valid @ModelAttribute ReportRequest request) {
         return ResponseEntity.ok(moderatorService.moderatorGetReport(request));
     }
 
@@ -51,7 +52,7 @@ public class ModeratorController {
      */
     @PreAuthorize("hasAuthority('MODERATOR')")
     @PostMapping("/report/is-approved")
-    public ResponseEntity<ModeratorReportUpdateIsApprovedStateResponse> updateIsApproved(@RequestBody ModeratorUpdateReportIsApprovedStateRequest request) {
+    public ResponseEntity<ModeratorReportUpdateIsApprovedStateResponse> updateIsApproved(@Valid @RequestBody ModeratorUpdateReportIsApprovedStateRequest request) {
         return ResponseEntity.ok(moderatorService.moderatorUpdateIsApproved(request));
     }
 

@@ -98,4 +98,13 @@ public class LaboFitnessUtil {
         return Thread.currentThread().getStackTrace()[2].getMethodName();
     }
 
+    public static Month getMonthEnumFormat(String month) {
+        try {
+            return Month.of(Integer.parseInt(month));
+        }
+        catch (NumberFormatException ignored) {}
+
+        return Month.valueOf(month);
+    }
+
 }

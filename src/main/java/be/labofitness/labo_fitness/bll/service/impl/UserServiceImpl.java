@@ -11,7 +11,6 @@ import be.labofitness.labo_fitness.bll.service.service.PhysiotherapistService;
 import be.labofitness.labo_fitness.bll.service.service.ReportService;
 import be.labofitness.labo_fitness.bll.service.service.UserService;
 import be.labofitness.labo_fitness.bll.service.service.security.SecurityService;
-import be.labofitness.labo_fitness.dal.repository.CoachRepository;
 import be.labofitness.labo_fitness.dal.repository.UserRepository;
 import be.labofitness.labo_fitness.domain.entity.Coach;
 import be.labofitness.labo_fitness.domain.entity.Physiotherapist;
@@ -31,7 +30,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
-
 import static be.labofitness.labo_fitness.il.utils.Anonymizer.genereteRandomString;
 
 /**
@@ -222,7 +220,7 @@ public class UserServiceImpl implements UserService {
 
         if(user.getRoles().stream().anyMatch(role -> role.getName().equals("PHYSIOTHERAPIST"))){
             Physiotherapist physio = physiotherapistService.getOneByEmail(user.getEmail());
-            physio.setInamiNumber(genereteRandomString(physio.getInamiNumber()));
+            physio.setInamiNumber(physio.getId().intValue());
             physiotherapistService.update(physio);
         }
 

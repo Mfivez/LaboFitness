@@ -154,6 +154,6 @@ public class ModeratorServiceImpl implements ModeratorService {
             message = "Report approved statement is now " + request.isApprovedState();
         }
 
-        return new ModeratorReportUpdateIsApprovedStateResponse( message, report.getId());
+        return new ModeratorReportUpdateIsApprovedStateResponse( report.getId(), message);
     }
 }
