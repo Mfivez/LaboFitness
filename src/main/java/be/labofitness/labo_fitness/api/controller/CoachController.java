@@ -1,6 +1,8 @@
 package be.labofitness.labo_fitness.api.controller;
 import be.labofitness.labo_fitness.bll.model.coach.ManageEventInscription.ManageEventInscriptionRequest;
 import be.labofitness.labo_fitness.bll.model.coach.manageAccount.CoachManageAccountRequest;
+import be.labofitness.labo_fitness.bll.model.coach.manageAccount.updateSpecificInformations.CoachUpdateSpecificsInformationsRequest;
+import be.labofitness.labo_fitness.bll.model.coach.manageAccount.updateSpecificInformations.CoachUpdateSpecificsInformationsResponse;
 import be.labofitness.labo_fitness.bll.model.planning.CoachPlanningRequest;
 import be.labofitness.labo_fitness.bll.model.coach.ManageEventInscription.ManageEventInscriptionResponse;
 import be.labofitness.labo_fitness.bll.model.coach.manageAccount.CoachManageAccountResponse;
@@ -77,6 +79,12 @@ public class CoachController {
     @PreAuthorize("hasAuthority('COACH')")
     public ResponseEntity<CoachChangePasswordResponse> changePassword(@Valid @RequestBody CoachChangePasswordRequest request){
         return ResponseEntity.ok(coachService.changePassword(request));
+    }
+
+    @PutMapping("/manage-account/updateSpecifics")
+    @PreAuthorize("hasAuthority('COACH')")
+    public ResponseEntity<CoachUpdateSpecificsInformationsResponse> updateSpecificInformations(@Valid @ModelAttribute CoachUpdateSpecificsInformationsRequest request){
+        return ResponseEntity.ok(coachService.updateSpecificInformations(request));
     }
 
     // endregion

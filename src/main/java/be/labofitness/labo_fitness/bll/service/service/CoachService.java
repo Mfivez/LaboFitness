@@ -1,6 +1,8 @@
 package be.labofitness.labo_fitness.bll.service.service;
 import be.labofitness.labo_fitness.bll.model.coach.ManageEventInscription.ManageEventInscriptionRequest;
 import be.labofitness.labo_fitness.bll.model.coach.manageAccount.CoachManageAccountRequest;
+import be.labofitness.labo_fitness.bll.model.coach.manageAccount.updateSpecificInformations.CoachUpdateSpecificsInformationsRequest;
+import be.labofitness.labo_fitness.bll.model.coach.manageAccount.updateSpecificInformations.CoachUpdateSpecificsInformationsResponse;
 import be.labofitness.labo_fitness.bll.model.planning.CoachPlanningRequest;
 import be.labofitness.labo_fitness.bll.model.coach.ManageEventInscription.ManageEventInscriptionResponse;
 import be.labofitness.labo_fitness.bll.model.coach.manageAccount.CoachManageAccountResponse;
@@ -47,6 +49,15 @@ public interface CoachService  extends CrudService<Coach, Long> {
      * @return the {@link Coach} change password response
      */
     CoachChangePasswordResponse changePassword(CoachChangePasswordRequest request);
+
+
+    /**
+     * Changes isRemote and pricePerHour of a {@link Coach}.
+     *
+     * @param request the {@link Coach} change specificInformations request
+     * @return the {@link Coach} change specificInformations response
+     */
+    CoachUpdateSpecificsInformationsResponse updateSpecificInformations (CoachUpdateSpecificsInformationsRequest request);
 
     // endregion
 

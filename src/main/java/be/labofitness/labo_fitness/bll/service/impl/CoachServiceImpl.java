@@ -7,6 +7,8 @@ import be.labofitness.labo_fitness.bll.model.coach.ManageEventInscription.Manage
 import be.labofitness.labo_fitness.bll.model.coach.ManageEventInscription.ManageEventInscriptionResponse;
 import be.labofitness.labo_fitness.bll.model.coach.manageAccount.CoachManageAccountRequest;
 import be.labofitness.labo_fitness.bll.model.coach.manageAccount.CoachManageAccountResponse;
+import be.labofitness.labo_fitness.bll.model.coach.manageAccount.updateSpecificInformations.CoachUpdateSpecificsInformationsRequest;
+import be.labofitness.labo_fitness.bll.model.coach.manageAccount.updateSpecificInformations.CoachUpdateSpecificsInformationsResponse;
 import be.labofitness.labo_fitness.bll.model.planning.CoachPlanningRequest;
 import be.labofitness.labo_fitness.bll.model.planning.PlanningResponse;
 import be.labofitness.labo_fitness.bll.model.coach.manageAccount.changePassword.CoachChangePasswordRequest;
@@ -22,6 +24,7 @@ import be.labofitness.labo_fitness.domain.entity.Coach;
 import be.labofitness.labo_fitness.domain.entity.Competition;
 import be.labofitness.labo_fitness.domain.entity.TrainingSession;
 import be.labofitness.labo_fitness.domain.entity.base.Address;
+import be.labofitness.labo_fitness.il.utils.LaboFitnessUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -30,6 +33,8 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static be.labofitness.labo_fitness.il.utils.LaboFitnessUtil.getCurrentMethodName;
 
 //TODO METH
 //import static be.labofitness.labo_fitness.il.utils.LaboFitnessUtil.getCurrentMethodeName;
@@ -147,7 +152,6 @@ public class CoachServiceImpl implements CoachService {
     @Transactional
     public CoachManageAccountResponse manageAccount(CoachManageAccountRequest request) {
 
-        String message  = "getCurrentMethodeName()";
         Coach coach = securityService.getAuthentication(Coach.class);
 
         if (!coach.getEmail().equals(request.email())) {
@@ -165,7 +169,7 @@ public class CoachServiceImpl implements CoachService {
 
         coachRepository.save(coach);
 
-        return CoachManageAccountResponse.fromEntity(coach,message);
+        return CoachManageAccountResponse.fromEntity(coach, getCurrentMethodName());
     }
 
     /**
@@ -177,8 +181,6 @@ public class CoachServiceImpl implements CoachService {
     @Transactional
     public CoachChangePasswordResponse changePassword(CoachChangePasswordRequest request) {
 
-        String message = "getCurrentMethodeName()";
-
         Coach coach = securityService.getAuthentication(Coach.class);
 
         if(!passwordEncoder.matches(request.oldPassword(),coach.getPassword())){
@@ -188,7 +190,24 @@ public class CoachServiceImpl implements CoachService {
         coach.setPassword(passwordEncoder.encode(request.newPassword()));
         coachRepository.save(coach);
 
-        return CoachChangePasswordResponse.fromEntity(coach, message);
+        return CoachChangePasswordResponse.fromEntity(coach, getCurrentMethodName());
+    }
+
+    /**
+     * Update isRemote and pricePerHour of an {@link Coach} account
+     * @param request of the {@link CoachUpdateSpecificsInformationsRequest} to update
+     * @return response {@link CoachUpdateSpecificsInformationsResponse} with a message
+     */
+    @Override
+    @Transactional
+    public CoachUpdateSpecificsInformationsResponse updateSpecificInformations(CoachUpdateSpecificsInformationsRequest request){
+        Coach coach = securityService.getAuthentication(Coach.class);
+
+        coach.setRemote(request.isRemote());
+        coach.setPriceHour(request.pricePerHour());
+        coachRepository.save(coach);
+
+        return CoachUpdateSpecificsInformationsResponse.fromEntity(coach, getCurrentMethodName());
     }
 
 

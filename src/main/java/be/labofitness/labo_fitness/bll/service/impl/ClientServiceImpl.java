@@ -103,7 +103,6 @@ public class ClientServiceImpl  implements ClientService {
     @Transactional
     public ClientChangePasswordResponse changePassword(ClientChangePasswordRequest request) {
 
-        String message = "getCurrentMethodeName()";
 
         Client client = securityService.getAuthentication(Client.class);
 
@@ -114,7 +113,7 @@ public class ClientServiceImpl  implements ClientService {
         client.setPassword(passwordEncoder.encode(request.newPassword()));
         clientRepository.save(client);
 
-        return ClientChangePasswordResponse.fromEntity(client, message);
+        return ClientChangePasswordResponse.fromEntity(client, getCurrentMethodName());
     }
 
     //endregion
