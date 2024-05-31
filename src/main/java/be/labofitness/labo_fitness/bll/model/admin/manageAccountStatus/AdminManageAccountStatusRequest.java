@@ -28,7 +28,6 @@ public record AdminManageAccountStatusRequest(
         String email,
 
         @NotNull(message = "error.admin.user.isActive.null")
-        @NotBlank(message = "error.admin.user.isActive.blank")
         Boolean isActive
 
 ){

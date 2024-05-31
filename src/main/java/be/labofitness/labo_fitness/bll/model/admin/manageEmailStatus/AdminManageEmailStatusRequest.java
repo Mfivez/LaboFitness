@@ -1,6 +1,6 @@
 package be.labofitness.labo_fitness.bll.model.admin.manageEmailStatus;
 import be.labofitness.labo_fitness.il.utils.annotations.extendedEmailvalidator.EmailValid;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 /**
  * Represents the request model for managing the email status of a user in the admin module.
@@ -24,8 +24,7 @@ public record AdminManageEmailStatusRequest(
         @EmailValid
         String email,
 
-        @NotBlank(message = "error.admin.user.emailActive.null")
-        @NotBlank(message = "error.admin.user.emailActive.blank")
+        @NotNull(message = "error.admin.user.emailActive.null")
         Boolean emailActive
 
 ) {

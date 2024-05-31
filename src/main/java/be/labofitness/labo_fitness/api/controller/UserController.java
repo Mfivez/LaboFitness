@@ -35,7 +35,7 @@ public class UserController {
      */
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/make-report")
-    public ResponseEntity<ReportResponse> makeReport(@Valid @ModelAttribute MakeReportRequest request) {
+    public ResponseEntity<ReportResponse> makeReport(@Valid @RequestBody MakeReportRequest request) {
         return ResponseEntity.ok(userService.makeReport(request));
     }
 

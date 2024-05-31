@@ -8,6 +8,7 @@ import be.labofitness.labo_fitness.bll.model.professionnel.manageAccount.manageL
 import be.labofitness.labo_fitness.bll.model.professionnel.manageAccount.manageLocation.addLocationPlace.ProfessionalAddLocationPlaceResponse;
 import be.labofitness.labo_fitness.bll.model.professionnel.manageAccount.manageLocation.updateLocationPlace.ProfessionalUpdateLocationPlaceResponse;
 import be.labofitness.labo_fitness.bll.service.service.ProfessionalService;
+import be.labofitness.labo_fitness.domain.entity.LocationPlace;
 import be.labofitness.labo_fitness.domain.entity.Professional;
 import be.labofitness.labo_fitness.domain.entity.Accreditation;
 import lombok.RequiredArgsConstructor;
@@ -22,15 +23,26 @@ public class ProfessionalController {
 
     private final ProfessionalService professionalService;
 
-
     // region MANAGE ACCOUNT
 
+    /**
+     * add to a {@link Professional} account an {@link LocationPlace } based on the provided request criteria.
+     *
+     * @param request The request containing filtering criteria.
+     * @return A ResponseEntity containing a list of {@link ProfessionalAddLocationPlaceResponse} matching the criteria.
+     */
     @PostMapping("/add-location-place")
     @PreAuthorize("hasAnyAuthority('PHYSIOTHERAPIST', 'COACH')")
     public ResponseEntity<ProfessionalAddLocationPlaceResponse> addLocationPlace(@RequestBody ProfessionalAddLocationPlaceRequest request) {
         return ResponseEntity.ok(professionalService.addLocationPlace(request));
     }
 
+    /**
+     * update to a {@link Professional} account the {@link LocationPlace } based on the provided request criteria.
+     *
+     * @param request The request containing filtering criteria.
+     * @return A ResponseEntity containing a list of {@link ProfessionalUpdateLocationPlaceResponse} matching the criteria.
+     */
     @PutMapping("/update-location-place")
     @PreAuthorize("hasAnyAuthority('PHYSIOTHERAPIST', 'COACH')")
     public ResponseEntity<ProfessionalUpdateLocationPlaceResponse> updateLocationPlace(@RequestBody ProfessionalUpdateLocationPlaceRequest request) {
