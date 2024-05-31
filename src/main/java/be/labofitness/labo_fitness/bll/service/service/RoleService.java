@@ -18,7 +18,12 @@ public interface RoleService  extends CrudService<Role, Long> {
      */
     Set<Role> setRole(Set<String> roles);
 
-
+    /**
+     * Retrieves a {@code Role} entity by its name.
+     *
+     * @param name the name of the role
+     * @return the {@code Role} entity with the specified name
+     */
     Role getOneByName(String name);
 
 }

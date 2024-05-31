@@ -79,11 +79,24 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     // region UTILS
 
+    /**
+     * Retrieves the count of pending appointment requests for a given client.
+     *
+     * @param client the client for whom to retrieve the count of pending appointment requests
+     * @return the count of pending appointment requests for the given client
+     */
     @Override
     public Long getPendingRequestsCount(Client client) {
         return appointmentRepository.countByClientAndAppointmentStatus(client, AppointmentStatus.PENDING);
     }
 
+    /**
+     * Checks if an appointment exists for a given client and reason with a pending status.
+     *
+     * @param client the client for whom to check if an appointment exists
+     * @param reason the reason of the appointment
+     * @return true if an appointment exists for the given client and reason with a pending status, otherwise false
+     */
     @Override
     public boolean ExistByReason(Client client, String reason) {
         return appointmentRepository.existsByClientAndReasonOfAppointmentAndAppointmentStatus(client, reason, AppointmentStatus.PENDING);
@@ -93,6 +106,12 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     // region SPECIFICATION
 
+    /**
+     * Finds appointments based on the provided specification.
+     *
+     * @param specification the specification to filter appointments
+     * @return a list of appointments matching the specification
+     */
     public List<Appointment> findBySpecification(Specification<Appointment> specification) {
         return appointmentRepository.findAll(specification);
     }

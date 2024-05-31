@@ -75,6 +75,12 @@ public class AdminServiceImpl implements AdminService {
 
     // REGION manage status account
 
+    /**
+     * Manages the account status of a user.
+     *
+     * @param request the request to manage the account status
+     * @return the response indicating the result of managing the account status
+     */
     @Override
     public AdminManageAccountStatusResponse manageAccountStatus(AdminManageAccountStatusRequest request) {
         return AdminManageAccountStatusResponse.fromEntity(userService.updateAccountStatus(
@@ -83,6 +89,12 @@ public class AdminServiceImpl implements AdminService {
         );
     }
 
+    /**
+     * Updates the email status of a user.
+     *
+     * @param request the request to update the email status
+     * @return the response indicating the result of updating the email status
+     */
     @Override
     public AdminManageEmailStatusResponse updateEmailStatus(AdminManageEmailStatusRequest request)
     {
@@ -92,6 +104,12 @@ public class AdminServiceImpl implements AdminService {
         );
     }
 
+    /**
+     * Anonymizes a user.
+     *
+     * @param request the request to anonymize the user
+     * @return the response indicating the result of anonymizing the user
+     */
     @Override
     public AdminAnonymizeUserResponse anonymizeUser (AdminAnonymizeUserRequest request){
 

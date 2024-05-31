@@ -149,6 +149,13 @@ public class ProfessionalServiceImpl implements ProfessionalService{
 
     // region MANAGE ACCOUNT
 
+    /**
+     * Adds a location place for the authenticated professional based on the provided request.
+     *
+     * @param request the request containing the details of the location place to add
+     * @return a response indicating the success of the operation
+     * @throws UnauthorizedException if the professional is not authorized to add the location place
+     */
     @Override @Transactional
     public ProfessionalAddLocationPlaceResponse addLocationPlace(ProfessionalAddLocationPlaceRequest request) {
         Professional professional = securityService.getAuthentication(Professional.class);
@@ -163,6 +170,13 @@ public class ProfessionalServiceImpl implements ProfessionalService{
         return new ProfessionalAddLocationPlaceResponse("Location place added successfully");
     }
 
+    /**
+     * Updates the location place identified by the location ID based on the provided request.
+     *
+     * @param request the request containing the details of the location place to update
+     * @return a response indicating the success of the operation
+     * @throws UnauthorizedException if the professional is not authorized to update the location place
+     */
     @Override @Transactional
     public ProfessionalUpdateLocationPlaceResponse updateLocationPlace(ProfessionalUpdateLocationPlaceRequest request) {
         LocationPlace locationPlace = locationService.getOne(request.locationId());

@@ -53,16 +53,55 @@ public interface UserService extends CrudService<User, Long> , UserDetailsServic
 
     //region UTILS
 
+    /**
+     * Updates the email address of a {@link User} if the new email address is valid.
+     *
+     * @param email    the current email address of the user
+     * @param newEmail the new email address to be set
+     * @return {@code true} if the email update was successful, {@code false} otherwise
+     */
     boolean emailUpdateIfValid(String email, String newEmail);
 
+    /**
+     * Retrieves a {@link User} entity by its email address.
+     *
+     * @param email the email address of the user
+     * @return the {@link User} entity with the specified email address
+     */
     User getOneByEmail(String email);
 
+    /**
+     * Updates the account status of a {@link User}.
+     *
+     * @param user   the user whose account status is to be updated
+     * @param status the new account status
+     * @return the updated {@link User} entity
+     */
     User updateAccountStatus(User user, boolean status);
 
+    /**
+     * Updates the email status of a {@link User}.
+     *
+     * @param user   the user whose email status is to be updated
+     * @param status the new email status
+     * @return the updated {@link User} entity
+     */
     User updateEmailStatus(User user, boolean status);
 
+    /**
+     * Anonymizes a {@link User}.
+     *
+     * @param user the user to be anonymized
+     * @return the anonymized {@link User} entity
+     */
     User anonymizeUser(User user);
 
+    /**
+     * Checks if an email address is valid.
+     *
+     * @param email the email address to be checked
+     * @return {@code true} if the email address is valid, {@code false} otherwise
+     */
     boolean checkEmail(String email);
 
     //endregion

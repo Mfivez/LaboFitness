@@ -83,6 +83,12 @@ public interface CoachService  extends CrudService<Coach, Long> {
 
     // region CLASSIC CRUD
 
+    /**
+     * Retrieves a {@link Coach} entity by its email address.
+     *
+     * @param email the email address of the coach
+     * @return the {@link Coach} entity with the specified email address
+     */
     Coach getOneByEmail(String email);
 
     //endregion
