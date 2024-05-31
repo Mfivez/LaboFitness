@@ -14,4 +14,6 @@ public interface SpecificationService {
 
     <S extends HasGetIdMethod, T extends HasFindByMethod<S>> Long getIdByMail(String mail, T repository);
 
+    <T> Specification<T> specificationHasAnyBoolean(Specification<T> spec, String status, Function<Boolean, Specification<T>> specBuilder);
+
 }

@@ -1,6 +1,7 @@
 package be.labofitness.labo_fitness.bll.service.impl;
 
 import be.labofitness.labo_fitness.bll.exception.Exist.DoesntExistException;
+import be.labofitness.labo_fitness.bll.exception.Unauthorize.UnauthorizedException;
 import be.labofitness.labo_fitness.bll.service.service.SpecificationService;
 import be.labofitness.labo_fitness.dal.util.HasFindByMethod;
 import be.labofitness.labo_fitness.dal.util.HasGetIdMethod;
@@ -44,6 +45,15 @@ public class SpecificationServiceImpl implements SpecificationService {
     public <S extends HasGetIdMethod, T extends HasFindByMethod<S>> Long getIdByMail(String mail, T repository) {
         return mail != null ? repository.findByEmail(mail).orElseThrow(
                 () -> new DoesntExistException("Email doesn't exist: " + mail)).getId() : null ;
+    }
+
+    public <T> Specification<T> specificationHasAnyBoolean(Specification<T> spec, String status, Function<Boolean, Specification<T>> specBuilder) {
+        return status != null ? switch (status.toLowerCase()) {
+            case "true" -> spec = spec.and(specBuilder.apply(true));
+            case "false" -> spec = spec.and(specBuilder.apply(false));
+            case "any" -> spec = spec.and(Specification.where(specBuilder.apply(false)).or(specBuilder.apply(true)));
+            default -> throw new UnauthorizedException("The value of 'status' must be 'true' 'false' or 'any.");
+        } : spec ;
     }
 
 }

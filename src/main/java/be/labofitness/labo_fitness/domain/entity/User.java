@@ -1,4 +1,5 @@
 package be.labofitness.labo_fitness.domain.entity;
+import be.labofitness.labo_fitness.dal.util.HasGetIdMethod;
 import be.labofitness.labo_fitness.domain.entity.base.Address;
 import be.labofitness.labo_fitness.domain.entity.base.BaseEntity;
 import be.labofitness.labo_fitness.domain.enums.Gender;
@@ -24,7 +25,7 @@ import java.util.stream.Collectors;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "users")
-public abstract class User extends BaseEntity<Long> implements UserDetails {
+public abstract class User extends BaseEntity<Long> implements UserDetails, HasGetIdMethod {
 
     /**
      * The name of the {@code user}.
