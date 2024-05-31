@@ -8,6 +8,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
+/**
+ * Implementation of the {@link LocationService} interface providing operations to manage location places.
+ */
 @RequiredArgsConstructor
 @Service
 public class LocationServiceImpl implements LocationService {
@@ -74,12 +77,24 @@ public class LocationServiceImpl implements LocationService {
 
     // endregion
 
+    /**
+     * Adds a new location place with the provided address.
+     *
+     * @param address the address of the location place to add
+     * @return the created location place
+     */
     @Override
     public LocationPlace addLocationPlace(Address address) {
         LocationPlace locationPlace = new LocationPlace(address);
         return locationRepository.save(locationPlace);
     }
 
+    /**
+     * Updates an existing location place.
+     *
+     * @param locationPlace the location place to update
+     * @return the updated location place
+     */
     @Override
     public LocationPlace updateLocationPlace(LocationPlace locationPlace) {
         return locationRepository.save(locationPlace);

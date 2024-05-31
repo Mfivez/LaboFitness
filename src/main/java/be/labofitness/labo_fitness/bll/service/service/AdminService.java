@@ -14,8 +14,7 @@ import java.util.List;
 /**
  * Service interface for performing administrative operations.
  */
-public interface AdminService
-{
+public interface AdminService {
 
     //region GET USER
 
@@ -31,11 +30,29 @@ public interface AdminService
 
     //region MANAGE ACCOUNT USER
 
+    /**
+     * Manages the account status of a user based on the provided request.
+     *
+     * @param request the request to manage account status
+     * @return the response indicating the result of the account status management
+     */
     AdminManageAccountStatusResponse manageAccountStatus(AdminManageAccountStatusRequest request);
 
+    /**
+     * Updates the email status of a user based on the provided request.
+     *
+     * @param request the request to update email status
+     * @return the response indicating the result of the email status update
+     */
     AdminManageEmailStatusResponse updateEmailStatus(AdminManageEmailStatusRequest request);
 
-    AdminAnonymizeUserResponse anonymizeUser (AdminAnonymizeUserRequest request);
+    /**
+     * Anonymizes a user based on the provided request.
+     *
+     * @param request the request to anonymize user
+     * @return the response indicating the result of the user anonymization
+     */
+    AdminAnonymizeUserResponse anonymizeUser(AdminAnonymizeUserRequest request);
 
     // endregion
 }

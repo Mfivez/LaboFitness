@@ -29,8 +29,20 @@ public interface ProfessionalService extends CrudService<Professional, Long> {
 
     // region LOCATION PLACE
 
+    /**
+     * Adds a new location place for a {@link Professional}.
+     *
+     * @param request the request containing the location place details
+     * @return the response indicating the success of the operation
+     */
     ProfessionalAddLocationPlaceResponse addLocationPlace(ProfessionalAddLocationPlaceRequest request);
 
+    /**
+     * Updates an existing location place for a {@link Professional}.
+     *
+     * @param request the request containing the updated location place details
+     * @return the response indicating the success of the operation
+     */
     ProfessionalUpdateLocationPlaceResponse updateLocationPlace(ProfessionalUpdateLocationPlaceRequest request);
 
     /**

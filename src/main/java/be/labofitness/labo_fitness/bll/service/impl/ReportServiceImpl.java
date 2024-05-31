@@ -106,6 +106,12 @@ public class ReportServiceImpl implements ReportService {
 
     // region SPECIFICATION
 
+    /**
+     * Retrieves a list of reports based on the provided specification.
+     *
+     * @param specification the specification to filter reports
+     * @return a list of reports that match the provided specification
+     */
     public List<Report> getReportsBySpecification(Specification<Report> specification) {
         return reportRepository.findAll(specification);
     }

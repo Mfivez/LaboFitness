@@ -13,6 +13,12 @@ public interface TrainingSessionService extends CrudService<TrainingSession, Lon
 
     //region SPECIFICATION
 
+    /**
+     * Retrieves a list of {@link TrainingSession} entities based on the provided specifications.
+     *
+     * @param specification the specification to filter the training sessions
+     * @return a list of {@link TrainingSession} entities that match the provided specifications
+     */
     List<TrainingSession> findBySpecifications(Specification<TrainingSession> specification);
 
     //endregion

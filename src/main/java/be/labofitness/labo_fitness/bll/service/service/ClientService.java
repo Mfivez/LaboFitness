@@ -231,6 +231,12 @@ public interface ClientService  extends CrudService<Client, Long> {
 
     //region CRUD SERVICE
 
+    /**
+     * Retrieves a {@link Client} entity by its email address.
+     *
+     * @param email the email address of the Client
+     * @return the {@link Client} entity with the specified email address
+     */
     Client getOneByEmail(String email);
 
     //endregion

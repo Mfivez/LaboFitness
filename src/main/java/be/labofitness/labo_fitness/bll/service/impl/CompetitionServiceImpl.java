@@ -96,6 +96,12 @@ public class CompetitionServiceImpl implements CompetitionService {
 
     // region SPECIFICATION
 
+    /**
+     * Retrieves a list of {@link Competition} entities based on the provided specification.
+     *
+     * @param specification the specification to filter {@link Competition} entities
+     * @return a list of filtered {@link Competition} entities
+     */
     @Override
     public List<Competition> getCompetitionBySpecification(Specification<Competition> specification) {
         return competitionRepository.findAll(specification);

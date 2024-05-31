@@ -49,6 +49,12 @@ public interface PhysiotherapistService extends CrudService<Physiotherapist, Lon
 
     //region UTILS
 
+    /**
+     * Retrieves a {@link Physiotherapist} entity by its email address.
+     *
+     * @param email the email address of the physiotherapist
+     * @return the {@link Physiotherapist} entity with the specified email address
+     */
     Physiotherapist getOneByEmail(String email);
 
     //endregion

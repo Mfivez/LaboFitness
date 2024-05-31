@@ -25,6 +25,12 @@ public interface CompetitionService  extends CrudService<Competition, Long>  {
 
     // region SPECIFICATION
 
+    /**
+     * Retrieves a list of {@link Competition} entities based on the provided specifications.
+     *
+     * @param specification the specification to filter the competitions
+     * @return a list of {@link Competition} entities that match the provided specifications
+     */
     List<Competition> getCompetitionBySpecification(Specification<Competition> specification);
 
     //endregion

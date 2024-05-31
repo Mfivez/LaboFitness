@@ -21,6 +21,12 @@ public interface ReportService  extends CrudService<Report, Long> {
      */
     void makeReportWithParams(User complainant, User reportedUser, String reportMessage);
 
+    /**
+     * Retrieves a list of {@link Report} entities based on the provided specifications.
+     *
+     * @param specification the specification to filter the reports
+     * @return a list of {@link Report} entities that match the provided specifications
+     */
     List<Report> getReportsBySpecification(Specification<Report> specification);
 
 }

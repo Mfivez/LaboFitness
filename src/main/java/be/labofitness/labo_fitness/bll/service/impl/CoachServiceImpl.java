@@ -28,23 +28,16 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import static be.labofitness.labo_fitness.il.utils.LaboFitnessUtil.getCurrentMethodName;
-
-//TODO METH
-//import static be.labofitness.labo_fitness.il.utils.LaboFitnessUtil.getCurrentMethodeName;
-
 /**
  * Implementation of the {@link CoachService} interface.
  * <br>Provides operations for managing coach-related functionalities such as planning, account management, and event inscription.
  */
 @RequiredArgsConstructor
 @Service
-//TODO REFACT IL FAUDRAIT QUE LES IMPL DE SERVICE N'APPELLENT QUE DES SERVICES ET PAS DES REPOS
 public class CoachServiceImpl implements CoachService {
 
     private final CoachRepository coachRepository;
@@ -53,11 +46,9 @@ public class CoachServiceImpl implements CoachService {
     private final PasswordEncoder passwordEncoder;
     private final CompetitionService competitionService;
     private final TrainingSessionService trainingService;
-    private final UserRepository userRepository;  //TODO REFAC
+    private final UserRepository userRepository;
 
     // region PLANNING
-
-    //TODO TRANSFER METHODS GET THINGS NOT OVERRIDE ON PLANNING SERVICE
 
     /**
      * Retrieves the planning for a {@link Coach} based on the provided request.
