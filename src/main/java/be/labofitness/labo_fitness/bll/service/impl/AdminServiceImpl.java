@@ -8,15 +8,10 @@ import be.labofitness.labo_fitness.bll.model.admin.manageAccountStatus.AdminMana
 import be.labofitness.labo_fitness.bll.model.admin.manageEmailStatus.AdminManageEmailStatusRequest;
 import be.labofitness.labo_fitness.bll.model.admin.manageEmailStatus.AdminManageEmailStatusResponse;
 import be.labofitness.labo_fitness.bll.service.service.AdminService;
-import be.labofitness.labo_fitness.bll.service.service.RoleService;
 import be.labofitness.labo_fitness.bll.service.service.UserService;
-import be.labofitness.labo_fitness.bll.service.service.security.SecurityService;
 import be.labofitness.labo_fitness.bll.specification.AdminGetUserSpecification;
-import be.labofitness.labo_fitness.bll.specification.CompetitionSpecification;
 import be.labofitness.labo_fitness.dal.repository.UserRepository;
-import be.labofitness.labo_fitness.domain.entity.Role;
 import be.labofitness.labo_fitness.domain.entity.User;
-import be.labofitness.labo_fitness.il.utils.LaboFitnessUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -35,8 +30,7 @@ public class AdminServiceImpl implements AdminService {
 
     private final UserRepository userRepository;
     private final UserService userService;
-    private final SecurityService securityService;
-    private final RoleService roleService;
+
 
     /**
      * Retrieves a list of {@link AdminGetUserResponse} based on the provided request criteria.

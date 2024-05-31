@@ -1,4 +1,5 @@
 package be.labofitness.labo_fitness.dal.repository;
+import be.labofitness.labo_fitness.dal.util.HasFindByMethod;
 import be.labofitness.labo_fitness.domain.entity.Coach;
 import be.labofitness.labo_fitness.domain.entity.Competition;
 import be.labofitness.labo_fitness.domain.entity.TrainingSession;
@@ -13,19 +14,7 @@ import java.util.Optional;
  * <p>Extends {@link JpaRepository} to inherit basic CRUD operations.</p>
  */
 @Repository
-public interface CoachRepository extends JpaRepository<Coach, Long> {
-
-    /**
-     * Finds a {@link Coach} by email.
-     *
-     * @param email The {@link Coach}'s email.
-     * @return An {@link Optional} {@link Coach} object.
-     */
-    @Query(
-            "SELECT c.password " +
-            "FROM Coach c " +
-            "WHERE c.id = :id")
-    String findPasswordByCoachId(Long id);
+public interface CoachRepository extends JpaRepository<Coach, Long>, HasFindByMethod<Coach> {
 
     @Query(
             "SELECT c " +

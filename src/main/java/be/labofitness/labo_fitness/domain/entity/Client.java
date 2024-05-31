@@ -1,4 +1,5 @@
 package be.labofitness.labo_fitness.domain.entity;
+import be.labofitness.labo_fitness.dal.util.HasGetIdMethod;
 import be.labofitness.labo_fitness.domain.enums.Goal;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -15,7 +16,7 @@ import java.util.List;
 @Getter @Setter @ToString
 @Entity
 @Table(name = "clients")
-public class Client extends User {
+public class Client extends User implements HasGetIdMethod {
 
     /**
      * The weight of the client.

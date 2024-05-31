@@ -1,4 +1,5 @@
 package be.labofitness.labo_fitness.domain.entity;
+import be.labofitness.labo_fitness.dal.util.HasGetIdMethod;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -12,7 +13,7 @@ import lombok.*;
 @Getter @Setter @ToString
 @Entity
 @Table(name = "Coaches")
-public class Coach extends Professional{
+public class Coach extends Professional implements HasGetIdMethod  {
 
     /**
      * <p>Indicates whether the coach offers remote services.</p>

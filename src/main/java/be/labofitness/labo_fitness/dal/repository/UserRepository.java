@@ -1,4 +1,5 @@
 package be.labofitness.labo_fitness.dal.repository;
+import be.labofitness.labo_fitness.dal.util.HasFindByMethod;
 import be.labofitness.labo_fitness.domain.entity.Coach;
 import be.labofitness.labo_fitness.domain.entity.Physiotherapist;
 import be.labofitness.labo_fitness.domain.entity.Report;
@@ -18,7 +19,7 @@ import java.util.Set;
  * <br>Extends {@link JpaRepository} to inherit basic CRUD operations.
  */
 @Repository
-public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificationExecutor<User> {
+public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificationExecutor<User>, HasFindByMethod<User> {
 
     // region UTILS METHODS
 

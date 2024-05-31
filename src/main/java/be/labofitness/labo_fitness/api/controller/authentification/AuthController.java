@@ -5,8 +5,8 @@ import be.labofitness.labo_fitness.bll.model.register.ProfessionalRegisterReques
 import be.labofitness.labo_fitness.bll.model.login.UserLoginResponse;
 import be.labofitness.labo_fitness.bll.model.register.RegisterResponse;
 import be.labofitness.labo_fitness.bll.service.service.ClientService;
-import be.labofitness.labo_fitness.bll.service.service.ProfessionalService;
 import be.labofitness.labo_fitness.bll.service.service.UserService;
+import be.labofitness.labo_fitness.bll.service.service.ProfessionalService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
