@@ -55,7 +55,7 @@ public class PhysiotherapistController {
      */
     @PutMapping("/manage-account")
     @PreAuthorize("hasAuthority('PHYSIOTHERAPIST') and isAuthenticated()")
-    public ResponseEntity<PhysiotherapistManageAccountResponse> physiotherapistManageAccount(@Valid @ModelAttribute PhysiotherapistManageAccountRequest request){
+    public ResponseEntity<PhysiotherapistManageAccountResponse> physiotherapistManageAccount(@Valid @RequestBody PhysiotherapistManageAccountRequest request){
         return ResponseEntity.ok(physiotherapistService.manageAccount(request));
     }
 

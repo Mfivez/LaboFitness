@@ -2,6 +2,22 @@ package be.labofitness.labo_fitness.bll.model.coach.manageAccount.updateSpecific
 
 import be.labofitness.labo_fitness.domain.entity.Coach;
 
+/**
+ * Represents the request model for changing the specific information of a coach's account.
+ * <p>
+ * This record encapsulates the idRemote information and the pricePerHour.
+ * </p>
+ * <p>
+ * Example usage:
+ * </p>
+ * <pre>{@code
+ * coochId = 1
+ * CoachUpdateSpecific informations successfully done
+ * CoachUpdateSpecificsInformationsResponse response = new CoachUpdateSpecificsInformationsResponse(coach, message);
+ * }</pre>
+ *
+ * @param id the id of the modified coach.
+ */
 public record CoachUpdateSpecificsInformationsResponse(
 
         Long id,
@@ -10,7 +26,7 @@ public record CoachUpdateSpecificsInformationsResponse(
     public static CoachUpdateSpecificsInformationsResponse fromEntity(Coach coach, String message){
         return new CoachUpdateSpecificsInformationsResponse(
                 coach.getId(),
-                "successfully done"
+                message + "successfully done"
         );
     }
 }

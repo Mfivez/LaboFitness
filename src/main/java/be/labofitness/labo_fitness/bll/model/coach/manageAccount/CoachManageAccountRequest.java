@@ -72,7 +72,6 @@ public record CoachManageAccountRequest(
         int pricePerHour,
 
         @NotNull(message = "error.coach.remote.null")
-        @NotBlank(message = "error.coach.remote.blank")
         boolean isRemote
 ) {
 

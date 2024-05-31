@@ -62,12 +62,12 @@ public class CoachController {
      */
     @PutMapping("/manage-account")
     @PreAuthorize("hasAuthority('COACH')")
-    public ResponseEntity<CoachManageAccountResponse> coachManageAccount(@Valid @ModelAttribute CoachManageAccountRequest request) {
+    public ResponseEntity<CoachManageAccountResponse> coachManageAccount(@Valid @RequestBody CoachManageAccountRequest request) {
         return ResponseEntity.ok(coachService.manageAccount(request));
     }
 
     /**
-     * Endpoint for changing a client's password.
+     * Endpoint for changing a coach's password.
      *
      * <p>This endpoint is accessible to authenticated users with the {@code CLIENT authority}. It handles account management requests
      * and returns a {@link CoachChangePasswordResponse} containing the details of the managed account.</p>
@@ -81,9 +81,18 @@ public class CoachController {
         return ResponseEntity.ok(coachService.changePassword(request));
     }
 
+    /**
+     * Endpoint for changing a specifics information.
+     *
+     * <p>This endpoint is accessible to authenticated users with the {@code CLIENT authority}. It handles account management requests
+     * and returns a {@link CoachUpdateSpecificsInformationsResponse} containing the details of the managed account.</p>
+     *
+     * @param request the {@link CoachUpdateSpecificsInformationsRequest} containing account management details
+     * @return a {@link ResponseEntity} containing the {@link CoachUpdateSpecificsInformationsResponse}
+     */
     @PutMapping("/manage-account/updateSpecifics")
     @PreAuthorize("hasAuthority('COACH')")
-    public ResponseEntity<CoachUpdateSpecificsInformationsResponse> updateSpecificInformations(@Valid @ModelAttribute CoachUpdateSpecificsInformationsRequest request){
+    public ResponseEntity<CoachUpdateSpecificsInformationsResponse> updateSpecificInformations(@Valid @RequestBody CoachUpdateSpecificsInformationsRequest request){
         return ResponseEntity.ok(coachService.updateSpecificInformations(request));
     }
 

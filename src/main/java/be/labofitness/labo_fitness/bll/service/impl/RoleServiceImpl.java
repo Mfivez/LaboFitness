@@ -28,7 +28,6 @@ public class RoleServiceImpl implements RoleService {
      */
     @Override
     public Set<Role> setRole(Set<String> roles) {
-        //TODO REFACTO -> JUST TRY CATCH WITH FILTER AND DELETE SWITCH
         return roles.stream()
                 .map(role -> switch (role) {
                     case "USER" -> roleRepository.findByName("USER").orElseThrow(() -> new DoesntExistException("Role name doesn't exist: USER"));

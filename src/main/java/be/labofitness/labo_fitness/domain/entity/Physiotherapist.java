@@ -26,6 +26,6 @@ public class Physiotherapist extends Professional implements HasGetIdMethod {
      * <br>It is marked as {@code nullable = false} to indicate that the {@code INAMI number} is required for all {@code physiotherapists}.</p>
      */
     @Column(name = "inami_number", nullable = false)
-    private int inamiNumber;
+    private long inamiNumber;
 
 }

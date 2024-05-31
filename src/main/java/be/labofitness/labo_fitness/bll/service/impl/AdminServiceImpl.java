@@ -8,6 +8,7 @@ import be.labofitness.labo_fitness.bll.model.admin.manageAccountStatus.AdminMana
 import be.labofitness.labo_fitness.bll.model.admin.manageEmailStatus.AdminManageEmailStatusRequest;
 import be.labofitness.labo_fitness.bll.model.admin.manageEmailStatus.AdminManageEmailStatusResponse;
 import be.labofitness.labo_fitness.bll.service.service.AdminService;
+import be.labofitness.labo_fitness.bll.service.service.SpecificationService;
 import be.labofitness.labo_fitness.bll.service.service.UserService;
 import be.labofitness.labo_fitness.bll.specification.AdminGetUserSpecification;
 import be.labofitness.labo_fitness.dal.repository.UserRepository;
@@ -30,6 +31,7 @@ public class AdminServiceImpl implements AdminService {
 
     private final UserRepository userRepository;
     private final UserService userService;
+    private final SpecificationService specificationService;
 
 
     /**
@@ -43,30 +45,20 @@ public class AdminServiceImpl implements AdminService {
 
         Specification<User> spec = Specification.where(null);
 
-        if(request.userEmail() != null && !request.userEmail().isEmpty()){
-            spec = spec.and(AdminGetUserSpecification.hasEmail(request.userEmail()));
-        }
+        spec = specificationService.specificationHasSomething(spec, request.userEmail(), AdminGetUserSpecification::hasEmail);
 
-        if (request.name() != null && !request.name().isEmpty()) {
-            spec = spec.and(AdminGetUserSpecification.hasName(request.name()));
-        }
-        if (request.id() != null) {
-            spec = spec.and(AdminGetUserSpecification.hasUserId(request.id()));
-        }
-        if (request.isActive() != null) {
-            spec = spec.and(AdminGetUserSpecification.isActive(request.isActive()));
-        }
+        spec = specificationService.specificationHasSomething(spec, request.name(), AdminGetUserSpecification::hasName);
 
-        if(request.isRemote() != null){
-            spec = spec.and(AdminGetUserSpecification.isRemote(request.isRemote()));
-        }
+        spec = specificationService.specificationHasSomething(spec, request.id(), AdminGetUserSpecification::hasUserId);
 
-        if(request.inamiNumber() != null){
-            spec = spec.and(AdminGetUserSpecification.hasInamiNumber(request.inamiNumber()));
-        }
-        if(request.roles() != null){
-            for (String role : request.roles()) { spec = spec.and(AdminGetUserSpecification.hasRole(role)); }
-        }
+        spec = specificationService.specificationHasSomething(spec, request.isActive(), AdminGetUserSpecification::isActive);
+
+        spec = specificationService.specificationHasSomething(spec, request.isRemote(), AdminGetUserSpecification::isRemote);
+
+        spec = specificationService.specificationHasSomething(spec, request.inamiNumber(), AdminGetUserSpecification::hasInamiNumber);
+
+        spec = specificationService.specificationHasCollectionOfSomething(spec, request.roles(), AdminGetUserSpecification::hasRole);
+
 
         return userRepository.findAll(spec).stream()
                 .map(AdminGetUserResponse::fromEntity)

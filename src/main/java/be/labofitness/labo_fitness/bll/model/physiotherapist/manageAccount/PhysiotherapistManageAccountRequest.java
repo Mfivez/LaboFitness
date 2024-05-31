@@ -1,9 +1,13 @@
 package be.labofitness.labo_fitness.bll.model.physiotherapist.manageAccount;
 import be.labofitness.labo_fitness.domain.enums.Gender;
+import be.labofitness.labo_fitness.il.utils.annotations.InamiNumberValidation.InamiValidator;
 import be.labofitness.labo_fitness.il.utils.annotations.extendedEmailvalidator.EmailValid;
 import be.labofitness.labo_fitness.il.utils.annotations.genderValidator.GenderValid;
 import be.labofitness.labo_fitness.il.utils.annotations.validatorsMessage.StringValid;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import org.hibernate.validator.constraints.Range;
 
 /**
@@ -67,8 +71,8 @@ public record PhysiotherapistManageAccountRequest(
         String zipCode,
 
         @NotNull(message = "error.physiotherapist.inamiNumber.null")
-        @Range(min = 11, max = 11)
-        int inamiNumber
+        @InamiValidator
+        long inamiNumber
 
 ) {
 }
