@@ -24,7 +24,6 @@ import be.labofitness.labo_fitness.domain.entity.Coach;
 import be.labofitness.labo_fitness.domain.entity.Competition;
 import be.labofitness.labo_fitness.domain.entity.TrainingSession;
 import be.labofitness.labo_fitness.domain.entity.base.Address;
-import be.labofitness.labo_fitness.il.utils.LaboFitnessUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;

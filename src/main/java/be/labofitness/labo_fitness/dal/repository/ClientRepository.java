@@ -1,4 +1,5 @@
 package be.labofitness.labo_fitness.dal.repository;
+import be.labofitness.labo_fitness.dal.util.HasFindByMethod;
 import be.labofitness.labo_fitness.domain.entity.*;
 import be.labofitness.labo_fitness.domain.enums.AppointmentStatus;
 import be.labofitness.labo_fitness.domain.enums.RecommendedLevel;
@@ -29,7 +30,7 @@ import java.util.Optional;
  * {@code Maybe need a refactoring where we'll use specifications}
  */
 @Repository
-public interface ClientRepository extends JpaRepository<Client, Long> {
+public interface ClientRepository extends JpaRepository<Client, Long>, HasFindByMethod<Client> {
 
 
     //region PASSWORD MANAGEMENT

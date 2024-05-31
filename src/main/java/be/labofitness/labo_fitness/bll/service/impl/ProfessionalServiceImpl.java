@@ -7,14 +7,11 @@ import be.labofitness.labo_fitness.bll.model.professionnel.manageAccount.manageA
 import be.labofitness.labo_fitness.bll.model.professionnel.manageAccount.manageAccreditation.updateAccreditation.ProfessionalUpdateAccreditationResponse;
 import be.labofitness.labo_fitness.bll.model.register.ProfessionalRegisterRequest;
 import be.labofitness.labo_fitness.bll.model.register.RegisterResponse;
-import be.labofitness.labo_fitness.bll.service.service.*;
 import be.labofitness.labo_fitness.bll.model.professionnel.manageAccount.manageLocation.addLocationPlace.ProfessionalAddLocationPlaceRequest;
 import be.labofitness.labo_fitness.bll.model.professionnel.manageAccount.manageLocation.updateLocationPlace.ProfessionalUpdateLocationPlaceRequest;
 import be.labofitness.labo_fitness.bll.model.professionnel.manageAccount.manageLocation.addLocationPlace.ProfessionalAddLocationPlaceResponse;
 import be.labofitness.labo_fitness.bll.model.professionnel.manageAccount.manageLocation.updateLocationPlace.ProfessionalUpdateLocationPlaceResponse;
-import be.labofitness.labo_fitness.bll.service.service.AccreditationService;
-import be.labofitness.labo_fitness.bll.service.service.ProfessionalService;
-import be.labofitness.labo_fitness.bll.service.service.RoleService;
+import be.labofitness.labo_fitness.bll.service.service.*;
 import be.labofitness.labo_fitness.bll.service.service.security.SecurityService;
 import be.labofitness.labo_fitness.dal.repository.*;
 import be.labofitness.labo_fitness.domain.entity.*;
@@ -24,10 +21,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 import java.util.Set;
-
 import static be.labofitness.labo_fitness.il.utils.LaboFitnessUtil.getCurrentMethodName;
 
 
@@ -106,8 +101,6 @@ public class ProfessionalServiceImpl implements ProfessionalService{
     public Physiotherapist getOne(Long id) {
         return null;
     }
-
-
 
     /**
      * Retrieves all {@link Professional}.

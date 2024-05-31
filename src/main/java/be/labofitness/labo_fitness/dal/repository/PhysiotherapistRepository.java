@@ -1,4 +1,5 @@
 package be.labofitness.labo_fitness.dal.repository;
+import be.labofitness.labo_fitness.dal.util.HasFindByMethod;
 import be.labofitness.labo_fitness.domain.entity.Appointment;
 import be.labofitness.labo_fitness.domain.entity.Physiotherapist;
 import be.labofitness.labo_fitness.domain.enums.AppointmentStatus;
@@ -14,7 +15,7 @@ import java.util.Optional;
  * <p>Extends {@link JpaRepository} to inherit basic CRUD operations.</p>
  */
 @Repository
-public interface PhysiotherapistRepository extends JpaRepository<Physiotherapist, Long> {
+public interface PhysiotherapistRepository extends JpaRepository<Physiotherapist, Long>, HasFindByMethod<Physiotherapist> {
 
     /**
      * Retrieves the list of personal accepted {@link Appointment} for a {@link Physiotherapist}.
@@ -42,7 +43,4 @@ public interface PhysiotherapistRepository extends JpaRepository<Physiotherapist
             "WHERE p.email = :email")
     Optional<Physiotherapist> findByEmail(String email);
 
-
-    @Query("SELECT p.password FROM Physiotherapist p WHERE p.id = :id")
-    String findPasswordByPhysiotherapistId(Long id);
 }
