@@ -28,6 +28,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -191,22 +192,16 @@ public class ClientServiceImpl  implements ClientService {
      */
     @Override
     public List<PlanningResponse> getPlanning(ClientPlanningRequest request) {
-        return IntStream.range(0, getEventName(request).size())
+        return IntStream.range(0, getEventDetails(request, Competition::getStartDate, TrainingSession::getStartDate, Appointment::getStartDate).size())
                 .mapToObj(i -> new PlanningResponse(
-                        getStartDates(request).get(i),
-                        getEndDates(request).get(i),
-                        getEventName(request).get(i)))
+                        getEventDetails(request, Competition::getStartDate, TrainingSession::getStartDate, Appointment::getStartDate).get(i),
+                        getEventDetails(request, Competition::getEndDate, TrainingSession::getEndDate, Appointment::getEndDate).get(i),
+                        getEventDetails(request, Competition::getName, TrainingSession::getName, Appointment::getName).get(i)))
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Retrieves the start dates of events based on the {@link Client} planning request.
-     *
-     * @param request the {@link Client} planning request
-     * @return the list of start dates
-     */
-    private List<LocalDateTime> getStartDates(ClientPlanningRequest request) {
-        List<LocalDateTime> startDate = iniDate();
+    private <T> List<T> getEventDetails(ClientPlanningRequest request, Function<Competition, T> compMapper, Function<TrainingSession, T> trainMapper, Function<Appointment, T> appMapper) {
+        List<T> details = new ArrayList<>();
         boolean[] booleans = getEndDatesBoolean(request.types(), request.sports(), request.coachMail(), request.physiotherapistMail());
         boolean includeAll = booleans[0];
         boolean includeOnlyComp = booleans[1];
@@ -214,102 +209,24 @@ public class ClientServiceImpl  implements ClientService {
         boolean includePhysio = booleans[3];
 
         if ((includeAll || request.types().contains("competition")) && !includePhysio) {
-            List<LocalDateTime> compStartDates = planningService.getAllClientCompetitions(request).stream()
-                    .map(Competition::getStartDate)
-                    .collect(Collectors.toList());
-            startDate.addAll(compStartDates);
+            List<T> compDetails = planningService.getAllClientCompetitions(request).stream()
+                    .map(compMapper).toList();
+            details.addAll(compDetails);
         }
 
         if (!includeOnlyComp && (includeAll || request.types().contains("appointment")) && !includeCoach) {
-            List<LocalDateTime> appStartDates = planningService.getAllClientAppointments(request).stream()
-                    .map(Appointment::getStartDate)
-                    .collect(Collectors.toList());
-            startDate.addAll(appStartDates);
+            List<T> appDetails = planningService.getAllClientAppointments(request).stream()
+                    .map(appMapper).toList();
+            details.addAll(appDetails);
         }
 
         if (!includeOnlyComp && (includeAll || request.types().contains("training")) && !includePhysio) {
-            List<LocalDateTime> trainingStartDates = planningService.getAllClientTrainings(request).stream()
-                    .map(TrainingSession::getStartDate)
-                    .collect(Collectors.toList());
-            startDate.addAll(trainingStartDates);
+            List<T> trainDetails = planningService.getAllClientTrainings(request).stream()
+                    .map(trainMapper).toList();
+            details.addAll(trainDetails);
         }
 
-        return startDate;
-    }
-
-    /**
-     * Retrieves the end dates of events based on the {@link Client} planning request.
-     *
-     * @param request the {@link Client} planning request
-     * @return the list of end dates
-     */
-    private List<LocalDateTime> getEndDates(ClientPlanningRequest request) {
-        List<LocalDateTime> endDate = iniDate();
-        boolean[] booleans = getEndDatesBoolean(request.types(), request.sports(), request.coachMail(), request.physiotherapistMail());
-        boolean includeAll = booleans[0];
-        boolean includeOnlyComp = booleans[1];
-        boolean includeCoach = booleans[2];
-        boolean includePhysio = booleans[3];
-
-        if ( !includeOnlyComp && (includeAll || request.types().contains("appointment")) && !includeCoach) {
-            List<LocalDateTime> appointmentEndDate = planningService.getAllClientAppointments(request).stream()
-                    .map(Appointment::getEndDate)
-                    .collect(Collectors.toList());
-            endDate.addAll(appointmentEndDate);
-        }
-
-        if ((includeAll || request.types().contains("competition")) && !includePhysio) {
-            List<LocalDateTime> compEndDates = planningService.getAllClientCompetitions(request).stream()
-                    .map(Competition::getEndDate)
-                    .collect(Collectors.toList());
-            endDate.addAll(compEndDates);
-        }
-
-        if (!includeOnlyComp && (includeAll || request.types().contains("training")) && !includePhysio) {
-            List<LocalDateTime> trainingEndDates = planningService.getAllClientTrainings(request).stream()
-                    .map(TrainingSession::getEndDate)
-                    .collect(Collectors.toList());
-            endDate.addAll(trainingEndDates);
-        }
-
-        return endDate;
-    }
-
-    /**
-     * Retrieves the names of events based on the {@link Client} planning request.
-     *
-     * @param request the {@link Client} planning request
-     * @return the list of event names
-     */
-    private List<String> getEventName(ClientPlanningRequest request) {
-        List<String> names = new ArrayList<>();
-        boolean[] booleans = getEndDatesBoolean(request.types(), request.sports(), request.coachMail(), request.physiotherapistMail());
-        boolean includeAll = booleans[0];
-        boolean includeOnlyComp = booleans[1];
-        boolean includeCoach = booleans[2];
-        boolean includePhysio = booleans[3];
-
-        if (!includeOnlyComp && (includeAll || request.types().contains("appointment")) && !includeCoach) {
-            List<String> appointmentNames = planningService.getAllClientAppointments(request).stream()
-                    .map(Appointment::getName)
-                    .collect(Collectors.toList());
-            names.addAll(appointmentNames);
-        }
-
-        if ((includeAll || request.types().contains("competition")) && !includePhysio) {
-            List<String> compNames = planningService.getAllClientCompetitions(request).stream()
-                    .map(Competition::getName)
-                    .collect(Collectors.toList());
-            names.addAll(compNames);
-        }
-
-        if (!includeOnlyComp && (includeAll || request.types().contains("training")) && !includePhysio) {
-            List<String> trainingNames = planningService.getAllClientTrainings(request).stream()
-                    .map(TrainingSession::getName)
-                    .collect(Collectors.toList());
-            names.addAll(trainingNames);
-        }
-        return names;
+        return details;
     }
 
     // endregion
@@ -479,15 +396,6 @@ public class ClientServiceImpl  implements ClientService {
     // endregion
 
     // region UTILS
-
-    /**
-     * Initializes and returns a new list of {@link LocalDateTime}.
-     *
-     * @return an empty list of {@link LocalDateTime}
-     */
-    private List<LocalDateTime> iniDate() {
-        return new ArrayList<>();
-    }
 
     /**
      * Determines {@code boolean} values based on the presence of various parameters.
