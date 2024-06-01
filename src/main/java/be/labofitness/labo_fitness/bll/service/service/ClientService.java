@@ -1,4 +1,5 @@
 package be.labofitness.labo_fitness.bll.service.service;
+
 import be.labofitness.labo_fitness.bll.model.client.CompetitionRegister.CompetitionRegisterRequest;
 import be.labofitness.labo_fitness.bll.model.client.CompetitionRegister.CompetitionRegisterResponse;
 import be.labofitness.labo_fitness.bll.model.client.TrainingSessionSubscription.TrainingSubscriptionRequest;
@@ -6,8 +7,6 @@ import be.labofitness.labo_fitness.bll.model.client.TrainingSessionSubscription.
 import be.labofitness.labo_fitness.bll.model.client.makeAppointment.*;
 import be.labofitness.labo_fitness.bll.model.client.manageAccount.ClientManageAccountRequest;
 import be.labofitness.labo_fitness.bll.model.client.manageAccount.ClientManageAccountResponse;
-import be.labofitness.labo_fitness.bll.model.client.manageAccount.changePassword.ClientChangePasswordRequest;
-import be.labofitness.labo_fitness.bll.model.client.manageAccount.changePassword.ClientChangePasswordResponse;
 import be.labofitness.labo_fitness.bll.model.planning.ClientPlanningRequest;
 import be.labofitness.labo_fitness.bll.model.planning.PlanningResponse;
 import be.labofitness.labo_fitness.bll.model.register.ClientRegisterRequest;
@@ -25,14 +24,6 @@ import be.labofitness.labo_fitness.domain.entity.TrainingSession;
 public interface ClientService  extends CrudService<Client, Long> {
 
     // region ACCOUNT MANAGEMENT
-
-    /**
-     * Changes the password of a {@link Client}.
-     *
-     * @param request the {@link Client} change password request
-     * @return the {@link Client} change password response
-     */
-    ClientChangePasswordResponse changePassword (ClientChangePasswordRequest request);
 
     /**
      * Registers a new {@link Client}.

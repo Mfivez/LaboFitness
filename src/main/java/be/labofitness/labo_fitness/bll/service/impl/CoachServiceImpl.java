@@ -2,7 +2,6 @@ package be.labofitness.labo_fitness.bll.service.impl;
 import be.labofitness.labo_fitness.bll.exception.Exist.AlreadyExistException;
 import be.labofitness.labo_fitness.bll.exception.Exist.DoesntExistException;
 import be.labofitness.labo_fitness.bll.exception.Unauthorize.UnauthorizedException;
-import be.labofitness.labo_fitness.bll.exception.notMatching.NotMatchingException;
 import be.labofitness.labo_fitness.bll.model.coach.ManageEventInscription.ManageEventInscriptionRequest;
 import be.labofitness.labo_fitness.bll.model.coach.ManageEventInscription.ManageEventInscriptionResponse;
 import be.labofitness.labo_fitness.bll.model.coach.manageAccount.CoachManageAccountRequest;
@@ -11,8 +10,6 @@ import be.labofitness.labo_fitness.bll.model.coach.manageAccount.updateSpecificI
 import be.labofitness.labo_fitness.bll.model.coach.manageAccount.updateSpecificInformations.CoachUpdateSpecificsInformationsResponse;
 import be.labofitness.labo_fitness.bll.model.planning.CoachPlanningRequest;
 import be.labofitness.labo_fitness.bll.model.planning.PlanningResponse;
-import be.labofitness.labo_fitness.bll.model.coach.manageAccount.changePassword.CoachChangePasswordRequest;
-import be.labofitness.labo_fitness.bll.model.coach.manageAccount.changePassword.CoachChangePasswordResponse;
 import be.labofitness.labo_fitness.bll.service.service.CoachService;
 import be.labofitness.labo_fitness.bll.service.service.CompetitionService;
 import be.labofitness.labo_fitness.bll.service.service.PlanningService;
@@ -29,9 +26,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
+
 import static be.labofitness.labo_fitness.il.utils.LaboFitnessUtil.getCurrentMethodName;
 /**
  * Implementation of the {@link CoachService} interface.
@@ -44,7 +43,6 @@ public class CoachServiceImpl implements CoachService {
     private final CoachRepository coachRepository;
     private final SecurityService securityService;
     private final PlanningService planningService;
-    private final PasswordEncoder passwordEncoder;
     private final CompetitionService competitionService;
     private final TrainingSessionService trainingService;
     private final UserRepository userRepository;
@@ -146,8 +144,9 @@ public class CoachServiceImpl implements CoachService {
         Coach coach = securityService.getAuthentication(Coach.class);
 
         if (!coach.getEmail().equals(request.email())) {
-            if (!userRepository.existsByEmail(request.email())) {  coach.setEmail(request.email());  }
-            else{
+            if (!userRepository.existsByEmail(request.email())) {
+                coach.setEmail(request.email());
+            } else {
                 throw new AlreadyExistException("Email: " + request.email() + " already exists");
             }
         }
@@ -161,27 +160,6 @@ public class CoachServiceImpl implements CoachService {
         coachRepository.save(coach);
 
         return CoachManageAccountResponse.fromEntity(coach, getCurrentMethodName());
-    }
-
-    /**
-     * Update the password of an {@link Coach} account
-     * @param request of the {@link CoachChangePasswordRequest} to update
-     * @return response {@link CoachChangePasswordResponse} with a message
-     */
-    @Override
-    @Transactional
-    public CoachChangePasswordResponse changePassword(CoachChangePasswordRequest request) {
-
-        Coach coach = securityService.getAuthentication(Coach.class);
-
-        if(!passwordEncoder.matches(request.oldPassword(),coach.getPassword())){
-
-            throw new NotMatchingException("wrong password");
-        }
-        coach.setPassword(passwordEncoder.encode(request.newPassword()));
-        coachRepository.save(coach);
-
-        return CoachChangePasswordResponse.fromEntity(coach, getCurrentMethodName());
     }
 
     /**

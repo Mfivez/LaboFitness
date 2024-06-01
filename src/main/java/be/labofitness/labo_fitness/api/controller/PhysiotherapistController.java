@@ -1,10 +1,8 @@
 package be.labofitness.labo_fitness.api.controller;
 import be.labofitness.labo_fitness.bll.model.physiotherapist.manageAccount.PhysiotherapistManageAccountRequest;
+import be.labofitness.labo_fitness.bll.model.physiotherapist.manageAccount.PhysiotherapistManageAccountResponse;
 import be.labofitness.labo_fitness.bll.model.planning.PhysioPlanningRequest;
 import be.labofitness.labo_fitness.bll.model.planning.PlanningResponse;
-import be.labofitness.labo_fitness.bll.model.physiotherapist.manageAccount.changePassWord.PhysiotherapistChangePasswordRequest;
-import be.labofitness.labo_fitness.bll.model.physiotherapist.manageAccount.PhysiotherapistManageAccountResponse;
-import be.labofitness.labo_fitness.bll.model.physiotherapist.manageAccount.changePassWord.PhysiotherapistChangePasswordResponse;
 import be.labofitness.labo_fitness.bll.service.service.PhysiotherapistService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -59,22 +57,7 @@ public class PhysiotherapistController {
         return ResponseEntity.ok(physiotherapistService.manageAccount(request));
     }
 
-    /**
-     * Endpoint for changing a client's password.
-     *
-     * <p>This endpoint is accessible to authenticated users with the {@code CLIENT authority}. It handles account management requests
-     * and returns a {@link PhysiotherapistChangePasswordResponse} containing the details of the managed account.</p>
-     *
-     * @param request the {@link PhysiotherapistChangePasswordRequest} containing account management details
-     * @return a {@link ResponseEntity} containing the {@link PhysiotherapistChangePasswordResponse}
-     */
-    @PutMapping("/manage-account/password")
-    @PreAuthorize("hasAuthority('PHYSIOTHERAPIST') and isAuthenticated()")
-    public ResponseEntity<PhysiotherapistChangePasswordResponse> changePassword(@Valid @RequestBody PhysiotherapistChangePasswordRequest request){
-        return ResponseEntity.ok(physiotherapistService.changePassword(request));
-
-    }
-
     //endregion
+
 }
 

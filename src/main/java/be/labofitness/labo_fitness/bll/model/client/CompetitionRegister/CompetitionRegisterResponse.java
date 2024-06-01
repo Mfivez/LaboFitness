@@ -18,4 +18,10 @@ package be.labofitness.labo_fitness.bll.model.client.CompetitionRegister;
 public record CompetitionRegisterResponse(
     String ConfirmationMessage
 ) {
+
+    public static CompetitionRegisterResponse fromEntity(String ConfirmationMessage){
+        return new CompetitionRegisterResponse(
+                ConfirmationMessage
+        );
+    }
 }

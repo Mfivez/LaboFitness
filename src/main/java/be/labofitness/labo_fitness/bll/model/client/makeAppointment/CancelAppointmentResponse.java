@@ -18,4 +18,11 @@ package be.labofitness.labo_fitness.bll.model.client.makeAppointment;
 public record CancelAppointmentResponse(
         String message
 ) {
+
+    public static CancelAppointmentResponse fromEntity(String message){
+        return new CancelAppointmentResponse(
+                message
+        );
+    }
+
 }

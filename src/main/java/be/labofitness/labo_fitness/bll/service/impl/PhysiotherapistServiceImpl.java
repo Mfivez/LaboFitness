@@ -3,8 +3,6 @@ import be.labofitness.labo_fitness.bll.exception.Exist.DoesntExistException;
 import be.labofitness.labo_fitness.bll.exception.notMatching.NotMatchingException;
 import be.labofitness.labo_fitness.bll.model.physiotherapist.manageAccount.PhysiotherapistManageAccountRequest;
 import be.labofitness.labo_fitness.bll.model.physiotherapist.manageAccount.PhysiotherapistManageAccountResponse;
-import be.labofitness.labo_fitness.bll.model.physiotherapist.manageAccount.changePassWord.PhysiotherapistChangePasswordRequest;
-import be.labofitness.labo_fitness.bll.model.physiotherapist.manageAccount.changePassWord.PhysiotherapistChangePasswordResponse;
 import be.labofitness.labo_fitness.bll.model.planning.PhysioPlanningRequest;
 import be.labofitness.labo_fitness.bll.model.planning.PlanningResponse;
 import be.labofitness.labo_fitness.bll.service.service.PhysiotherapistService;
@@ -17,7 +15,6 @@ import be.labofitness.labo_fitness.domain.entity.Physiotherapist;
 import be.labofitness.labo_fitness.domain.entity.base.Address;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
@@ -32,7 +29,6 @@ import static be.labofitness.labo_fitness.il.utils.LaboFitnessUtil.getCurrentMet
 @Service
 public class PhysiotherapistServiceImpl implements PhysiotherapistService {
 
-    private final PasswordEncoder passwordEncoder;
     private final PlanningService planningService;
     private final SecurityService securityService;
     private final UserRepository userRepository; //TODO REFAC
@@ -156,29 +152,6 @@ public class PhysiotherapistServiceImpl implements PhysiotherapistService {
         physiotherapistRepository.save(physiotherapist);
 
         return PhysiotherapistManageAccountResponse.fromEntity(physiotherapist, getCurrentMethodName());
-    }
-
-    /**
-     * Update the password of an {@link Physiotherapist} account
-     * @param request of the {@link PhysiotherapistChangePasswordRequest} to update
-     * @return response {@link PhysiotherapistChangePasswordResponse} with a message
-     */
-    @Override
-    @Transactional
-    public PhysiotherapistChangePasswordResponse changePassword(PhysiotherapistChangePasswordRequest request) {
-
-
-        Physiotherapist physiotherapist = securityService.getAuthentication(Physiotherapist.class);
-
-        if(!passwordEncoder.matches(request.oldPassword(),physiotherapist.getPassword())){
-
-            throw new NotMatchingException("passwords are not matching");
-        }
-
-        physiotherapist.setPassword(passwordEncoder.encode(request.newPassword()));
-        physiotherapistRepository.save(physiotherapist);
-
-        return PhysiotherapistChangePasswordResponse.fromEntity(physiotherapist,getCurrentMethodName());
     }
 
     // endregion

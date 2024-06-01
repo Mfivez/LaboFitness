@@ -2,7 +2,6 @@ package be.labofitness.labo_fitness.bll.service.impl;
 import be.labofitness.labo_fitness.bll.exception.Exist.AlreadyExistException;
 import be.labofitness.labo_fitness.bll.exception.Unauthorize.UnauthorizedException;
 import be.labofitness.labo_fitness.bll.exception.inscriptionClosed.EventCloseException;
-import be.labofitness.labo_fitness.bll.exception.notMatching.NotMatchingException;
 import be.labofitness.labo_fitness.bll.model.client.CompetitionRegister.CompetitionRegisterRequest;
 import be.labofitness.labo_fitness.bll.model.client.CompetitionRegister.CompetitionRegisterResponse;
 import be.labofitness.labo_fitness.bll.model.client.TrainingSessionSubscription.TrainingSubscriptionRequest;
@@ -10,8 +9,6 @@ import be.labofitness.labo_fitness.bll.model.client.TrainingSessionSubscription.
 import be.labofitness.labo_fitness.bll.model.client.makeAppointment.*;
 import be.labofitness.labo_fitness.bll.model.client.manageAccount.ClientManageAccountRequest;
 import be.labofitness.labo_fitness.bll.model.client.manageAccount.ClientManageAccountResponse;
-import be.labofitness.labo_fitness.bll.model.client.manageAccount.changePassword.ClientChangePasswordRequest;
-import be.labofitness.labo_fitness.bll.model.client.manageAccount.changePassword.ClientChangePasswordResponse;
 import be.labofitness.labo_fitness.bll.model.planning.ClientPlanningRequest;
 import be.labofitness.labo_fitness.bll.model.planning.PlanningResponse;
 import be.labofitness.labo_fitness.bll.model.register.ClientRegisterRequest;
@@ -32,7 +29,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import static be.labofitness.labo_fitness.il.utils.LaboFitnessUtil.getCurrentMethodName;
 
 /**
  * Implementation of the {@link ClientService} interface.
@@ -79,29 +75,6 @@ public class ClientServiceImpl  implements ClientService {
         clientRepository.save(client);
 
         return ClientManageAccountResponse.fromEntity(client,message);
-    }
-
-
-    /**
-     * Update the password of an {@link Client} account
-     * @param request of the {@link ClientChangePasswordRequest} to update
-     * @return response {@link ClientChangePasswordResponse} with a message
-     */
-    @Override
-    @Transactional
-    public ClientChangePasswordResponse changePassword(ClientChangePasswordRequest request) {
-
-
-        Client client = securityService.getAuthentication(Client.class);
-
-        if(!passwordEncoder.matches(request.oldPassword(), clientRepository.findPasswordByClientId(client.getId()))){
-
-            throw new NotMatchingException("Wrong password");
-        }
-        client.setPassword(passwordEncoder.encode(request.newPassword()));
-        clientRepository.save(client);
-
-        return ClientChangePasswordResponse.fromEntity(client, getCurrentMethodName());
     }
 
     //endregion

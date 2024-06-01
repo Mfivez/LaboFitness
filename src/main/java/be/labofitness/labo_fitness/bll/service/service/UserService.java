@@ -1,6 +1,8 @@
 package be.labofitness.labo_fitness.bll.service.service;
 import be.labofitness.labo_fitness.bll.model.login.UserLoginRequest;
 import be.labofitness.labo_fitness.bll.model.login.UserLoginResponse;
+import be.labofitness.labo_fitness.bll.model.user.changePassword.ChangePasswordRequest;
+import be.labofitness.labo_fitness.bll.model.user.changePassword.ChangePasswordResponse;
 import be.labofitness.labo_fitness.bll.model.user.getReport.GetReportResponse;
 import be.labofitness.labo_fitness.bll.model.user.makeReport.MakeReportRequest;
 import be.labofitness.labo_fitness.bll.model.user.makeReport.ReportResponse;
@@ -29,6 +31,12 @@ public interface UserService extends CrudService<User, Long> , UserDetailsServic
      * @return the response containing user details and {@code authentication token}
      */
     UserLoginResponse login(UserLoginRequest loginRequest);
+
+    //endregion
+
+    //region CHANGE PASSWORD
+
+    ChangePasswordResponse changePassword(ChangePasswordRequest request);
 
     //endregion
 

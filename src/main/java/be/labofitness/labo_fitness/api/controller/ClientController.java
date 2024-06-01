@@ -6,8 +6,6 @@ import be.labofitness.labo_fitness.bll.model.client.TrainingSessionSubscription.
 import be.labofitness.labo_fitness.bll.model.client.makeAppointment.*;
 import be.labofitness.labo_fitness.bll.model.client.manageAccount.ClientManageAccountRequest;
 import be.labofitness.labo_fitness.bll.model.client.manageAccount.ClientManageAccountResponse;
-import be.labofitness.labo_fitness.bll.model.client.manageAccount.changePassword.ClientChangePasswordRequest;
-import be.labofitness.labo_fitness.bll.model.client.manageAccount.changePassword.ClientChangePasswordResponse;
 import be.labofitness.labo_fitness.bll.model.planning.ClientPlanningRequest;
 import be.labofitness.labo_fitness.bll.model.planning.PlanningResponse;
 import be.labofitness.labo_fitness.bll.service.service.ClientService;
@@ -50,21 +48,6 @@ public class ClientController {
     @PreAuthorize("hasAuthority('CLIENT')")
     public ResponseEntity<ClientManageAccountResponse> clientManageAccount(@Valid @RequestBody ClientManageAccountRequest request) {
         return ResponseEntity.ok(clientService.manageAccount(request));
-    }
-
-    /**
-     * Endpoint for changing a client's password.
-     *
-     * <p>This endpoint is accessible to authenticated users with the {@code CLIENT authority}. It handles account management requests
-     * and returns a {@link ClientChangePasswordResponse} containing the details of the managed account.</p>
-     *
-     * @param request the {@link ClientChangePasswordRequest} containing account management details
-     * @return a {@link ResponseEntity} containing the {@link ClientChangePasswordResponse}
-     */
-    @PutMapping("/manage-account/password")
-    @PreAuthorize("hasAuthority('CLIENT')")
-    public ResponseEntity<ClientChangePasswordResponse> changePassword(@Valid @RequestBody ClientChangePasswordRequest request){
-        return ResponseEntity.ok(clientService.changePassword(request));
     }
 
     //endregion

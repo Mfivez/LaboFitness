@@ -1,8 +1,11 @@
 package be.labofitness.labo_fitness.bll.service.impl;
 import be.labofitness.labo_fitness.bll.exception.Exist.AlreadyExistException;
 import be.labofitness.labo_fitness.bll.exception.Exist.DoesntExistException;
+import be.labofitness.labo_fitness.bll.exception.notMatching.NotMatchingException;
 import be.labofitness.labo_fitness.bll.model.login.UserLoginRequest;
 import be.labofitness.labo_fitness.bll.model.login.UserLoginResponse;
+import be.labofitness.labo_fitness.bll.model.user.changePassword.ChangePasswordRequest;
+import be.labofitness.labo_fitness.bll.model.user.changePassword.ChangePasswordResponse;
 import be.labofitness.labo_fitness.bll.model.user.getReport.GetReportResponse;
 import be.labofitness.labo_fitness.bll.model.user.makeReport.MakeReportRequest;
 import be.labofitness.labo_fitness.bll.model.user.makeReport.ReportResponse;
@@ -31,6 +34,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import static be.labofitness.labo_fitness.il.utils.Anonymizer.genereteRandomString;
+import static be.labofitness.labo_fitness.il.utils.LaboFitnessUtil.getCurrentMethodName;
 
 /**
  * Implementation of the {@link UserService} interface.
@@ -104,6 +108,24 @@ public class UserServiceImpl implements UserService {
     }
 
     // endregion
+
+    //region CHANGE PASSWORD
+
+    @Override @Transactional
+    public ChangePasswordResponse changePassword(ChangePasswordRequest request) {
+        User user = securityService.getAuthentication(User.class);
+
+        if(!passwordEncoder.matches(request.oldPassword(),user.getPassword())){
+
+            throw new NotMatchingException("wrong password");
+        }
+        user.setPassword(passwordEncoder.encode(request.newPassword()));
+        userRepository.save(user);
+
+        return ChangePasswordResponse.fromEntity(user, getCurrentMethodName());
+    }
+
+    //endregion
 
     // region REPORT
 

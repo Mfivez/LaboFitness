@@ -1,6 +1,8 @@
 package be.labofitness.labo_fitness.api.controller;
-import be.labofitness.labo_fitness.bll.model.user.makeReport.MakeReportRequest;
+import be.labofitness.labo_fitness.bll.model.user.changePassword.ChangePasswordRequest;
+import be.labofitness.labo_fitness.bll.model.user.changePassword.ChangePasswordResponse;
 import be.labofitness.labo_fitness.bll.model.user.getReport.GetReportResponse;
+import be.labofitness.labo_fitness.bll.model.user.makeReport.MakeReportRequest;
 import be.labofitness.labo_fitness.bll.model.user.makeReport.ReportResponse;
 import be.labofitness.labo_fitness.bll.service.service.UserService;
 import jakarta.validation.Valid;
@@ -8,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.Set;
 
 /**
@@ -54,5 +57,23 @@ public class UserController {
 
     // endregion
 
+    //region CHANGE PASSWORD
+
+    /**
+     * Endpoint for changing a user's password.
+     *
+     * <p>This endpoint is accessible to authenticated users. It handles account management requests
+     * and returns a {@link ChangePasswordResponse} containing the details of the managed account.</p>
+     *
+     * @param request the {@link ChangePasswordRequest} containing account management details
+     * @return a {@link ResponseEntity} containing the {@link ChangePasswordResponse}
+     */
+    @PreAuthorize("isAuthenticated()")
+    @PutMapping("/manage-account/password")
+    public ResponseEntity<ChangePasswordResponse> makeReport(@Valid @RequestBody ChangePasswordRequest request) {
+        return ResponseEntity.ok(userService.changePassword(request));
+    }
+
+    //endregion
 
 }
