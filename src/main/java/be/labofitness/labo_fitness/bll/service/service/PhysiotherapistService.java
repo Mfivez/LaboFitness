@@ -24,7 +24,7 @@ public interface PhysiotherapistService extends CrudService<Physiotherapist, Lon
      * @param request the {@link Physiotherapist} planning request
      * @return the planning response containing the {@code appointments}, start dates, and end dates
      */
-    PlanningResponse getPlanning(PhysioPlanningRequest request) ;
+    List<PlanningResponse> getPlanning(PhysioPlanningRequest request) ;
 
     // endregion
 

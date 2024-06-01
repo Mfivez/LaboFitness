@@ -17,6 +17,8 @@ import be.labofitness.labo_fitness.domain.entity.Client;
 import be.labofitness.labo_fitness.domain.entity.Competition;
 import be.labofitness.labo_fitness.domain.entity.TrainingSession;
 
+import java.util.List;
+
 /**
  * Service interface for managing {@link Client}.
  * <br>Extends {@link CrudService} for basic CRUD operations.
@@ -75,7 +77,7 @@ public interface ClientService  extends CrudService<Client, Long> {
      * @param request the {@link Client} planning request
      * @return the planning response
      */
-    PlanningResponse getPlanning(ClientPlanningRequest request) ;
+    List<PlanningResponse> getPlanning(ClientPlanningRequest request) ;
 
     // endregion
 

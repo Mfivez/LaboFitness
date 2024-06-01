@@ -24,12 +24,11 @@ import be.labofitness.labo_fitness.domain.entity.base.Address;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static be.labofitness.labo_fitness.il.utils.LaboFitnessUtil.getCurrentMethodName;
 /**
@@ -47,6 +46,7 @@ public class CoachServiceImpl implements CoachService {
     private final TrainingSessionService trainingService;
     private final UserRepository userRepository;
 
+
     // region PLANNING
 
     /**
@@ -56,74 +56,48 @@ public class CoachServiceImpl implements CoachService {
      * @return A {@link PlanningResponse} object containing the planned events.
      */
     @Override
-    public PlanningResponse getPlanning(CoachPlanningRequest request) {
-        return new PlanningResponse(
-                getStartDates(request),
-                getEndDates(request),
-                getEventNames(request)
-        );
+    public List<PlanningResponse> getPlanning(CoachPlanningRequest request) {
+        return IntStream.range(0, getEventDetails(request, Competition::getStartDate, TrainingSession::getStartDate).size())
+                .mapToObj(i -> new PlanningResponse(
+                        getEventDetails(request, Competition::getStartDate, TrainingSession::getStartDate).get(i),
+                        getEventDetails(request, Competition::getEndDate, TrainingSession::getEndDate).get(i),
+                        getEventDetails(request, Competition::getName, TrainingSession::getName).get(i)))
+                .collect(Collectors.toList());
     }
 
-    /**
-     * Retrieves the start dates of events based on the provided {@link Coach} planning request.
-     *
-     * @param request The {@link Coach} planning request containing parameters for filtering events.
-     * @return A list of {@link LocalDateTime} objects representing the start dates of events.
-     */
-    private List<LocalDateTime> getStartDates(CoachPlanningRequest request) {
-        boolean includeOnlyComp = request.sports() != null;
-        boolean includeAll = (request.types() == null || request.types().isEmpty()) && !includeOnlyComp;
+    private <T> List<T> getEventDetails(CoachPlanningRequest request, Function<Competition, T> compMapper, Function<TrainingSession, T> trainMapper) {
+        boolean includeOnlyComp =
+                request.sports() != null
+                || (request.types() != null
+                && request.types().contains("competition")
+                && !request.types().contains("training"));
 
-        if (includeOnlyComp || includeAll) {
+        boolean includeOnlyTrain =
+                request.sports() == null
+                && (request.types() != null
+                &&  request.types().contains("training")
+                && !(request.types().contains("competition")));
+
+        if (includeOnlyComp) {
             return planningService.getAllCoachCompetitions(request).stream()
-                    .map(Competition::getStartDate)
-                    .collect(Collectors.toList());
-        } else {
-            return planningService.getAllCoachTrainings(request).stream()
-                    .map(TrainingSession::getStartDate)
+                    .map(compMapper)
                     .collect(Collectors.toList());
         }
-    }
-
-    /**
-     * Retrieves the end dates of events based on the provided {@link Coach} planning request.
-     *
-     * @param request The {@link Coach} planning request containing parameters for filtering events.
-     * @return A list of {@link LocalDateTime} objects representing the end dates of events.
-     */
-    private List<LocalDateTime> getEndDates(CoachPlanningRequest request) {
-        boolean includeOnlyComp = request.sports() != null;
-        boolean includeAll = request.types() == null || request.types().isEmpty();
-
-        if (includeOnlyComp || includeAll) {
-            return planningService.getAllCoachCompetitions(request).stream()
-                    .map(Competition::getEndDate)
-                    .collect(Collectors.toList());
-        } else {
+        else if (includeOnlyTrain) {
             return planningService.getAllCoachTrainings(request).stream()
-                    .map(TrainingSession::getEndDate)
+                    .map(trainMapper)
                     .collect(Collectors.toList());
         }
-    }
-
-    /**
-     * Retrieves the names of events based on the provided {@link Coach} planning request.
-     *
-     * @param request The {@link Coach} planning request containing parameters for filtering events.
-     * @return A list of strings representing the names of events.
-     */
-    private List<String> getEventNames(CoachPlanningRequest request) {
-        boolean includeOnlyComp = request.sports() != null;
-        boolean includeAll = request.types() == null || request.types().isEmpty();
-
-        if (includeOnlyComp || includeAll || request.types().contains("competition")) {
-            return planningService.getAllCoachCompetitions(request).stream()
-                    .map(Competition::getName)
+        else {
+            List<T> details = planningService.getAllCoachTrainings(request).stream()
+                    .map(trainMapper)
                     .collect(Collectors.toList());
-        } else {
-            return planningService.getAllCoachTrainings(request).stream()
-                    .map(TrainingSession::getName)
+            List<T> compDetails = planningService.getAllCoachCompetitions(request).stream()
+                    .map(compMapper)
                     .collect(Collectors.toList());
+
+            details.addAll(compDetails);
+            return details;
         }
     }
 
@@ -150,13 +124,13 @@ public class CoachServiceImpl implements CoachService {
                 throw new AlreadyExistException("Email: " + request.email() + " already exists");
             }
         }
+
         coach.setName(request.name());
         coach.setLastname(request.lastName());
         coach.setGender(request.gender());
         coach.setAddress(new Address(request.street(), request.number(), request.city(), request.zipCode()));
         coach.setRemote(request.isRemote());
         coach.setPriceHour(request.pricePerHour());
-
         coachRepository.save(coach);
 
         return CoachManageAccountResponse.fromEntity(coach, getCurrentMethodName());

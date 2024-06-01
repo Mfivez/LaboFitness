@@ -54,9 +54,9 @@ public class PlanningServiceImpl implements PlanningService {
                 .where(AppointmentSpecification.hasClient(securityService.getAuthentication(Client.class).getId())
                         .and(AppointmentSpecification.hasStatus(AppointmentStatus.ACCEPTED)));
 
-            spec = specificationService.specificationHasSomething(spec,
-                    specificationService.getIdByMail(request.physiotherapistMail(), physiotherapistRepository),
-                    AppointmentSpecification::hasPhysiotherapist);
+        spec = specificationService.specificationHasSomething(spec,
+                specificationService.getIdByMail(request.physiotherapistMail(), physiotherapistRepository),
+                AppointmentSpecification::hasPhysiotherapist);
 
         spec = specificationService.specificationHasSomething(spec, request.name(), AppointmentSpecification::hasName);
 
@@ -105,9 +105,9 @@ public class PlanningServiceImpl implements PlanningService {
         Specification<TrainingSession> spec = Specification
                 .where(TrainingSpecification.hasClient(securityService.getAuthentication(Client.class).getId()));
 
-            spec = specificationService.specificationHasSomething(spec,
-                    specificationService.getIdByMail(request.coachMail(), coachRepository),
-                    TrainingSpecification::hasCoach);
+        spec = specificationService.specificationHasSomething(spec,
+                specificationService.getIdByMail(request.coachMail(), coachRepository),
+                TrainingSpecification::hasCoach);
 
         spec = specificationService.specificationHasSomething(spec, request.name(), TrainingSpecification::hasName);
 
@@ -134,9 +134,9 @@ public class PlanningServiceImpl implements PlanningService {
                 .where(AppointmentSpecification.hasPhysiotherapist(securityService.getAuthentication(Physiotherapist.class).getId())
                         .and(AppointmentSpecification.hasStatus(AppointmentStatus.ACCEPTED)));
 
-            spec = specificationService.specificationHasSomething(spec,
-                    specificationService.getIdByMail(request.clientEmail(), clientRepository),
-                    AppointmentSpecification::hasClient);
+        spec = specificationService.specificationHasSomething(spec,
+                specificationService.getIdByMail(request.clientEmail(), clientRepository),
+                AppointmentSpecification::hasClient);
 
         spec = specificationService.specificationHasSomething(spec, request.name(), AppointmentSpecification::hasName);
 
@@ -162,9 +162,9 @@ public class PlanningServiceImpl implements PlanningService {
         Specification<Competition> spec = Specification
                 .where(CompetitionSpecification.hasCoach(securityService.getAuthentication(Coach.class).getId()));
 
-            spec = specificationService.specificationHasSomething(spec,
-                    specificationService.getIdByMail(request.clientEmail(), clientRepository),
-                    CompetitionSpecification::hasClient);
+        spec = specificationService.specificationHasSomething(spec,
+                specificationService.getIdByMail(request.clientEmail(), clientRepository),
+                CompetitionSpecification::hasClient);
 
         spec = specificationService.specificationHasSomething(spec, request.name(), CompetitionSpecification::hasName);
 
@@ -188,11 +188,12 @@ public class PlanningServiceImpl implements PlanningService {
         Specification<TrainingSession> spec = Specification
                 .where(TrainingSpecification.hasCoach(securityService.getAuthentication(Coach.class).getId()));
 
-            spec = specificationService.specificationHasSomething(spec,
-                    specificationService.getIdByMail(request.clientEmail(), coachRepository),
-                    TrainingSpecification::hasClient);
+        spec = specificationService.specificationHasSomething(spec,
+                specificationService.getIdByMail(request.clientEmail(), coachRepository),
+                TrainingSpecification::hasClient);
 
         spec = specificationService.specificationHasSomething(spec, request.name(), TrainingSpecification::hasName);
+
 
         spec = specificationService.specificationHasSomething(spec, request.startDate(), TrainingSpecification::hasStartDateAfter);
 

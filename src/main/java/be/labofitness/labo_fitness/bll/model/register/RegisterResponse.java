@@ -20,4 +20,9 @@ public record RegisterResponse(
         //todo send email to client
 
 ) {
+
+    public static RegisterResponse fromEntity(String registerSuccessMessage){
+        return new RegisterResponse(registerSuccessMessage);
+    }
+
 }

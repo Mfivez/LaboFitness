@@ -14,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * Controller for handling coach-related requests.
  * Provides endpoints for
@@ -41,7 +43,7 @@ public class CoachController {
      */
     @PreAuthorize("hasAuthority('COACH')")
     @GetMapping("/planning")
-    public ResponseEntity<PlanningResponse> getPlanning(@Valid @ModelAttribute CoachPlanningRequest request) {
+    public ResponseEntity<List<PlanningResponse>> getPlanning(@Valid @ModelAttribute CoachPlanningRequest request) {
         return ResponseEntity.ok(coachService.getPlanning(request));
     }
 

@@ -29,7 +29,7 @@ public interface CoachService  extends CrudService<Coach, Long> {
      * @param request the {@link Coach} planning request
      * @return the planning response
      */
-    PlanningResponse getPlanning(CoachPlanningRequest request) ;
+    List<PlanningResponse> getPlanning(CoachPlanningRequest request) ;
 
     // endregion
 

@@ -16,6 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * Controller for handling client-related requests.
  * Provides endpoints for :
@@ -103,7 +105,7 @@ public class ClientController {
      */
     @PreAuthorize("hasAuthority('CLIENT')")
     @GetMapping("/Planning")
-    public ResponseEntity<PlanningResponse> getPlanningWithSpecifications(@Valid @ModelAttribute ClientPlanningRequest request) {
+    public ResponseEntity<List<PlanningResponse>> getPlanningWithSpecifications(@Valid @ModelAttribute ClientPlanningRequest request) {
         return ResponseEntity.ok(clientService.getPlanning(request));
     }
 

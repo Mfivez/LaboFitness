@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import static be.labofitness.labo_fitness.il.utils.LaboFitnessUtil.getCurrentMethodName;
 
 /**
@@ -43,11 +44,17 @@ public class PhysiotherapistServiceImpl implements PhysiotherapistService {
      * @return a {@link PlanningResponse} object containing the planning details
      */
     @Override
-    public PlanningResponse getPlanning(PhysioPlanningRequest request) {
-        return new PlanningResponse(
-                planningService.getAllPhysioAppointments(request).stream().map(Appointment::getStartDate).collect(Collectors.toList()),
-                planningService.getAllPhysioAppointments(request).stream().map(Appointment::getEndDate).collect(Collectors.toList()),
-                planningService.getAllPhysioAppointments(request).stream().map(Appointment::getName).collect(Collectors.toList()));
+    public List<PlanningResponse> getPlanning(PhysioPlanningRequest request) {
+        return IntStream.range(0, planningService.getAllPhysioAppointments(request).stream()
+                        .map(Appointment::getStartDate).toList().size())
+                .mapToObj(i -> new PlanningResponse(
+                        planningService.getAllPhysioAppointments(request).stream()
+                                .map(Appointment::getStartDate).toList().get(i),
+                        planningService.getAllPhysioAppointments(request).stream()
+                                .map(Appointment::getEndDate).toList().get(i),
+                        planningService.getAllPhysioAppointments(request).stream()
+                                .map(Appointment::getName).toList().get(i)))
+                .collect(Collectors.toList());
     }
 
     //endregion

@@ -59,13 +59,14 @@ public class SpecificationServiceImpl implements SpecificationService {
      * @return the combined specification
      */
     public <T, R> Specification<T> specificationHasCollectionOfSomething(Specification<T> spec, Collection<R> collection, Function<R, Specification<T>> specBuilder) {
-        for (R element : collection) {
-            spec = (element != null ?
-                    (element instanceof String ?
-                            (!((String) element).isEmpty() ?
-                                    spec.and(specBuilder.apply(element)) : spec) : spec.and(specBuilder.apply(element))) : spec);
-        }
-        return spec;
+        if (collection != null) {
+            for (R element : collection) {
+                spec = (element != null ?
+                        (element instanceof String ?
+                                (!((String) element).isEmpty() ?
+                                        spec.and(specBuilder.apply(element)) : spec) : spec.and(specBuilder.apply(element))) : spec);
+            }  return spec;
+        } return spec;
     }
 
     /**

@@ -1,5 +1,7 @@
 package be.labofitness.labo_fitness.bll.model.moderator.report;
 
+import be.labofitness.labo_fitness.domain.entity.Report;
+
 /**
  * Represents the response model for updating the approval state of a report by a moderator.
  * <p>
@@ -16,11 +18,16 @@ package be.labofitness.labo_fitness.bll.model.moderator.report;
  * @param message An optional message regarding the report.
  */
 public record ModeratorReportUpdateIsApprovedStateResponse(
-
-
         Long Id,
-
         String message
 
 ) {
+
+    public static ModeratorReportUpdateIsApprovedStateResponse fromEntity(Report report, String message){
+        return new ModeratorReportUpdateIsApprovedStateResponse(
+                report.getId(),
+                message + " successfully done"
+        );
+    }
+
 }

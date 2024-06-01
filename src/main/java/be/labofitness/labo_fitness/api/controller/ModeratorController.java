@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * Controller for handling moderator-related requests.
  * <p>Provides endpoints for : </p>
@@ -36,7 +38,7 @@ public class ModeratorController {
      */
     @PreAuthorize("hasAuthority('MODERATOR')")
     @GetMapping("/report")
-    public ResponseEntity<ReportResponse> getReportsWithSpecif(@Valid @ModelAttribute ReportRequest request) {
+    public ResponseEntity<List<ReportResponse>> getReportsWithSpecif(@Valid @ModelAttribute ReportRequest request) {
         return ResponseEntity.ok(moderatorService.moderatorGetReport(request));
     }
 

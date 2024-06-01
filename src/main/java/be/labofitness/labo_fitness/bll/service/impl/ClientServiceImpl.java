@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * Implementation of the {@link ClientService} interface.
@@ -189,12 +190,13 @@ public class ClientServiceImpl  implements ClientService {
      * @return the planning response
      */
     @Override
-    public PlanningResponse getPlanning(ClientPlanningRequest request) {
-        return new PlanningResponse(
-                getStartDates(request),
-                getEndDates(request),
-                getEventName(request)
-        );
+    public List<PlanningResponse> getPlanning(ClientPlanningRequest request) {
+        return IntStream.range(0, getEventName(request).size())
+                .mapToObj(i -> new PlanningResponse(
+                        getStartDates(request).get(i),
+                        getEndDates(request).get(i),
+                        getEventName(request).get(i)))
+                .collect(Collectors.toList());
     }
 
     /**

@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * Controller for handling physiotherapist-related requests.
  * Provides an endpoint for retrieving the {@code physiotherapist's planning}.
@@ -34,7 +36,7 @@ public class PhysiotherapistController {
      */
     @PreAuthorize("hasAuthority('PHYSIOTHERAPIST')")
     @GetMapping("/Planning")
-    public ResponseEntity<PlanningResponse> getPlanningWithSpecifications(@Valid @ModelAttribute PhysioPlanningRequest request) {
+    public ResponseEntity<List<PlanningResponse>> getPlanningWithSpecifications(@Valid @ModelAttribute PhysioPlanningRequest request) {
         return ResponseEntity.ok(physiotherapistService.getPlanning(request));
     }
 

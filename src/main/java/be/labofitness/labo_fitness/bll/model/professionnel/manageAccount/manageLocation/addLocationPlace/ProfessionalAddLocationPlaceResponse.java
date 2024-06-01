@@ -19,4 +19,8 @@ public record ProfessionalAddLocationPlaceResponse(
         String message
 ) {
 
+    public static ProfessionalAddLocationPlaceResponse fromEntity(String message){
+        return new ProfessionalAddLocationPlaceResponse(message);
+    }
+
 }
