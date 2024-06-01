@@ -4,6 +4,7 @@ import be.labofitness.labo_fitness.domain.entity.Coach;
 import be.labofitness.labo_fitness.domain.entity.Competition;
 import be.labofitness.labo_fitness.domain.entity.TrainingSession;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.Optional;
  * <p>Extends {@link JpaRepository} to inherit basic CRUD operations.</p>
  */
 @Repository
-public interface CoachRepository extends JpaRepository<Coach, Long>, HasFindByMethod<Coach> {
+public interface CoachRepository extends JpaRepository<Coach, Long>, HasFindByMethod<Coach>, JpaSpecificationExecutor<Coach> {
 
     @Query(
             "SELECT c " +

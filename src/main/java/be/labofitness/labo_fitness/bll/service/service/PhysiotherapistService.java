@@ -1,12 +1,15 @@
 package be.labofitness.labo_fitness.bll.service.service;
 import be.labofitness.labo_fitness.bll.model.physiotherapist.manageAccount.PhysiotherapistManageAccountRequest;
+import be.labofitness.labo_fitness.bll.model.physiotherapist.manageAccount.PhysiotherapistManageAccountResponse;
+import be.labofitness.labo_fitness.bll.model.physiotherapist.manageAccount.changePassWord.PhysiotherapistChangePasswordRequest;
+import be.labofitness.labo_fitness.bll.model.physiotherapist.manageAccount.changePassWord.PhysiotherapistChangePasswordResponse;
 import be.labofitness.labo_fitness.bll.model.planning.PhysioPlanningRequest;
 import be.labofitness.labo_fitness.bll.model.planning.PlanningResponse;
-import be.labofitness.labo_fitness.bll.model.physiotherapist.manageAccount.changePassWord.PhysiotherapistChangePasswordRequest;
-import be.labofitness.labo_fitness.bll.model.physiotherapist.manageAccount.PhysiotherapistManageAccountResponse;
-import be.labofitness.labo_fitness.bll.model.physiotherapist.manageAccount.changePassWord.PhysiotherapistChangePasswordResponse;
 import be.labofitness.labo_fitness.bll.service.base.CrudService;
 import be.labofitness.labo_fitness.domain.entity.Physiotherapist;
+import org.springframework.data.jpa.domain.Specification;
+
+import java.util.List;
 
 // TODO dev a logic for the nomination's of appointments
 /**
@@ -58,5 +61,11 @@ public interface PhysiotherapistService extends CrudService<Physiotherapist, Lon
     Physiotherapist getOneByEmail(String email);
 
     //endregion
+
+    // region SPECIFICATION
+
+    List<Physiotherapist> getPhysiotherapistBySpecification(Specification<Physiotherapist> specification);
+
+    // endregion
 
 }

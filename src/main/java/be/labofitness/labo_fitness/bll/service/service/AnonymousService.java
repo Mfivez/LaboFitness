@@ -1,15 +1,12 @@
 package be.labofitness.labo_fitness.bll.service.service;
-import be.labofitness.labo_fitness.bll.model.user.getCoach.GetCoachesByNameRequest;
-import be.labofitness.labo_fitness.bll.model.user.getCoach.GetCoachesByRemoteRequest;
-import be.labofitness.labo_fitness.bll.model.user.getCoach.GetCoachesBySpecializationRequest;
+import be.labofitness.labo_fitness.bll.model.user.getCoach.GetCoachBySpecificationRequest;
 import be.labofitness.labo_fitness.bll.model.user.getCoach.GetCoachesResponse;
-import be.labofitness.labo_fitness.bll.model.user.getPhysiotherapist.GetPhysioByNameRequest;
-import be.labofitness.labo_fitness.bll.model.user.getPhysiotherapist.GetPhysioBySpecializationRequest;
+import be.labofitness.labo_fitness.bll.model.user.getPhysiotherapist.GetPhysioBySpecificationRequest;
 import be.labofitness.labo_fitness.bll.model.user.getPhysiotherapist.GetPhysioResponse;
-import be.labofitness.labo_fitness.bll.model.user.getTrainingSession.*;
+import be.labofitness.labo_fitness.bll.model.user.getTrainingSession.GetTrainingSessionBySpecificationRequest;
+import be.labofitness.labo_fitness.bll.model.user.getTrainingSession.GetTrainingSessionResponse;
 import be.labofitness.labo_fitness.domain.entity.Coach;
 import be.labofitness.labo_fitness.domain.entity.Physiotherapist;
-import be.labofitness.labo_fitness.domain.entity.TrainingSession;
 
 import java.util.List;
 
@@ -21,105 +18,31 @@ public interface AnonymousService {
     //region COACH
 
     /**
-     * Retrieves all {@link Coach}.
+     * Retrieves {@link Coach} based on specification.
      *
-     * @return a list of all {@link Coach}
+     * @param request the request containing the criteria for filtering {@link Coach} by specification
+     * @return a list of {@link Coach} filtered by specification
      */
-    List<GetCoachesResponse> getAllCoaches();
-
-    /**
-     * Retrieves {@link Coach} based on remote availability.
-     *
-     * @param request the request containing the criteria for filtering {@link Coach} by remote availability
-     * @return a list of {@link Coach} filtered by remote availability
-     */
-    List<GetCoachesResponse> getAllCoachesByIsRemote(GetCoachesByRemoteRequest request);
-
-    /**
-     * Retrieves {@link Coach} based on specialization.
-     *
-     * @param request the request containing the criteria for filtering {@link Coach} by specialization
-     * @return a list of {@link Coach} filtered by specialization
-     */
-    List<GetCoachesResponse> getAllCoachesBySpecialization(GetCoachesBySpecializationRequest request);
-
-    /**
-     * Retrieves {@link Coach} based on name.
-     *
-     * @param request the request containing the criteria for filtering {@link Coach} by name
-     * @return a list of {@link Coach} filtered by name
-     */
-    List<GetCoachesResponse> getAllCoachesByName(GetCoachesByNameRequest request);
+    List<GetCoachesResponse> getAllCoachesBySpecification(GetCoachBySpecificationRequest request);
 
     // endregion
 
     //region PHYSIOTHERAPIST
 
     /**
-     * Retrieves all {@link Physiotherapist}.
+     * Retrieves {@link Physiotherapist} based on specification.
      *
-     * @return a list of all {@link Physiotherapist}
+     * @param request the request containing the criteria for filtering {@link Physiotherapist} by specification
+     * @return a list of {@link Physiotherapist} filtered by specification
      */
-    List<GetPhysioResponse> getAllPhysio();
-
-    /**
-     * Retrieves {@link Physiotherapist} based on specialization.
-     *
-     * @param request the request containing the criteria for filtering {@link Physiotherapist} by specialization
-     * @return a list of {@link Physiotherapist} filtered by specialization
-     */
-    List<GetPhysioResponse> getPhysioBySpecialization(GetPhysioBySpecializationRequest request);
-
-    /**
-     * Retrieves {@link Physiotherapist} based on name.
-     *
-     * @param request the request containing the criteria for filtering {@link Physiotherapist} by name
-     * @return a list of {@link Physiotherapist} filtered by name
-     */
-    List<GetPhysioResponse> getPhysioByName(GetPhysioByNameRequest request);
+    List<GetPhysioResponse> getAllPhysioBySpecification(GetPhysioBySpecificationRequest request);
 
     //endregion
 
     // region TRAINING SESSIONS
 
-    /**
-     * Retrieves all {@link TrainingSession}.
-     *
-     * @return a list of all {@link TrainingSession}
-     */
-    List<GetTrainingSessionResponse> findAllTrainingSession();
 
-    /**
-     * Retrieves {@link TrainingSession} based on recommended level.
-     *
-     * @param request the request containing the criteria for filtering {@link TrainingSession} by recommended level
-     * @return a list of {@link TrainingSession} filtered by recommended level
-     */
-    List<GetTrainingSessionResponse> findTrainingSessionByRecommendedLvl(GetTrainingSessionByRecommendedLvlRequest request);
-
-    /**
-     * Retrieves {@link TrainingSession} based on duration.
-     *
-     * @param request the request containing the criteria for filtering {@link TrainingSession} by duration
-     * @return a list of {@link TrainingSession} filtered by duration
-     */
-    List<GetTrainingSessionResponse> findTrainingSessionByDuration(GetTrainingSessionsByDurationRequest request);
-
-    /**
-     * Retrieves {@link TrainingSession} based on name.
-     *
-     * @param request the request containing the criteria for filtering {@link TrainingSession} by name
-     * @return a list of {@link TrainingSession} filtered by name
-     */
-    List<GetTrainingSessionResponse> findTrainingSessionByName(GetTrainingSessionsByNameRequest request);
-
-    /**
-     * Retrieves {@link TrainingSession} based on coach name.
-     *
-     * @param request the request containing the criteria for filtering {@link TrainingSession} by coach name
-     * @return a list of {@link TrainingSession} filtered by coach name
-     */
-    List<GetTrainingSessionResponse> findTrainingSessionByCoachName(GetTrainingSessionsByCoachNameRequest request);
+    List<GetTrainingSessionResponse> getAllTrainingSessionsBySpecification(GetTrainingSessionBySpecificationRequest request);
 
     // endregion
 

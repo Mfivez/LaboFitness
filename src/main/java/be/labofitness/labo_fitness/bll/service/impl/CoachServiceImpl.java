@@ -26,6 +26,7 @@ import be.labofitness.labo_fitness.domain.entity.TrainingSession;
 import be.labofitness.labo_fitness.domain.entity.base.Address;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
@@ -329,5 +330,14 @@ public class CoachServiceImpl implements CoachService {
     }
 
     //endregion
+
+    // region SPECIFICATION
+
+    @Override
+    public List<Coach> getCoachBySpecification(Specification<Coach> specification) {
+        return coachRepository.findAll(specification);
+    }
+
+    // endregion
 
 }

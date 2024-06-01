@@ -16,6 +16,7 @@ import be.labofitness.labo_fitness.domain.entity.Appointment;
 import be.labofitness.labo_fitness.domain.entity.Physiotherapist;
 import be.labofitness.labo_fitness.domain.entity.base.Address;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,8 +37,6 @@ public class PhysiotherapistServiceImpl implements PhysiotherapistService {
     private final SecurityService securityService;
     private final UserRepository userRepository; //TODO REFAC
     private final PhysiotherapistRepository physiotherapistRepository;
-
-
 
     // region GET PLANNING
 
@@ -183,4 +182,14 @@ public class PhysiotherapistServiceImpl implements PhysiotherapistService {
     }
 
     // endregion
+
+    // region SPECIFICATION
+
+    @Override
+    public List<Physiotherapist> getPhysiotherapistBySpecification(Specification<Physiotherapist> specification) {
+        return physiotherapistRepository.findAll(specification);
+    }
+
+    // endregion
+
 }

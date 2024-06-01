@@ -1,25 +1,22 @@
 package be.labofitness.labo_fitness.bll.service.impl;
-import be.labofitness.labo_fitness.bll.model.user.getCoach.GetCoachesByNameRequest;
-import be.labofitness.labo_fitness.bll.model.user.getCoach.GetCoachesByRemoteRequest;
-import be.labofitness.labo_fitness.bll.model.user.getCoach.GetCoachesBySpecializationRequest;
-import be.labofitness.labo_fitness.bll.model.user.getPhysiotherapist.GetPhysioByNameRequest;
-import be.labofitness.labo_fitness.bll.model.user.getPhysiotherapist.GetPhysioBySpecializationRequest;
-import be.labofitness.labo_fitness.bll.model.user.getTrainingSession.GetTrainingSessionByRecommendedLvlRequest;
-import be.labofitness.labo_fitness.bll.model.user.getTrainingSession.GetTrainingSessionsByCoachNameRequest;
-import be.labofitness.labo_fitness.bll.model.user.getTrainingSession.GetTrainingSessionsByDurationRequest;
-import be.labofitness.labo_fitness.bll.model.user.getTrainingSession.GetTrainingSessionsByNameRequest;
+import be.labofitness.labo_fitness.bll.model.user.getCoach.GetCoachBySpecificationRequest;
 import be.labofitness.labo_fitness.bll.model.user.getCoach.GetCoachesResponse;
+import be.labofitness.labo_fitness.bll.model.user.getPhysiotherapist.GetPhysioBySpecificationRequest;
 import be.labofitness.labo_fitness.bll.model.user.getPhysiotherapist.GetPhysioResponse;
+import be.labofitness.labo_fitness.bll.model.user.getTrainingSession.GetTrainingSessionBySpecificationRequest;
 import be.labofitness.labo_fitness.bll.model.user.getTrainingSession.GetTrainingSessionResponse;
-import be.labofitness.labo_fitness.bll.service.service.AnonymousService;
-import be.labofitness.labo_fitness.dal.repository.UserRepository;
+import be.labofitness.labo_fitness.bll.service.service.*;
+import be.labofitness.labo_fitness.bll.specification.CoachSpecification;
+import be.labofitness.labo_fitness.bll.specification.PhysioSpecification;
+import be.labofitness.labo_fitness.bll.specification.TrainingSpecification;
+import be.labofitness.labo_fitness.dal.repository.CoachRepository;
 import be.labofitness.labo_fitness.domain.entity.Coach;
-import be.labofitness.labo_fitness.domain.entity.Professional;
 import be.labofitness.labo_fitness.domain.entity.Physiotherapist;
+import be.labofitness.labo_fitness.domain.entity.Professional;
 import be.labofitness.labo_fitness.domain.entity.TrainingSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,55 +32,37 @@ import java.util.stream.Collectors;
 @Service
 public class AnonymousServiceImpl implements AnonymousService {
 
-    private final UserRepository userRepository;
+    private final SpecificationService specificationService;
+    private final CoachService coachService;
+    private final PhysiotherapistService physioService;
+    private final TrainingSessionService trainingSessionService;
+    private final CoachRepository coachRepository;
 
     // region GET PHYSIOTHERAPIST
 
     /**
-     * Retrieves all {@link Physiotherapist}.
+     * Retrieves {@link Physiotherapist} based on specification.
      *
-     * @return a list of responses containing {@link Physiotherapist} details
+     * @param request the request containing the criteria for filtering {@link Physiotherapist} by specification
+     * @return a list of {@link Physiotherapist} filtered by specification
      */
     @Override
-    public List<GetPhysioResponse> getAllPhysio() {
-        List<Physiotherapist> physio = userRepository.findAllPhysio();
-        return physioToUserGetCoachesResponse(physio);
-    }
+    public List<GetPhysioResponse> getAllPhysioBySpecification(GetPhysioBySpecificationRequest request) {
+        Specification<Physiotherapist> spec;
+        if (request.clientId() == null) {
+            spec = Specification.where(null);
+        }
+        else spec = Specification.where(PhysioSpecification.hasClientId(request.clientId()));
 
-    /**
-     * Retrieves {@link Physiotherapist} by specialization.
-     *
-     * @param request the request containing the specialization
-     * @return a list of responses containing {@link Physiotherapist} details
-     */
-    @Override
-    public List<GetPhysioResponse> getPhysioBySpecialization(GetPhysioBySpecializationRequest request) {
-        List<Physiotherapist> physio = userRepository.findPhysioBySpecialization(request.specialization());
-        return physioToUserGetCoachesResponse(physio);
-    }
+        spec = specificationService.specificationHasSomething(spec, request.name(), PhysioSpecification::hasName);
 
-    /**
-     * Retrieves {@link Physiotherapist} by name.
-     *
-     * @param request the request containing the name
-     * @return a list of responses containing {@link Physiotherapist} details
-     */
-    @Override
-    public List<GetPhysioResponse> getPhysioByName(GetPhysioByNameRequest request) {
-        List<Physiotherapist> physio = userRepository.findPhysioByName(request.name());
-        return physioToUserGetCoachesResponse(physio);
-    }
+        spec = specificationService.specificationHasSomething(spec, request.email(), PhysioSpecification::hasEmail);
 
-    /**
-     * Converts a list of {@link Physiotherapist} to a list of {@link Physiotherapist} response objects.
-     *
-     * @param physio the list of {@link Physiotherapist}
-     * @return a list of responses containing {@link Physiotherapist} details
-     */
-    public List<GetPhysioResponse>  physioToUserGetCoachesResponse(List<Physiotherapist> physio) {
-        return physio.stream()
-                .map(GetPhysioResponse::fromEntity)
-                .collect(Collectors.toList());
+        spec = specificationService.specificationHasSomething(spec, request.lastname(), PhysioSpecification::hasLastName);
+
+        spec = specificationService.specificationHasSomething(spec, request.specialization(), PhysioSpecification::hasSpecialization);
+
+        return physioService.getPhysiotherapistBySpecification(spec).stream().map(GetPhysioResponse::fromEntity).collect(Collectors.toList());
     }
 
     //endregion
@@ -91,63 +70,35 @@ public class AnonymousServiceImpl implements AnonymousService {
     // region GET COACHES
 
     /**
-     * Retrieves all {@link Coach}.
+     * Retrieves {@link Coach} based on specification.
      *
-     * @return a list of responses containing {@link Coach} details
+     * @param request the request containing the criteria for filtering {@link Coach} by specification
+     * @return a list of {@link Coach} filtered by specification
      */
     @Override
-    public List<GetCoachesResponse> getAllCoaches() {
-        List<Coach> coaches = userRepository.findAllCoaches();
-        return coachesToUserGetCoachesResponse(coaches);
-    }
+    public List<GetCoachesResponse> getAllCoachesBySpecification(GetCoachBySpecificationRequest request) {
+        Specification<Coach> spec;
+        if (request.clientId() == null) {
+            spec = Specification.where(null);
+        }
+        else spec = Specification.where(CoachSpecification.hasASubscriptionToCompetitionOfCoach(request.clientId())
+                .or(CoachSpecification.hasASubscriptionToTrainingOfCoach(request.clientId())));
 
-    /**
-     * Retrieves {@link Coach} by remote status.
-     *
-     * @param request the request containing the remote status
-     * @return a list of responses containing {@link Coach} details
-     */
-    @Override
-    public List<GetCoachesResponse> getAllCoachesByIsRemote(GetCoachesByRemoteRequest request) {
-        List<Coach> coaches = userRepository.findCoachesByIsRemote(request.is_remote());
-        return coachesToUserGetCoachesResponse(coaches);
+        spec = specificationService.specificationHasSomething(spec, request.name(), CoachSpecification::hasName);
 
-    }
+        spec = specificationService.specificationHasSomething(spec, request.email(), CoachSpecification::hasEmail);
 
-    /**
-     * Retrieves {@link Coach} by specialization.
-     *
-     * @param request the request containing the specialization
-     * @return a list of responses containing {@link Coach} details
-     */
-    @Override
-    public List<GetCoachesResponse> getAllCoachesBySpecialization(GetCoachesBySpecializationRequest request) {
-        List<Coach> coaches = userRepository.findCoachesBySpecialization(request.specialization());
-        return coachesToUserGetCoachesResponse(coaches);
-    }
+        spec = specificationService.specificationHasSomething(spec, request.lastname(), CoachSpecification::hasLastName);
 
-    /**
-     * Retrieves {@link Coach} by name.
-     *
-     * @param request the request containing the name
-     * @return a list of responses containing {@link Coach} details
-     */
-    @Override
-    public List<GetCoachesResponse> getAllCoachesByName(GetCoachesByNameRequest request) {
-        List<Coach> coaches = userRepository.findCoachesByName(request.name());
-        return coachesToUserGetCoachesResponse(coaches);
-    }
+        spec = specificationService.specificationHasSomething(spec, request.pricePerHourMin(), CoachSpecification::hasPriceHourGreaterThanOrEqualTo);
 
-    /**
-     * Converts a list of {@link Coach} to a list of {@link Coach} response objects.
-     *
-     * @param coaches the list of {@link Coach}
-     * @return a list of responses containing {@link Coach} details
-     */
-    public List<GetCoachesResponse>  coachesToUserGetCoachesResponse(List<Coach> coaches) {
-        return coaches.stream()
-                .map(GetCoachesResponse::fromEntity)
-                .collect(Collectors.toList());
+        spec = specificationService.specificationHasSomething(spec, request.pricePerHourMax(), CoachSpecification::hasPriceHourLessThanOrEqualTo);
+
+        spec = specificationService.specificationHasSomething(spec, request.isRemote(), CoachSpecification::isRemote);
+
+        spec = specificationService.specificationHasSomething(spec, request.specialization(), CoachSpecification::hasSpecialization);
+
+        return coachService.getCoachBySpecification(spec).stream().map(GetCoachesResponse::fromEntity).collect(Collectors.toList());
     }
 
     //endregion
@@ -155,74 +106,31 @@ public class AnonymousServiceImpl implements AnonymousService {
     // region TRAINING SESSIONS
 
     /**
-     * Retrieves all {@link TrainingSession}.
+     * Retrieves {@link TrainingSession} based on specification.
      *
-     * @return a list of responses containing {@link TrainingSession} details
+     * @param request the request containing the criteria for filtering {@link TrainingSession} by specification
+     * @return a list of {@link TrainingSession} filtered by specification
      */
     @Override
-    public List<GetTrainingSessionResponse> findAllTrainingSession() {
-        List<TrainingSession> trainingSessions = userRepository.findAllTrainingSessions();
-        return trainingSessionToClientGetTrainingSessionResponse(trainingSessions);
-    }
+    public List<GetTrainingSessionResponse> getAllTrainingSessionsBySpecification(GetTrainingSessionBySpecificationRequest request) {
+        Specification<TrainingSession> spec;
+        if (request.clientId() == null) {
+            spec = Specification.where(null);
+        }
+        else spec = Specification.where(TrainingSpecification.hasClient(request.clientId()));
 
-    /**
-     * Retrieves {@link TrainingSession} by recommended level.
-     *
-     * @param request the request containing the recommended level
-     * @return a list of responses containing {@link TrainingSession} details
-     */
-    @Override
-    public List<GetTrainingSessionResponse> findTrainingSessionByRecommendedLvl(GetTrainingSessionByRecommendedLvlRequest request) {
-        List<TrainingSession> trainingSessions = userRepository.findTrainingSessionsByRecommendedLevel(request.recommendedLevel());
-        return trainingSessionToClientGetTrainingSessionResponse(trainingSessions);
-    }
+        spec = specificationService.specificationHasSomething(spec, request.trainingName(), TrainingSpecification::hasName);
 
-    /**
-     * Retrieves {@link TrainingSession} by duration.
-     *
-     * @param request the request containing the duration
-     * @return a list of responses containing {@link TrainingSession} details
-     */
-    @Override
-    public List<GetTrainingSessionResponse> findTrainingSessionByDuration(GetTrainingSessionsByDurationRequest request) {
-        List<TrainingSession> trainingSessions = userRepository.findTrainingSessionsByDuration(request.duration());
-        return trainingSessionToClientGetTrainingSessionResponse(trainingSessions);
-    }
+        spec = specificationService.specificationHasSomething(
+                spec,
+                specificationService.getIdByMail(request.coachName(), coachRepository),
+                TrainingSpecification::hasCoach);
 
-    /**
-     * Retrieves {@link TrainingSession} by name.
-     *
-     * @param request the request containing the name
-     * @return a list of responses containing {@link TrainingSession} details
-     */
-    @Override
-    public List<GetTrainingSessionResponse> findTrainingSessionByName(GetTrainingSessionsByNameRequest request) {
-        List<TrainingSession> trainingSessions = userRepository.findTrainingSessionsByName(request.name());
-        return trainingSessionToClientGetTrainingSessionResponse(trainingSessions);
-    }
+        spec = specificationService.specificationHasSomething(spec, request.recommendedLevel(), TrainingSpecification::hasRecommendedLevel);
 
-    /**
-     * Retrieves {@link TrainingSession} by {@link Coach}'s name.
-     *
-     * @param request the request containing the {@link Coach}'s name
-     * @return a list of responses containing {@link TrainingSession} details
-     */
-    @Override
-    public List<GetTrainingSessionResponse> findTrainingSessionByCoachName(GetTrainingSessionsByCoachNameRequest request) {
-        List<TrainingSession> trainingSessions = userRepository.findTrainingSessionsByCoachName(request.coach_name());
-        return trainingSessionToClientGetTrainingSessionResponse(trainingSessions);
-    }
+        spec = specificationService.specificationHasSomething(spec, request.isInscriptionOpen(), TrainingSpecification::isInscriptionOpen);
 
-    /**
-     * Converts a list of {@link TrainingSession} to a list of {@link TrainingSession} response objects.
-     *
-     * @param trainings the list of {@link TrainingSession}
-     * @return a list of responses containing {@link TrainingSession} details
-     */
-    public List<GetTrainingSessionResponse>  trainingSessionToClientGetTrainingSessionResponse(List<TrainingSession> trainings) {
-        return trainings.stream()
-                .map(GetTrainingSessionResponse::fromEntity)
-                .collect(Collectors.toList());
+        return trainingSessionService.findBySpecifications(spec).stream().map(GetTrainingSessionResponse::fromEntity).collect(Collectors.toList());
     }
 
     // endregion

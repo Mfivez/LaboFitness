@@ -13,6 +13,9 @@ import be.labofitness.labo_fitness.bll.model.coach.manageAccount.changePassword.
 import be.labofitness.labo_fitness.bll.service.base.CrudService;
 import be.labofitness.labo_fitness.domain.entity.Coach;
 import be.labofitness.labo_fitness.domain.entity.Competition;
+import org.springframework.data.jpa.domain.Specification;
+
+import java.util.List;
 
 /**
  * Service interface for managing {@link Coach}.
@@ -92,5 +95,11 @@ public interface CoachService  extends CrudService<Coach, Long> {
     Coach getOneByEmail(String email);
 
     //endregion
+
+    // region SPECIFICATION
+
+    List<Coach> getCoachBySpecification(Specification<Coach> specification);
+
+    // endregion
 
 }

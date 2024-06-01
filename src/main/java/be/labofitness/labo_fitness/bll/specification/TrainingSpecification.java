@@ -2,6 +2,7 @@ package be.labofitness.labo_fitness.bll.specification;
 import be.labofitness.labo_fitness.domain.entity.Client;
 import be.labofitness.labo_fitness.domain.entity.Coach;
 import be.labofitness.labo_fitness.domain.entity.TrainingSession;
+import be.labofitness.labo_fitness.domain.enums.RecommendedLevel;
 import jakarta.persistence.criteria.Join;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -67,6 +68,21 @@ public abstract class TrainingSpecification {
             Join<TrainingSession, Client> clientJoin = root.join("clients");
             return criteriaBuilder.equal(clientJoin.get("id"), clientId);
         };
+    }
+
+    public static Specification<TrainingSession> hasDuration(int duration) {
+        return (root, _, criteriaBuilder) ->
+                criteriaBuilder.equal(root.get("duration"), duration);
+    }
+
+    public static Specification<TrainingSession> hasRecommendedLevel(RecommendedLevel recommendedLevel) {
+        return (root, _, criteriaBuilder) ->
+                criteriaBuilder.equal(root.get("recommendedLevel"), recommendedLevel);
+    }
+
+    public static Specification<TrainingSession> isInscriptionOpen(boolean isInscriptionOpen) {
+        return (root, _, criteriaBuilder) ->
+                criteriaBuilder.equal(root.get("isInscriptionOpen"), isInscriptionOpen);
     }
 
 }
