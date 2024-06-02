@@ -24,17 +24,6 @@ public abstract class CompetitionSpecification {
     }
 
     /**
-     * Specifies a condition to filter {@link Competition} by whether inscription is open.
-     *
-     * @param isOpen a boolean indicating whether inscription is open
-     * @return a {@link Specification} object for filtering {@link Competition} by inscription status
-     */
-    public static Specification<Competition> isInscriptionOpen(boolean isOpen) {
-        return (root, _, criteriaBuilder) ->
-                criteriaBuilder.equal(root.get("inscriptionIsOpen"), isOpen);
-    }
-
-    /**
      * Specifies a condition to filter {@link Competition} by start date after a specified date.
      *
      * @param startDate the start date to filter by

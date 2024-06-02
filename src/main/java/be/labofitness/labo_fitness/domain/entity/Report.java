@@ -62,4 +62,5 @@ public class Report extends BaseEntity<Long> {
         this.isConfirmed = false;
         this.isApproved = false;
     }
+
 }

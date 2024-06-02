@@ -28,9 +28,7 @@ public class AppointmentServiceImpl implements AppointmentService {
      * @return the {@link Appointment} with the given ID
      */
     @Override
-    public Appointment getOne(Long id) {
-        return null;
-    }
+    public Appointment getOne(Long id) {return null;}
 
     /**
      * Retrieves all {@link Appointment}.
@@ -38,9 +36,7 @@ public class AppointmentServiceImpl implements AppointmentService {
      * @return a list of all {@link Appointment}
      */
     @Override
-    public List<Appointment> getAll() {
-        return appointmentRepository.findAll();
-    }
+    public List<Appointment> getAll() {return appointmentRepository.findAll();}
 
     /**
      * Creates a new {@link Appointment}.
@@ -49,9 +45,7 @@ public class AppointmentServiceImpl implements AppointmentService {
      * @return the created {@link Appointment}
      */
     @Override
-    public Appointment create(Appointment entity) {
-        return appointmentRepository.save(entity);
-    }
+    public Appointment create(Appointment entity) {return appointmentRepository.save(entity);}
 
     /**
      * Updates an existing {@link Appointment}.
@@ -60,9 +54,7 @@ public class AppointmentServiceImpl implements AppointmentService {
      * @return the updated {@link Appointment}
      */
     @Override
-    public Appointment update(Appointment entity) {
-        return appointmentRepository.save(entity);
-    }
+    public Appointment update(Appointment entity) {return appointmentRepository.save(entity);}
 
     /**
      * Deletes an {@link Appointment} by its ID.
@@ -71,9 +63,7 @@ public class AppointmentServiceImpl implements AppointmentService {
      * @return the deleted {@link Appointment}, or null if not found
      */
     @Override
-    public Appointment delete(Long id) {
-        return null;
-    }
+    public Appointment delete(Long id) {return null;}
 
     // endregion
 

@@ -3,7 +3,6 @@ import be.labofitness.labo_fitness.LaboFitnessApplication;
 import be.labofitness.labo_fitness.il.utils.CPrinter;
 import lombok.Getter;
 
-
 /**
  * {@code Custom exception} class for the {@link LaboFitnessApplication}.
  * This class extends {@link RuntimeException} and provides additional details

@@ -26,15 +26,14 @@ public class AccreditationServiceImpl implements AccreditationService {
      * @param accreditationType the type of the {@link Accreditation}
      * @param description       the description of the {@link Accreditation}
      * @param pro               the professional associated with the {@link Accreditation}
-     * @return the created {@link Accreditation}
      */
     @Override
-    public Accreditation createWithParam(AccreditationType accreditationType, String description, Professional pro) {
+    public void createWithParam(AccreditationType accreditationType, String description, Professional pro) {
         Accreditation accreditation = new Accreditation();
         accreditation.setType(accreditationType);
         accreditation.setDescription(description);
         accreditation.setProfessional(pro);
-        return accreditationRepository.save(accreditation);
+        accreditationRepository.save(accreditation);
     }
 
     // region CLASSIC CRUD
@@ -58,9 +57,7 @@ public class AccreditationServiceImpl implements AccreditationService {
      * @return a list of all {@link Accreditation}
      */
     @Override
-    public List<Accreditation> getAll() {
-        return accreditationRepository.findAll();
-    }
+    public List<Accreditation> getAll() { return accreditationRepository.findAll(); }
 
     /**
      * Creates a new {@link Accreditation}.
@@ -69,9 +66,7 @@ public class AccreditationServiceImpl implements AccreditationService {
      * @return the created {@link Accreditation}
      */
     @Override
-    public Accreditation create(Accreditation entity) {
-        return accreditationRepository.save(entity);
-    }
+    public Accreditation create(Accreditation entity) { return accreditationRepository.save(entity); }
 
     /**
      * Updates an existing {@link Accreditation}.
@@ -80,9 +75,7 @@ public class AccreditationServiceImpl implements AccreditationService {
      * @return the updated {@link Accreditation}
      */
     @Override
-    public Accreditation update(Accreditation entity) {
-        return accreditationRepository.save(entity);
-    }
+    public Accreditation update(Accreditation entity) { return accreditationRepository.save(entity); }
 
     /**
      * Deletes an {@link Accreditation} by its ID.
@@ -91,9 +84,7 @@ public class AccreditationServiceImpl implements AccreditationService {
      * @return the deleted {@link Accreditation}, or null if not found
      */
     @Override
-    public Accreditation delete(Long id) {
-        return null;
-    }
+    public Accreditation delete(Long id) { return null; }
 
     // endregion
 

@@ -26,35 +26,6 @@ public class LaboFitnessUtil {
     }
 
     /**
-     * Creates a new {@link LocalDateTime} object with the specified year, month, day, and hour.
-     *
-     * @param year  The year.
-     * @param month The month.
-     * @param day   The day of the month.
-     * @param hour  The hour of the day.
-     * @return A new {@link LocalDateTime} object.
-     */
-    public static LocalDateTime createNewDate(int year, Month month, int day, int hour) {
-        int iniTime = 0;
-        return LocalDateTime.of(year, month, day,hour, iniTime,iniTime);
-    }
-
-    /**
-     * Creates a new {@link LocalDateTime} object with the specified year, month, day, hour, and minute.
-     *
-     * @param year   The year.
-     * @param month  The month.
-     * @param day    The day of the month.
-     * @param hour   The hour of the day.
-     * @param minute The minute of the hour.
-     * @return A new {@link LocalDateTime} object.
-     */
-    public static LocalDateTime createNewDate(int year, Month month, int day, int hour, int minute) {
-        int iniTime = 0;
-        return LocalDateTime.of(year, month, day,hour, minute,iniTime);
-    }
-
-    /**
      * Converts the given {@link LocalDateTime} object to a string representation of the format "day/month/year".
      *
      * @param date The {@link LocalDateTime} object to convert.
@@ -87,8 +58,6 @@ public class LaboFitnessUtil {
         return date.isAfter(startDate) && date.isBefore(endDate);
     }
 
-
-
     /**
      * Uses the CurrentThread to get the method name
      *
@@ -99,11 +68,8 @@ public class LaboFitnessUtil {
     }
 
     public static Month getMonthEnumFormat(String month) {
-        try {
-            return Month.of(Integer.parseInt(month));
-        }
+        try {  return Month.of(Integer.parseInt(month));  }
         catch (NumberFormatException ignored) {}
-
         return Month.valueOf(month);
     }
 

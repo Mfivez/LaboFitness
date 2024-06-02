@@ -61,6 +61,4 @@ public interface ProfessionalService extends CrudService<Professional, Long> {
      */
     ProfessionalUpdateAccreditationResponse updateAccreditation (ProfessionalUpdateAccreditationRequest request);
 
-
-
 }

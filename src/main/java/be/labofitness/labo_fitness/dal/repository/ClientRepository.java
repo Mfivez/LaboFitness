@@ -30,14 +30,6 @@ import java.util.Optional;
 @Repository
 public interface ClientRepository extends JpaRepository<Client, Long>, HasFindByMethod<Client> {
 
-
-    //region PASSWORD MANAGEMENT
-
-    @Query("SELECT c.password FROM Client c where c.id = :id")
-    String findPasswordByClientId(Long id);
-
-    //endregion
-
     // region APPOINTMENT
 
     //TODO Bouger ce truc dans appointment repo

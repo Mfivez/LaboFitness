@@ -14,9 +14,7 @@ public class MonthValidator implements ConstraintValidator<MonthValid, String> {
 
         try {
             int monthNumber = Integer.parseInt(value);
-            if (monthNumber >= 1 && monthNumber <= 12) {
-                return true;
-            }
+            if (monthNumber >= 1 && monthNumber <= 12) {  return true;  }
         }
         catch (NumberFormatException ignored) {}
 

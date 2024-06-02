@@ -21,17 +21,6 @@ public abstract class PhysioSpecification {
     }
 
     /**
-     * Specifies a condition to filter {@link Physiotherapist} by INAMI number.
-     *
-     * @param inamiNumber the INAMI number to match
-     * @return a {@link Specification} object for filtering {@link Physiotherapist} by INAMI number
-     */
-    public static Specification<Physiotherapist> hasInamiNumber(long inamiNumber) {
-        return (root, _, criteriaBuilder) ->
-                criteriaBuilder.equal(root.get("inamiNumber"), inamiNumber);
-    }
-
-    /**
      * Specifies a condition to filter {@link Physiotherapist} by name.
      *
      * @param name the name to match

@@ -87,7 +87,6 @@ public class SpecificationServiceImpl implements SpecificationService {
                 () -> new DoesntExistException("Email doesn't exist: " + mail)).getId() : null ;
     }
 
-
     /**
      * Constructs a {@link Specification} by checking if a boolean value is true, false, or any.
      *

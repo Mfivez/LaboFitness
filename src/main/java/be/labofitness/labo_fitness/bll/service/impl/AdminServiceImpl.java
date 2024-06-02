@@ -33,7 +33,6 @@ public class AdminServiceImpl implements AdminService {
     private final UserService userService;
     private final SpecificationService specificationService;
 
-
     /**
      * Retrieves a list of {@link AdminGetUserResponse} based on the provided request criteria.
      *
@@ -42,7 +41,6 @@ public class AdminServiceImpl implements AdminService {
      */
     @Override
     public List<AdminGetUserResponse> getAllUsers(AdminGetUserRequest request) {
-
         Specification<User> spec = Specification.where(null);
 
         spec = specificationService.specificationHasSomething(spec, request.userEmail(), UserSpecification::hasEmail);
@@ -58,7 +56,6 @@ public class AdminServiceImpl implements AdminService {
         spec = specificationService.specificationHasSomething(spec, request.inamiNumber(), UserSpecification::hasInamiNumber);
 
         spec = specificationService.specificationHasCollectionOfSomething(spec, request.roles(), UserSpecification::hasRole);
-
 
         return userRepository.findAll(spec).stream()
                 .map(AdminGetUserResponse::fromEntity)
@@ -88,8 +85,7 @@ public class AdminServiceImpl implements AdminService {
      * @return the response indicating the result of updating the email status
      */
     @Override
-    public AdminManageEmailStatusResponse updateEmailStatus(AdminManageEmailStatusRequest request)
-    {
+    public AdminManageEmailStatusResponse updateEmailStatus(AdminManageEmailStatusRequest request) {
         return AdminManageEmailStatusResponse.fromEntity(userService.updateEmailStatus(
                 userService.getOneByEmail(request.email()), request.emailActive()),
                 getCurrentMethodName()
@@ -104,7 +100,6 @@ public class AdminServiceImpl implements AdminService {
      */
     @Override
     public AdminAnonymizeUserResponse anonymizeUser (AdminAnonymizeUserRequest request){
-
         return AdminAnonymizeUserResponse.fromEntity(userService.anonymizeUser(
                 userService.getOneByEmail(request.email())),
                 getCurrentMethodName()

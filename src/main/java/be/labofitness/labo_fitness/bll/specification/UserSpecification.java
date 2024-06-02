@@ -1,5 +1,4 @@
 package be.labofitness.labo_fitness.bll.specification;
-
 import be.labofitness.labo_fitness.domain.entity.User;
 import org.springframework.data.jpa.domain.Specification;
 

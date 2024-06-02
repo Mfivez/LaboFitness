@@ -70,11 +70,6 @@ public abstract class TrainingSpecification {
         };
     }
 
-    public static Specification<TrainingSession> hasDuration(int duration) {
-        return (root, _, criteriaBuilder) ->
-                criteriaBuilder.equal(root.get("duration"), duration);
-    }
-
     public static Specification<TrainingSession> hasRecommendedLevel(RecommendedLevel recommendedLevel) {
         return (root, _, criteriaBuilder) ->
                 criteriaBuilder.equal(root.get("recommendedLevel"), recommendedLevel);

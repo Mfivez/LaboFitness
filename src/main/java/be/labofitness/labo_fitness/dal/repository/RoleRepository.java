@@ -26,7 +26,7 @@ public interface RoleRepository extends JpaRepository<Role, Long> {
             "WHERE r.name = :name")
     Optional<Role> findByName(String name);
 
-
     @Query("SELECT r.name FROM Role  r")
     List<String> findAllName();
+
 }

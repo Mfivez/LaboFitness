@@ -13,8 +13,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * Custom email validator annotation for validating email format.
  */
 @Email(message = "Email is not correct")
-@Pattern(regexp = EMAIL_REGEX,
-        message = "Email format is not correct")
+@Pattern(regexp = EMAIL_REGEX, message = "Email format is not correct")
 @Target( { METHOD, FIELD, ANNOTATION_TYPE })
 @Retention(RUNTIME)
 @Constraint(validatedBy = {})

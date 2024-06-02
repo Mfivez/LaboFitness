@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class SecurityServiceImpl implements SecurityService {
 
-
     /**
      * Retrieves the current authentication object and casts it to the specified type.
      *

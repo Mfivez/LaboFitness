@@ -47,5 +47,4 @@ public class Accreditation extends BaseEntity<Long> {
     @JoinColumn(nullable = false)
     private Professional professional;
 
-
 }

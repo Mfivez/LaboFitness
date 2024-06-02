@@ -58,16 +58,13 @@ public class ReportServiceImpl implements ReportService {
                 .orElseThrow(() -> new DoesntExistException("reportId doesn't exist:" + id));
     }
 
-
     /**
      * Retrieves all {@link Report}.
      *
      * @return a list of all {@link Report}
      */
     @Override
-    public List<Report> getAll() {
-        return reportRepository.findAll();
-    }
+    public List<Report> getAll() { return reportRepository.findAll(); }
 
     /**
      * Creates a new {@link Report}.
@@ -76,9 +73,7 @@ public class ReportServiceImpl implements ReportService {
      * @return the created {@link Report}
      */
     @Override
-    public Report create(Report entity) {
-        return null;
-    }
+    public Report create(Report entity) { return null;}
 
     /**
      * Updates an existing {@link Report}.
@@ -87,9 +82,7 @@ public class ReportServiceImpl implements ReportService {
      * @return the updated {@link Report}
      */
     @Override
-    public Report update(Report entity) {
-        return reportRepository.save(entity);
-    }
+    public Report update(Report entity) { return reportRepository.save(entity);}
 
     /**
      * Deletes an {@link Report} by its ID.
@@ -98,9 +91,7 @@ public class ReportServiceImpl implements ReportService {
      * @return the deleted {@link Report}, or null if not found
      */
     @Override
-    public Report delete(Long id) {
-        return null;
-    }
+    public Report delete(Long id) { return null; }
 
     // endregion
 
@@ -117,5 +108,6 @@ public class ReportServiceImpl implements ReportService {
     }
 
     //endregion
+
 }
 

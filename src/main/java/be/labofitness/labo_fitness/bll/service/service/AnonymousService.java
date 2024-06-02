@@ -7,7 +7,6 @@ import be.labofitness.labo_fitness.bll.model.user.getTrainingSession.GetTraining
 import be.labofitness.labo_fitness.bll.model.user.getTrainingSession.GetTrainingSessionResponse;
 import be.labofitness.labo_fitness.domain.entity.Coach;
 import be.labofitness.labo_fitness.domain.entity.Physiotherapist;
-
 import java.util.List;
 
 /**
@@ -40,7 +39,6 @@ public interface AnonymousService {
     //endregion
 
     // region TRAINING SESSIONS
-
 
     List<GetTrainingSessionResponse> getAllTrainingSessionsBySpecification(GetTrainingSessionBySpecificationRequest request);
 

@@ -46,7 +46,6 @@ public class CoachServiceImpl implements CoachService {
     private final TrainingSessionService trainingService;
     private final UserRepository userRepository;
 
-
     // region PLANNING
 
     /**
@@ -94,7 +93,7 @@ public class CoachServiceImpl implements CoachService {
                     .collect(Collectors.toList());
             List<T> compDetails = planningService.getAllCoachCompetitions(request).stream()
                     .map(compMapper)
-                    .collect(Collectors.toList());
+                    .toList();
 
             details.addAll(compDetails);
             return details;
@@ -165,9 +164,7 @@ public class CoachServiceImpl implements CoachService {
      * @return the {@link Coach} with the given ID
      */
     @Override
-    public Coach getOne(Long id) {
-        return null;
-    }
+    public Coach getOne(Long id) {return null;}
 
     @Override
     public Coach getOneByEmail(String email) {
@@ -181,9 +178,7 @@ public class CoachServiceImpl implements CoachService {
      * @return a list of all {@link Coach}
      */
     @Override
-    public List<Coach> getAll() {
-        return coachRepository.findAll();
-    }
+    public List<Coach> getAll() {return coachRepository.findAll();}
 
     /**
      * Creates a new {@link Coach}.
@@ -192,9 +187,7 @@ public class CoachServiceImpl implements CoachService {
      * @return the created {@link Coach}
      */
     @Override
-    public Coach create(Coach entity) {
-        return coachRepository.save(entity);
-    }
+    public Coach create(Coach entity) {return coachRepository.save(entity);}
 
     /**
      * Updates an existing {@link Coach}.
@@ -203,9 +196,7 @@ public class CoachServiceImpl implements CoachService {
      * @return the updated {@link Coach}
      */
     @Override
-    public Coach update(Coach entity) {
-        return null;
-    }
+    public Coach update(Coach entity) {return null;}
 
     /**
      * Deletes an {@link Coach} by its ID.
@@ -214,9 +205,7 @@ public class CoachServiceImpl implements CoachService {
      * @return the deleted {@link Coach}, or null if not found
      */
     @Override
-    public Coach delete(Long id) {
-        return null;
-    }
+    public Coach delete(Long id) {return null;}
 
     // endregion
 

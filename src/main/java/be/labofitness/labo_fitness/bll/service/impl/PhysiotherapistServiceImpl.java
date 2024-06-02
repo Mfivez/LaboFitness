@@ -68,9 +68,7 @@ public class PhysiotherapistServiceImpl implements PhysiotherapistService {
      * @return the {@link Physiotherapist} with the given ID
      */
     @Override
-    public Physiotherapist getOne(Long id) {
-        return null;
-    }
+    public Physiotherapist getOne(Long id) {return null;}
 
     /**
      * Retrieves an {@link Physiotherapist} by its email.
@@ -90,9 +88,7 @@ public class PhysiotherapistServiceImpl implements PhysiotherapistService {
      * @return a list of all {@link Physiotherapist}
      */
     @Override
-    public List<Physiotherapist> getAll() {
-        return physiotherapistRepository.findAll();
-    }
+    public List<Physiotherapist> getAll() {return physiotherapistRepository.findAll();}
 
     /**
      * Creates a new {@link Physiotherapist}.
@@ -112,9 +108,7 @@ public class PhysiotherapistServiceImpl implements PhysiotherapistService {
      * @return the updated {@link Physiotherapist}
      */
     @Override
-    public Physiotherapist update(Physiotherapist entity) {
-        return null;
-    }
+    public Physiotherapist update(Physiotherapist entity) {return null;}
 
     /**
      * Deletes an {@link Physiotherapist} by its ID.
@@ -123,9 +117,7 @@ public class PhysiotherapistServiceImpl implements PhysiotherapistService {
      * @return the deleted {@link Physiotherapist}, or null if not found
      */
     @Override
-    public Physiotherapist delete(Long id) {
-        return null;
-    }
+    public Physiotherapist delete(Long id) {return null;}
 
     // endregion
 

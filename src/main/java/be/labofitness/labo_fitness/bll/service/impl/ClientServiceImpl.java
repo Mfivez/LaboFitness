@@ -60,8 +60,7 @@ public class ClientServiceImpl  implements ClientService {
      * @return the account management response
      * @throws AlreadyExistException if the email already exists
      */
-    @Override
-    @Transactional
+    @Override @Transactional
     public ClientManageAccountResponse manageAccount(ClientManageAccountRequest request) {
         String message  = "getCurrentMethodeName()";
         Client client = securityService.getAuthentication(Client.class);
@@ -202,11 +201,10 @@ public class ClientServiceImpl  implements ClientService {
 
     private <T> List<T> getEventDetails(ClientPlanningRequest request, Function<Competition, T> compMapper, Function<TrainingSession, T> trainMapper, Function<Appointment, T> appMapper) {
         List<T> details = new ArrayList<>();
-        boolean[] booleans = getEndDatesBoolean(request.types(), request.sports(), request.coachMail(), request.physiotherapistMail());
-        boolean includeAll = booleans[0];
-        boolean includeOnlyComp = booleans[1];
-        boolean includeCoach = booleans[2];
-        boolean includePhysio = booleans[3];
+        boolean includeAll = request.types() == null || request.types().isEmpty();
+        boolean includeOnlyComp = request.sports() != null && !request.sports().isEmpty();
+        boolean includeCoach = request.coachMail() != null;
+        boolean includePhysio = request.physiotherapistMail() != null;
 
         if ((includeAll || request.types().contains("competition")) && !includePhysio) {
             List<T> compDetails = planningService.getAllClientCompetitions(request).stream()
@@ -334,21 +332,7 @@ public class ClientServiceImpl  implements ClientService {
      * @return the {@link Client} with the given ID
      */
     @Override
-    public Client getOne(Long id) {
-        return null;
-    }
-
-    /**
-     * Retrieves an {@link Client} by its mail.
-     *
-     * @param mail the ID of the {@link Client} to retrieve
-     * @return the {@link Client} with the given mail
-     */
-    @Override
-    public Client getOneByEmail(String mail)  {
-        return clientRepository.findByEmail(mail)
-                .orElseThrow( () -> new IllegalArgumentException("Client doesn't exist"));
-    }
+    public Client getOne(Long id) {return null;}
 
     /**
      * Retrieves all {@link Client}.
@@ -356,9 +340,7 @@ public class ClientServiceImpl  implements ClientService {
      * @return a list of all {@link Client}
      */
     @Override
-    public List<Client> getAll() {
-        return clientRepository.findAll();
-    }
+    public List<Client> getAll() {return clientRepository.findAll();}
 
     /**
      * Creates a new {@link Client}.
@@ -367,9 +349,7 @@ public class ClientServiceImpl  implements ClientService {
      * @return the created {@link Client}
      */
     @Override
-    public Client create(Client entity) {
-        return null;
-    }
+    public Client create(Client entity) {return null;}
 
     /**
      * Updates an existing {@link Client}.
@@ -378,9 +358,7 @@ public class ClientServiceImpl  implements ClientService {
      * @return the updated {@link Client}
      */
     @Override
-    public Client update(Client entity) {
-        return null;
-    }
+    public Client update(Client entity) {return null;}
 
     /**
      * Deletes an {@link Client} by its ID.
@@ -389,37 +367,7 @@ public class ClientServiceImpl  implements ClientService {
      * @return the deleted {@link Client}, or null if not found
      */
     @Override
-    public Client delete(Long id) {
-        return null;
-    }
-
-    // endregion
-
-    // region UTILS
-
-    /**
-     * Determines {@code boolean} values based on the presence of various parameters.
-     *
-     * @param types a list of types to check
-     * @param sports a list of sports to check
-     * @param coachMail the email of the coach
-     * @param physiotherapistMail the email of the physiotherapist
-     * @return a boolean array where:
-     *         <ul>
-     *           <li>{@code booleans}[0] is true if {@code types} is null or empty (include all)</li>
-     *           <li>{@code booleans}[1] is true if {@code sports} is not null and not empty (include {@link Competition} only)</li>
-     *           <li>{@code booleans}[2] is true if {@code coachMail} is not null (include {@link Coach)</li>
-     *           <li>{@code booleans}[3] is true if {@code physiotherapistMail} is not null (include {@link Physiotherapist)</li>
-     *         </ul>
-     */
-    private boolean[] getEndDatesBoolean(List<String>  types, List<String> sports, String coachMail, String physiotherapistMail) {
-        boolean[] booleans = new boolean[4];
-        booleans[0] = types == null || types.isEmpty(); // INCLUDE ALL
-        booleans[1] = sports != null && !sports.isEmpty(); // INCLUDE COMPETITION ONLY
-        booleans[2] = coachMail != null; // INCLUDE COACH
-        booleans[3] = physiotherapistMail != null; // INCLUDE PHYSIO
-        return booleans;
-    }
+    public Client delete(Long id) {return null;}
 
     // endregion
 

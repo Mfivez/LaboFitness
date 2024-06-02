@@ -6,5 +6,4 @@ import be.labofitness.labo_fitness.domain.entity.Sport;
  * Service interface for managing {@link Sport}.
  * <br>Extends {@link CrudService} for basic CRUD operations.
  */
-public interface SportService extends CrudService<Sport, Long> {
-}
+public interface SportService extends CrudService<Sport, Long> { }

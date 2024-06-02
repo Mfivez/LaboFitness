@@ -1,5 +1,4 @@
 package be.labofitness.labo_fitness.bll.service.service;
-
 import be.labofitness.labo_fitness.bll.model.client.CompetitionRegister.CompetitionRegisterRequest;
 import be.labofitness.labo_fitness.bll.model.client.CompetitionRegister.CompetitionRegisterResponse;
 import be.labofitness.labo_fitness.bll.model.client.TrainingSessionSubscription.TrainingSubscriptionRequest;
@@ -16,7 +15,6 @@ import be.labofitness.labo_fitness.domain.entity.Appointment;
 import be.labofitness.labo_fitness.domain.entity.Client;
 import be.labofitness.labo_fitness.domain.entity.Competition;
 import be.labofitness.labo_fitness.domain.entity.TrainingSession;
-
 import java.util.List;
 
 /**
@@ -108,17 +106,5 @@ public interface ClientService  extends CrudService<Client, Long> {
     CancelAppointmentResponse cancelAppointment(CancelAppointmentRequest request);
 
     // endregion
-
-    //region CRUD SERVICE
-
-    /**
-     * Retrieves a {@link Client} entity by its email address.
-     *
-     * @param email the email address of the Client
-     * @return the {@link Client} entity with the specified email address
-     */
-    Client getOneByEmail(String email);
-
-    //endregion
 
 }

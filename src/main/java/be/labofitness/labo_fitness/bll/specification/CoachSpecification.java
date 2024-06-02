@@ -5,7 +5,6 @@ import be.labofitness.labo_fitness.domain.entity.TrainingSession;
 import jakarta.persistence.criteria.Root;
 import org.springframework.data.jpa.domain.Specification;
 
-
 /**
  * {@link Specification} class for filtering {@link Coach} entities based on various criteria.
  */
@@ -54,8 +53,6 @@ public abstract class CoachSpecification {
         return (root, _, criteriaBuilder) ->
                 criteriaBuilder.lessThanOrEqualTo(root.get("priceHour"), priceHour);
     }
-
-
 
     /**
      * Specifies a condition to filter {@link Coach} by name.

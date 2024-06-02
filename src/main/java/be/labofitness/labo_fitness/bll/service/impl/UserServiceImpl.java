@@ -141,11 +141,9 @@ public class UserServiceImpl implements UserService {
         User complainant = securityService.getAuthentication(User.class);
 
         User reportedUser =  userRepository.findByEmail(request.reportedUserEmail())
-                .orElseThrow(() -> new DoesntExistException(
-                        "Email doesn't exist: " + request.reportedUserEmail()));
+                .orElseThrow(() -> new DoesntExistException( "Email doesn't exist: " + request.reportedUserEmail() ));
 
         reportService.makeReportWithParams(complainant, reportedUser, request.report());
-
 
         return new ReportResponse("Vous avez bien reporté l'utilisateur " +
                 reportedUser.getName() + " " + reportedUser.getLastname() +
@@ -159,12 +157,11 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public Set<GetReportResponse> getValidReport() {
-        User user = securityService.getAuthentication(User.class);
-        return userRepository.getReportMessageByIsValidate(user.getId(),true).stream()
+        return userRepository.getReportMessageByIsValidate(
+                securityService.getAuthentication(User.class).getId(),true).stream()
                 .map(GetReportResponse::new)
                 .collect(Collectors.toSet());
     }
-
 
     // endregion
 
@@ -199,9 +196,7 @@ public class UserServiceImpl implements UserService {
      * @return a list of all {@link User}
      */
     @Override
-    public List<User> getAll() {
-        return userRepository.findAll();
-    }
+    public List<User> getAll() { return userRepository.findAll(); }
 
     /**
      * Creates a new {@link User}.
@@ -210,9 +205,7 @@ public class UserServiceImpl implements UserService {
      * @return the created {@link User}
      */
     @Override
-    public User create(User entity) {
-        return null;
-    }
+    public User create(User entity) { return null; }
 
     /**
      * Updates an existing {@link User}.
@@ -221,9 +214,7 @@ public class UserServiceImpl implements UserService {
      * @return the updated {@link User}
      */
     @Override
-    public User update(User entity) {
-        return null;
-    }
+    public User update(User entity) { return null; }
 
     @Override
     public User updateAccountStatus(User user, boolean status) {
@@ -271,9 +262,7 @@ public class UserServiceImpl implements UserService {
      * @return the deleted {@link User}, or null if not found
      */
     @Override
-    public User delete(Long id) {
-        return null;
-    }
+    public User delete(Long id) { return null; }
 
     // endregion
 

@@ -38,9 +38,7 @@ public class LocationServiceImpl implements LocationService {
      * @return a list of all {@link LocationPlace}
      */
     @Override
-    public List<LocationPlace> getAll() {
-        return locationRepository.findAll();
-    }
+    public List<LocationPlace> getAll() {return locationRepository.findAll();}
 
     /**
      * Creates a new {@link LocationPlace}.
@@ -49,9 +47,7 @@ public class LocationServiceImpl implements LocationService {
      * @return the created {@link LocationPlace}
      */
     @Override
-    public LocationPlace create(LocationPlace entity) {
-        return null;
-    }
+    public LocationPlace create(LocationPlace entity) {return null;}
 
     /**
      * Updates an existing {@link LocationPlace}.
@@ -60,9 +56,7 @@ public class LocationServiceImpl implements LocationService {
      * @return the updated {@link LocationPlace}
      */
     @Override
-    public LocationPlace update(LocationPlace entity) {
-        return locationRepository.save(entity);
-    }
+    public LocationPlace update(LocationPlace entity) {return locationRepository.save(entity);}
 
     /**
      * Deletes an {@link LocationPlace} by its ID.
@@ -71,9 +65,7 @@ public class LocationServiceImpl implements LocationService {
      * @return the deleted {@link LocationPlace}, or null if not found
      */
     @Override
-    public LocationPlace delete(Long id) {
-        return null;
-    }
+    public LocationPlace delete(Long id) {return null;}
 
     // endregion
 
@@ -86,17 +78,6 @@ public class LocationServiceImpl implements LocationService {
     @Override
     public LocationPlace addLocationPlace(Address address) {
         LocationPlace locationPlace = new LocationPlace(address);
-        return locationRepository.save(locationPlace);
-    }
-
-    /**
-     * Updates an existing location place.
-     *
-     * @param locationPlace the location place to update
-     * @return the updated location place
-     */
-    @Override
-    public LocationPlace updateLocationPlace(LocationPlace locationPlace) {
         return locationRepository.save(locationPlace);
     }
 

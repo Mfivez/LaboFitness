@@ -49,20 +49,7 @@ public class RoleServiceImpl implements RoleService {
      * @return the {@link Role} with the given ID
      */
     @Override
-    public Role getOne(Long id) {
-        return null;
-    }
-
-    /**
-     * Retrieves an {@link Role} by its name.
-     *
-     * @param name the name of the {@link Role} to retrieve
-     * @return the {@link Role} with the given name
-     */
-    @Override
-    public Role getOneByName(String name) {
-        return null;
-    }
+    public Role getOne(Long id) { return null; }
 
     /**
      * Retrieves all {@link Role}.
@@ -70,9 +57,7 @@ public class RoleServiceImpl implements RoleService {
      * @return a list of all {@link Role}
      */
     @Override
-    public List<Role> getAll() {
-        return roleRepository.findAll();
-    }
+    public List<Role> getAll() { return roleRepository.findAll(); }
 
     /**
      * Creates a new {@link Role}.
@@ -81,9 +66,7 @@ public class RoleServiceImpl implements RoleService {
      * @return the created {@link Role}
      */
     @Override
-    public Role create(Role entity) {
-        return null;
-    }
+    public Role create(Role entity) { return null; }
 
     /**
      * Updates an existing {@link Role}.
@@ -92,9 +75,7 @@ public class RoleServiceImpl implements RoleService {
      * @return the updated {@link Role}
      */
     @Override
-    public Role update(Role entity) {
-        return null;
-    }
+    public Role update(Role entity) { return null; }
 
     /**
      * Deletes an {@link Role} by its ID.
@@ -103,9 +84,8 @@ public class RoleServiceImpl implements RoleService {
      * @return the deleted {@link Role}, or null if not found
      */
     @Override
-    public Role delete(Long id) {
-        return null;
-    }
+    public Role delete(Long id) { return null; }
 
     // endregion
+
 }

@@ -1,5 +1,4 @@
 package be.labofitness.labo_fitness.il.utils.annotations.appointmentValidator;
-
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 

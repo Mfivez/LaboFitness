@@ -6,7 +6,6 @@ import be.labofitness.labo_fitness.bll.model.planning.PlanningResponse;
 import be.labofitness.labo_fitness.bll.service.base.CrudService;
 import be.labofitness.labo_fitness.domain.entity.Physiotherapist;
 import org.springframework.data.jpa.domain.Specification;
-
 import java.util.List;
 
 // TODO dev a logic for the nomination's of appointments
