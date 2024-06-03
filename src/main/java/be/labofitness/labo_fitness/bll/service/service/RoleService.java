@@ -1,7 +1,9 @@
 package be.labofitness.labo_fitness.bll.service.service;
+
 import be.labofitness.labo_fitness.bll.service.base.CrudService;
 import be.labofitness.labo_fitness.domain.entity.Role;
 import be.labofitness.labo_fitness.domain.entity.User;
+
 import java.util.Set;
 
 /**
@@ -17,13 +19,5 @@ public interface RoleService  extends CrudService<Role, Long> {
      * @return the set of {@link Role} assigned to the {@link User}
      */
     Set<Role> setRole(Set<String> roles);
-
-    /**
-     * Retrieves a {@code Role} entity by its name.
-     *
-     * @param name the name of the role
-     * @return the {@code Role} entity with the specified name
-     */
-    Role getOneByName(String name);
 
 }

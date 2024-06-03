@@ -55,9 +55,7 @@ public class CompetitionServiceImpl implements CompetitionService {
      * @return a list of all {@link Competition}
      */
     @Override
-    public List<Competition> getAll() {
-        return competitionRepository.findAll();
-    }
+    public List<Competition> getAll() {return competitionRepository.findAll();}
 
     /**
      * Creates a new {@link Competition}.
@@ -66,9 +64,7 @@ public class CompetitionServiceImpl implements CompetitionService {
      * @return the created {@link Competition}
      */
     @Override
-    public Competition create(Competition entity) {
-        return null;
-    }
+    public Competition create(Competition entity) {return null;}
 
     /**
      * Updates an existing {@link Competition}.
@@ -77,9 +73,7 @@ public class CompetitionServiceImpl implements CompetitionService {
      * @return the updated {@link Competition}
      */
     @Override
-    public Competition update(Competition entity) {
-        return competitionRepository.save(entity);
-    }
+    public Competition update(Competition entity) {return competitionRepository.save(entity);}
 
     /**
      * Deletes an {@link Competition} by its ID.
@@ -88,9 +82,7 @@ public class CompetitionServiceImpl implements CompetitionService {
      * @return the deleted {@link Competition}, or null if not found
      */
     @Override
-    public Competition delete(Long id) {
-        return null;
-    }
+    public Competition delete(Long id) {return null;}
 
     // endregion
 

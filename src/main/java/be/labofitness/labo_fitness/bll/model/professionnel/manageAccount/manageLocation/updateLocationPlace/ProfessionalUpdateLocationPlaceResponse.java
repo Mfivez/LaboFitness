@@ -17,4 +17,10 @@ package be.labofitness.labo_fitness.bll.model.professionnel.manageAccount.manage
  */
 public record ProfessionalUpdateLocationPlaceResponse(
         String message
-) { }
+) {
+
+    public static ProfessionalUpdateLocationPlaceResponse fromEntity(String message){
+        return new ProfessionalUpdateLocationPlaceResponse(message);
+    }
+
+}

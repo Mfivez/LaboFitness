@@ -1,5 +1,6 @@
 package be.labofitness.labo_fitness.bll.model.moderator.report;
-import java.util.List;
+
+import be.labofitness.labo_fitness.domain.entity.Report;
 
 /**
  * Represents the response model for reporting a user to a moderator.
@@ -14,10 +15,20 @@ import java.util.List;
  * @param isConfirmed          The list of confirmation states.
  */
 public record ReportResponse(
-        List<String> reportedUserEmail,
-        List<String> complainantUserEmail,
-        List<String> description,
-        List<Boolean> isApproved,
-        List<Boolean> isConfirmed
+        String reportedUserEmail,
+        String complainantUserEmail,
+        String description,
+        Boolean isApproved,
+        Boolean isConfirmed
 ) {
+
+    public static ReportResponse fromEntity(Report report){
+        return new ReportResponse(
+                report.getReportedUser().getName(),
+                report.getComplainant().getName(),
+                report.getDescription(),
+                report.isApproved(),
+                report.isConfirmed()
+        );
+    }
 }

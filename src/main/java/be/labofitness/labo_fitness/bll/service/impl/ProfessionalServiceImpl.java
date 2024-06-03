@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.Set;
 import static be.labofitness.labo_fitness.il.utils.LaboFitnessUtil.getCurrentMethodName;
 
-
 /**
  * Implementation of the {@link ProfessionalService} interface.
  * <br>Provides functionality for registering professionals
@@ -56,7 +55,6 @@ public class ProfessionalServiceImpl implements ProfessionalService{
      */
     @Override
     public RegisterResponse register(ProfessionalRegisterRequest request) {
-
         if(userService.checkEmail(request.email())) {
             throw new AlreadyExistException("email already exists : " + request.email());
         }
@@ -98,9 +96,7 @@ public class ProfessionalServiceImpl implements ProfessionalService{
      * @return the {@link Professional} with the given ID
      */
     @Override
-    public Physiotherapist getOne(Long id) {
-        return null;
-    }
+    public Physiotherapist getOne(Long id) {return null;}
 
     /**
      * Retrieves all {@link Professional}.
@@ -108,9 +104,7 @@ public class ProfessionalServiceImpl implements ProfessionalService{
      * @return a list of all {@link Professional}
      */
     @Override
-    public List<Professional> getAll() {
-        return professionalRepository.findAll();
-    }
+    public List<Professional> getAll() {return professionalRepository.findAll();}
 
     /**
      * Creates a new {@link Professional}.
@@ -119,9 +113,7 @@ public class ProfessionalServiceImpl implements ProfessionalService{
      * @return the created {@link Professional}
      */
     @Override
-    public Professional create(Professional entity) {
-        return null;
-    }
+    public Professional create(Professional entity) {return null;}
 
     /**
      * Updates an existing {@link Professional}.
@@ -130,9 +122,7 @@ public class ProfessionalServiceImpl implements ProfessionalService{
      * @return the updated {@link Professional}
      */
     @Override
-    public Professional update(Professional entity) {
-        return null;
-    }
+    public Professional update(Professional entity) {return null;}
 
     /**
      * Deletes an {@link Professional} by its ID.
@@ -141,9 +131,7 @@ public class ProfessionalServiceImpl implements ProfessionalService{
      * @return the deleted {@link Professional}, or null if not found
      */
     @Override
-    public Professional delete(Long id) {
-        return null;
-    }
+    public Professional delete(Long id) {return null;}
 
     // endregion
 
@@ -158,13 +146,10 @@ public class ProfessionalServiceImpl implements ProfessionalService{
      */
     @Override @Transactional
     public ProfessionalAddLocationPlaceResponse addLocationPlace(ProfessionalAddLocationPlaceRequest request) {
-        Professional professional = securityService.getAuthentication(Professional.class);
-
         Address address = new Address(request.street(), request.number(), request.city(), request.zipCode());
-        LocationPlace locationPlace = locationService.addLocationPlace(address);
 
-
-        professional.getLocationPlace().add(locationPlace);
+        Professional professional = securityService.getAuthentication(Professional.class);
+        professional.getLocationPlace().add(locationService.addLocationPlace(address));
         professionalRepository.save(professional);
 
         return new ProfessionalAddLocationPlaceResponse("Location place added successfully");
@@ -183,10 +168,8 @@ public class ProfessionalServiceImpl implements ProfessionalService{
 
         if (securityService.getAuthentication(Professional.class).getLocationPlace().stream().anyMatch(loc -> loc.equals(locationPlace))) {
             throw new UnauthorizedException("You're not allowed to update the location place" +
-                    locationPlace.getAddress().getStreet() + " " +
-                    locationPlace.getAddress().getNumber() + " " +
-                    locationPlace.getAddress().getCity() + " " +
-                    locationPlace.getAddress().getZipcode() +
+                    locationPlace.getAddress().getStreet() + " " + locationPlace.getAddress().getNumber() + " " +
+                    locationPlace.getAddress().getCity() + " " + locationPlace.getAddress().getZipcode() +
                     "because this is not your professional address"
             );
         }
@@ -207,7 +190,6 @@ public class ProfessionalServiceImpl implements ProfessionalService{
     @Override
     @Transactional
     public ProfessionalAddAccreditationResponse addAccreditation(ProfessionalAddAccreditationRequest request){
-
         Professional professional = securityService.getAuthentication(Professional.class);
         Accreditation accreditation = new Accreditation();
 
@@ -228,7 +210,6 @@ public class ProfessionalServiceImpl implements ProfessionalService{
     @Override
     @Transactional
     public ProfessionalUpdateAccreditationResponse updateAccreditation (ProfessionalUpdateAccreditationRequest request){
-
         Professional professional = securityService.getAuthentication(Professional.class);
         Accreditation accreditation = accreditationService.getOne(request.accreditationId());
 
@@ -237,6 +218,7 @@ public class ProfessionalServiceImpl implements ProfessionalService{
         }
         accreditation.setDescription(request.description());
         accreditationService.update(accreditation);
+
         return ProfessionalUpdateAccreditationResponse.fromEntity(getCurrentMethodName(),accreditation);
     }
 

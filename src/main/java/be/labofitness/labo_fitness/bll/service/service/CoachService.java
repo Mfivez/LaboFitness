@@ -1,18 +1,19 @@
 package be.labofitness.labo_fitness.bll.service.service;
 import be.labofitness.labo_fitness.bll.model.coach.ManageEventInscription.ManageEventInscriptionRequest;
+import be.labofitness.labo_fitness.bll.model.coach.ManageEventInscription.ManageEventInscriptionResponse;
 import be.labofitness.labo_fitness.bll.model.coach.manageAccount.CoachManageAccountRequest;
+import be.labofitness.labo_fitness.bll.model.coach.manageAccount.CoachManageAccountResponse;
 import be.labofitness.labo_fitness.bll.model.coach.manageAccount.updateSpecificInformations.CoachUpdateSpecificsInformationsRequest;
 import be.labofitness.labo_fitness.bll.model.coach.manageAccount.updateSpecificInformations.CoachUpdateSpecificsInformationsResponse;
 import be.labofitness.labo_fitness.bll.model.planning.CoachPlanningRequest;
-import be.labofitness.labo_fitness.bll.model.coach.ManageEventInscription.ManageEventInscriptionResponse;
-import be.labofitness.labo_fitness.bll.model.coach.manageAccount.CoachManageAccountResponse;
 import be.labofitness.labo_fitness.bll.model.planning.PlanningResponse;
-import be.labofitness.labo_fitness.domain.entity.TrainingSession;
-import be.labofitness.labo_fitness.bll.model.coach.manageAccount.changePassword.CoachChangePasswordRequest;
-import be.labofitness.labo_fitness.bll.model.coach.manageAccount.changePassword.CoachChangePasswordResponse;
 import be.labofitness.labo_fitness.bll.service.base.CrudService;
 import be.labofitness.labo_fitness.domain.entity.Coach;
 import be.labofitness.labo_fitness.domain.entity.Competition;
+import be.labofitness.labo_fitness.domain.entity.TrainingSession;
+import org.springframework.data.jpa.domain.Specification;
+
+import java.util.List;
 
 /**
  * Service interface for managing {@link Coach}.
@@ -28,7 +29,7 @@ public interface CoachService  extends CrudService<Coach, Long> {
      * @param request the {@link Coach} planning request
      * @return the planning response
      */
-    PlanningResponse getPlanning(CoachPlanningRequest request) ;
+    List<PlanningResponse> getPlanning(CoachPlanningRequest request) ;
 
     // endregion
 
@@ -41,15 +42,6 @@ public interface CoachService  extends CrudService<Coach, Long> {
      * @return the {@link Coach} manage account response
      */
     CoachManageAccountResponse manageAccount(CoachManageAccountRequest request);
-
-    /**
-     * Changes the password of a {@link Coach}.
-     *
-     * @param request the {@link Coach} change password request
-     * @return the {@link Coach} change password response
-     */
-    CoachChangePasswordResponse changePassword(CoachChangePasswordRequest request);
-
 
     /**
      * Changes isRemote and pricePerHour of a {@link Coach}.
@@ -92,5 +84,11 @@ public interface CoachService  extends CrudService<Coach, Long> {
     Coach getOneByEmail(String email);
 
     //endregion
+
+    // region SPECIFICATION
+
+    List<Coach> getCoachBySpecification(Specification<Coach> specification);
+
+    // endregion
 
 }

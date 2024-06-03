@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class SecurityServiceImpl implements SecurityService {
 
-
     /**
      * Retrieves the current authentication object and casts it to the specified type.
      *
@@ -29,7 +28,7 @@ public class SecurityServiceImpl implements SecurityService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication == null) {
-            throw new AuthenticationException("Authentication is null", 401);}
+            return null;}
 
         if (type.isInstance(authentication.getPrincipal())) {
             return type.cast(authentication.getPrincipal());

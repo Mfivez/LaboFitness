@@ -3,8 +3,6 @@ import be.labofitness.labo_fitness.bll.exception.Exist.DoesntExistException;
 import be.labofitness.labo_fitness.bll.exception.notMatching.NotMatchingException;
 import be.labofitness.labo_fitness.bll.model.physiotherapist.manageAccount.PhysiotherapistManageAccountRequest;
 import be.labofitness.labo_fitness.bll.model.physiotherapist.manageAccount.PhysiotherapistManageAccountResponse;
-import be.labofitness.labo_fitness.bll.model.physiotherapist.manageAccount.changePassWord.PhysiotherapistChangePasswordRequest;
-import be.labofitness.labo_fitness.bll.model.physiotherapist.manageAccount.changePassWord.PhysiotherapistChangePasswordResponse;
 import be.labofitness.labo_fitness.bll.model.planning.PhysioPlanningRequest;
 import be.labofitness.labo_fitness.bll.model.planning.PlanningResponse;
 import be.labofitness.labo_fitness.bll.service.service.PhysiotherapistService;
@@ -16,11 +14,12 @@ import be.labofitness.labo_fitness.domain.entity.Appointment;
 import be.labofitness.labo_fitness.domain.entity.Physiotherapist;
 import be.labofitness.labo_fitness.domain.entity.base.Address;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import static be.labofitness.labo_fitness.il.utils.LaboFitnessUtil.getCurrentMethodName;
 
 /**
@@ -31,13 +30,10 @@ import static be.labofitness.labo_fitness.il.utils.LaboFitnessUtil.getCurrentMet
 @Service
 public class PhysiotherapistServiceImpl implements PhysiotherapistService {
 
-    private final PasswordEncoder passwordEncoder;
     private final PlanningService planningService;
     private final SecurityService securityService;
     private final UserRepository userRepository; //TODO REFAC
     private final PhysiotherapistRepository physiotherapistRepository;
-
-
 
     // region GET PLANNING
 
@@ -48,11 +44,17 @@ public class PhysiotherapistServiceImpl implements PhysiotherapistService {
      * @return a {@link PlanningResponse} object containing the planning details
      */
     @Override
-    public PlanningResponse getPlanning(PhysioPlanningRequest request) {
-        return new PlanningResponse(
-                planningService.getAllPhysioAppointments(request).stream().map(Appointment::getStartDate).collect(Collectors.toList()),
-                planningService.getAllPhysioAppointments(request).stream().map(Appointment::getEndDate).collect(Collectors.toList()),
-                planningService.getAllPhysioAppointments(request).stream().map(Appointment::getName).collect(Collectors.toList()));
+    public List<PlanningResponse> getPlanning(PhysioPlanningRequest request) {
+        return IntStream.range(0, planningService.getAllPhysioAppointments(request).stream()
+                        .map(Appointment::getStartDate).toList().size())
+                .mapToObj(i -> new PlanningResponse(
+                        planningService.getAllPhysioAppointments(request).stream()
+                                .map(Appointment::getStartDate).toList().get(i),
+                        planningService.getAllPhysioAppointments(request).stream()
+                                .map(Appointment::getEndDate).toList().get(i),
+                        planningService.getAllPhysioAppointments(request).stream()
+                                .map(Appointment::getName).toList().get(i)))
+                .collect(Collectors.toList());
     }
 
     //endregion
@@ -66,9 +68,7 @@ public class PhysiotherapistServiceImpl implements PhysiotherapistService {
      * @return the {@link Physiotherapist} with the given ID
      */
     @Override
-    public Physiotherapist getOne(Long id) {
-        return null;
-    }
+    public Physiotherapist getOne(Long id) {return null;}
 
     /**
      * Retrieves an {@link Physiotherapist} by its email.
@@ -88,9 +88,7 @@ public class PhysiotherapistServiceImpl implements PhysiotherapistService {
      * @return a list of all {@link Physiotherapist}
      */
     @Override
-    public List<Physiotherapist> getAll() {
-        return physiotherapistRepository.findAll();
-    }
+    public List<Physiotherapist> getAll() {return physiotherapistRepository.findAll();}
 
     /**
      * Creates a new {@link Physiotherapist}.
@@ -110,9 +108,7 @@ public class PhysiotherapistServiceImpl implements PhysiotherapistService {
      * @return the updated {@link Physiotherapist}
      */
     @Override
-    public Physiotherapist update(Physiotherapist entity) {
-        return null;
-    }
+    public Physiotherapist update(Physiotherapist entity) {return null;}
 
     /**
      * Deletes an {@link Physiotherapist} by its ID.
@@ -121,9 +117,7 @@ public class PhysiotherapistServiceImpl implements PhysiotherapistService {
      * @return the deleted {@link Physiotherapist}, or null if not found
      */
     @Override
-    public Physiotherapist delete(Long id) {
-        return null;
-    }
+    public Physiotherapist delete(Long id) {return null;}
 
     // endregion
 
@@ -159,28 +153,15 @@ public class PhysiotherapistServiceImpl implements PhysiotherapistService {
         return PhysiotherapistManageAccountResponse.fromEntity(physiotherapist, getCurrentMethodName());
     }
 
-    /**
-     * Update the password of an {@link Physiotherapist} account
-     * @param request of the {@link PhysiotherapistChangePasswordRequest} to update
-     * @return response {@link PhysiotherapistChangePasswordResponse} with a message
-     */
+    // endregion
+
+    // region SPECIFICATION
+
     @Override
-    @Transactional
-    public PhysiotherapistChangePasswordResponse changePassword(PhysiotherapistChangePasswordRequest request) {
-
-
-        Physiotherapist physiotherapist = securityService.getAuthentication(Physiotherapist.class);
-
-        if(!passwordEncoder.matches(request.oldPassword(),physiotherapist.getPassword())){
-
-            throw new NotMatchingException("passwords are not matching");
-        }
-
-        physiotherapist.setPassword(passwordEncoder.encode(request.newPassword()));
-        physiotherapistRepository.save(physiotherapist);
-
-        return PhysiotherapistChangePasswordResponse.fromEntity(physiotherapist,getCurrentMethodName());
+    public List<Physiotherapist> getPhysiotherapistBySpecification(Specification<Physiotherapist> specification) {
+        return physiotherapistRepository.findAll(specification);
     }
 
     // endregion
+
 }

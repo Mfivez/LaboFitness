@@ -57,6 +57,4 @@ public @interface StringValid {
      */
     int min();
 
-
-
 }

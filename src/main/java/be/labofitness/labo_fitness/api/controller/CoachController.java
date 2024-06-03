@@ -1,20 +1,20 @@
 package be.labofitness.labo_fitness.api.controller;
 import be.labofitness.labo_fitness.bll.model.coach.ManageEventInscription.ManageEventInscriptionRequest;
+import be.labofitness.labo_fitness.bll.model.coach.ManageEventInscription.ManageEventInscriptionResponse;
 import be.labofitness.labo_fitness.bll.model.coach.manageAccount.CoachManageAccountRequest;
+import be.labofitness.labo_fitness.bll.model.coach.manageAccount.CoachManageAccountResponse;
 import be.labofitness.labo_fitness.bll.model.coach.manageAccount.updateSpecificInformations.CoachUpdateSpecificsInformationsRequest;
 import be.labofitness.labo_fitness.bll.model.coach.manageAccount.updateSpecificInformations.CoachUpdateSpecificsInformationsResponse;
 import be.labofitness.labo_fitness.bll.model.planning.CoachPlanningRequest;
-import be.labofitness.labo_fitness.bll.model.coach.ManageEventInscription.ManageEventInscriptionResponse;
-import be.labofitness.labo_fitness.bll.model.coach.manageAccount.CoachManageAccountResponse;
 import be.labofitness.labo_fitness.bll.model.planning.PlanningResponse;
-import be.labofitness.labo_fitness.bll.model.coach.manageAccount.changePassword.CoachChangePasswordRequest;
-import be.labofitness.labo_fitness.bll.model.coach.manageAccount.changePassword.CoachChangePasswordResponse;
 import be.labofitness.labo_fitness.bll.service.service.CoachService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * Controller for handling coach-related requests.
@@ -43,7 +43,7 @@ public class CoachController {
      */
     @PreAuthorize("hasAuthority('COACH')")
     @GetMapping("/planning")
-    public ResponseEntity<PlanningResponse> getPlanning(@Valid @ModelAttribute CoachPlanningRequest request) {
+    public ResponseEntity<List<PlanningResponse>> getPlanning(@Valid @ModelAttribute CoachPlanningRequest request) {
         return ResponseEntity.ok(coachService.getPlanning(request));
     }
 
@@ -64,21 +64,6 @@ public class CoachController {
     @PreAuthorize("hasAuthority('COACH')")
     public ResponseEntity<CoachManageAccountResponse> coachManageAccount(@Valid @RequestBody CoachManageAccountRequest request) {
         return ResponseEntity.ok(coachService.manageAccount(request));
-    }
-
-    /**
-     * Endpoint for changing a coach's password.
-     *
-     * <p>This endpoint is accessible to authenticated users with the {@code CLIENT authority}. It handles account management requests
-     * and returns a {@link CoachChangePasswordResponse} containing the details of the managed account.</p>
-     *
-     * @param request the {@link CoachChangePasswordRequest} containing account management details
-     * @return a {@link ResponseEntity} containing the {@link CoachChangePasswordResponse}
-     */
-    @PutMapping("/manage-account/password")
-    @PreAuthorize("hasAuthority('COACH')")
-    public ResponseEntity<CoachChangePasswordResponse> changePassword(@Valid @RequestBody CoachChangePasswordRequest request){
-        return ResponseEntity.ok(coachService.changePassword(request));
     }
 
     /**

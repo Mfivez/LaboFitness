@@ -75,16 +75,5 @@ public class JwtUtil {
         Date now = new Date();
         return now.after(claims.getIssuedAt()) && now.before(claims.getExpiration());
     }
-    /*
-    * 		      if (!client.getEmail().equals(request.email())) {
-            if (!userRepository.existsByEmail(request.email())) {  client.setEmail(request.email());  }
-            else{
-                throw new PasswordNotMatchingException("Email already exists");
-            }
-    *
-    * */
-
-
-
 
 }

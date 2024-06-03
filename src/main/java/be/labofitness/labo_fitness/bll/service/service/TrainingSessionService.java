@@ -22,4 +22,5 @@ public interface TrainingSessionService extends CrudService<TrainingSession, Lon
     List<TrainingSession> findBySpecifications(Specification<TrainingSession> specification);
 
     //endregion
+
 }

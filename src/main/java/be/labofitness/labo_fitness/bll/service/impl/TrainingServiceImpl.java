@@ -39,9 +39,7 @@ public class TrainingServiceImpl implements TrainingSessionService {
      * @return a list of all {@link TrainingSession}
      */
     @Override
-    public List<TrainingSession> getAll() {
-        return trainingSessionRepository.findAll();
-    }
+    public List<TrainingSession> getAll() { return trainingSessionRepository.findAll(); }
 
     /**
      * Creates a new {@link TrainingSession}.
@@ -50,9 +48,7 @@ public class TrainingServiceImpl implements TrainingSessionService {
      * @return the created {@link TrainingSession}
      */
     @Override
-    public TrainingSession create(TrainingSession entity) {
-        return null;
-    }
+    public TrainingSession create(TrainingSession entity) { return null; }
 
     /**
      * Updates an existing {@link TrainingSession}.
@@ -61,9 +57,7 @@ public class TrainingServiceImpl implements TrainingSessionService {
      * @return the updated {@link TrainingSession}
      */
     @Override
-    public TrainingSession update(TrainingSession entity) {
-        return trainingSessionRepository.save(entity);
-    }
+    public TrainingSession update(TrainingSession entity) { return trainingSessionRepository.save(entity); }
 
     /**
      * Deletes an {@link TrainingSession} by its ID.
@@ -72,9 +66,7 @@ public class TrainingServiceImpl implements TrainingSessionService {
      * @return the deleted {@link TrainingSession}, or null if not found
      */
     @Override
-    public TrainingSession delete(Long id) {
-        return null;
-    }
+    public TrainingSession delete(Long id) { return null; }
 
     // endregion
 

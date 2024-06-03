@@ -1,5 +1,4 @@
 package be.labofitness.labo_fitness.il.utils;
-
 import java.util.Random;
 
 public class Anonymizer {

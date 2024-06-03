@@ -26,9 +26,7 @@ public class SportServiceImpl implements SportService {
      * @return the {@link Sport} with the given ID
      */
     @Override
-    public Sport getOne(Long id) {
-        return null;
-    }
+    public Sport getOne(Long id) { return null; }
 
     /**
      * Retrieves all {@link Sport}.
@@ -36,9 +34,7 @@ public class SportServiceImpl implements SportService {
      * @return a list of all {@link Sport}
      */
     @Override
-    public List<Sport> getAll() {
-        return sportRepository.findAll();
-    }
+    public List<Sport> getAll() { return sportRepository.findAll(); }
 
     /**
      * Creates a new {@link Sport}.
@@ -47,9 +43,7 @@ public class SportServiceImpl implements SportService {
      * @return the created {@link Sport}
      */
     @Override
-    public Sport create(Sport entity) {
-        return null;
-    }
+    public Sport create(Sport entity) { return null; }
 
     /**
      * Updates an existing {@link Sport}.
@@ -58,9 +52,7 @@ public class SportServiceImpl implements SportService {
      * @return the updated {@link Sport}
      */
     @Override
-    public Sport update(Sport entity) {
-        return null;
-    }
+    public Sport update(Sport entity) { return null; }
 
     /**
      * Deletes an {@link Sport} by its ID.
@@ -69,9 +61,7 @@ public class SportServiceImpl implements SportService {
      * @return the deleted {@link Sport}, or null if not found
      */
     @Override
-    public Sport delete(Long id) {
-        return null;
-    }
+    public Sport delete(Long id) { return null; }
 
     // endregion
 

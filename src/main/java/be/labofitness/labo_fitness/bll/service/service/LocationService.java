@@ -17,12 +17,4 @@ public interface LocationService extends CrudService<LocationPlace, Long> {
      */
     LocationPlace addLocationPlace(Address address);
 
-    /**
-     * Updates an existing location place.
-     *
-     * @param locationPlace the updated location place entity
-     * @return the updated location place entity
-     */
-    LocationPlace updateLocationPlace(LocationPlace locationPlace);
-
 }

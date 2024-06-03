@@ -1,7 +1,6 @@
 package be.labofitness.labo_fitness.il.utils.annotations.genderValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;

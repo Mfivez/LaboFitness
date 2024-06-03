@@ -10,7 +10,7 @@ import be.labofitness.labo_fitness.bll.model.admin.manageEmailStatus.AdminManage
 import be.labofitness.labo_fitness.bll.service.service.AdminService;
 import be.labofitness.labo_fitness.bll.service.service.SpecificationService;
 import be.labofitness.labo_fitness.bll.service.service.UserService;
-import be.labofitness.labo_fitness.bll.specification.AdminGetUserSpecification;
+import be.labofitness.labo_fitness.bll.specification.UserSpecification;
 import be.labofitness.labo_fitness.dal.repository.UserRepository;
 import be.labofitness.labo_fitness.domain.entity.User;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +33,6 @@ public class AdminServiceImpl implements AdminService {
     private final UserService userService;
     private final SpecificationService specificationService;
 
-
     /**
      * Retrieves a list of {@link AdminGetUserResponse} based on the provided request criteria.
      *
@@ -42,23 +41,21 @@ public class AdminServiceImpl implements AdminService {
      */
     @Override
     public List<AdminGetUserResponse> getAllUsers(AdminGetUserRequest request) {
-
         Specification<User> spec = Specification.where(null);
 
-        spec = specificationService.specificationHasSomething(spec, request.userEmail(), AdminGetUserSpecification::hasEmail);
+        spec = specificationService.specificationHasSomething(spec, request.userEmail(), UserSpecification::hasEmail);
 
-        spec = specificationService.specificationHasSomething(spec, request.name(), AdminGetUserSpecification::hasName);
+        spec = specificationService.specificationHasSomething(spec, request.name(), UserSpecification::hasName);
 
-        spec = specificationService.specificationHasSomething(spec, request.id(), AdminGetUserSpecification::hasUserId);
+        spec = specificationService.specificationHasSomething(spec, request.id(), UserSpecification::hasUserId);
 
-        spec = specificationService.specificationHasSomething(spec, request.isActive(), AdminGetUserSpecification::isActive);
+        spec = specificationService.specificationHasSomething(spec, request.isActive(), UserSpecification::isActive);
 
-        spec = specificationService.specificationHasSomething(spec, request.isRemote(), AdminGetUserSpecification::isRemote);
+        spec = specificationService.specificationHasSomething(spec, request.isRemote(), UserSpecification::isRemote);
 
-        spec = specificationService.specificationHasSomething(spec, request.inamiNumber(), AdminGetUserSpecification::hasInamiNumber);
+        spec = specificationService.specificationHasSomething(spec, request.inamiNumber(), UserSpecification::hasInamiNumber);
 
-        spec = specificationService.specificationHasCollectionOfSomething(spec, request.roles(), AdminGetUserSpecification::hasRole);
-
+        spec = specificationService.specificationHasCollectionOfSomething(spec, request.roles(), UserSpecification::hasRole);
 
         return userRepository.findAll(spec).stream()
                 .map(AdminGetUserResponse::fromEntity)
@@ -88,8 +85,7 @@ public class AdminServiceImpl implements AdminService {
      * @return the response indicating the result of updating the email status
      */
     @Override
-    public AdminManageEmailStatusResponse updateEmailStatus(AdminManageEmailStatusRequest request)
-    {
+    public AdminManageEmailStatusResponse updateEmailStatus(AdminManageEmailStatusRequest request) {
         return AdminManageEmailStatusResponse.fromEntity(userService.updateEmailStatus(
                 userService.getOneByEmail(request.email()), request.emailActive()),
                 getCurrentMethodName()
@@ -104,7 +100,6 @@ public class AdminServiceImpl implements AdminService {
      */
     @Override
     public AdminAnonymizeUserResponse anonymizeUser (AdminAnonymizeUserRequest request){
-
         return AdminAnonymizeUserResponse.fromEntity(userService.anonymizeUser(
                 userService.getOneByEmail(request.email())),
                 getCurrentMethodName()

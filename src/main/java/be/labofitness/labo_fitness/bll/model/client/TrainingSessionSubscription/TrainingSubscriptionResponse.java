@@ -16,6 +16,15 @@ package be.labofitness.labo_fitness.bll.model.client.TrainingSessionSubscription
  * @param message A message indicating the success of the subscription.
  */
 public record TrainingSubscriptionResponse(
+
         String message
 )
-{}
+{
+
+    public static TrainingSubscriptionResponse fromEntity(String message){
+        return new TrainingSubscriptionResponse(
+                message
+        );
+    }
+
+}

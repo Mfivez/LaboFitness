@@ -18,4 +18,11 @@ package be.labofitness.labo_fitness.bll.model.client.makeAppointment;
 public record MakeRequestForAppointmentResponse(
         String AppointmentValidated
 ) {
+
+    public static MakeRequestForAppointmentResponse fromEntity(String AppointmentValidated){
+        return new MakeRequestForAppointmentResponse(
+                AppointmentValidated
+        );
+    }
+
 }

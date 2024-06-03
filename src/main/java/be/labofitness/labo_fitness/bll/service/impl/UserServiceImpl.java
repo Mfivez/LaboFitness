@@ -1,8 +1,11 @@
 package be.labofitness.labo_fitness.bll.service.impl;
 import be.labofitness.labo_fitness.bll.exception.Exist.AlreadyExistException;
 import be.labofitness.labo_fitness.bll.exception.Exist.DoesntExistException;
+import be.labofitness.labo_fitness.bll.exception.notMatching.NotMatchingException;
 import be.labofitness.labo_fitness.bll.model.login.UserLoginRequest;
 import be.labofitness.labo_fitness.bll.model.login.UserLoginResponse;
+import be.labofitness.labo_fitness.bll.model.user.changePassword.ChangePasswordRequest;
+import be.labofitness.labo_fitness.bll.model.user.changePassword.ChangePasswordResponse;
 import be.labofitness.labo_fitness.bll.model.user.getReport.GetReportResponse;
 import be.labofitness.labo_fitness.bll.model.user.makeReport.MakeReportRequest;
 import be.labofitness.labo_fitness.bll.model.user.makeReport.ReportResponse;
@@ -31,6 +34,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import static be.labofitness.labo_fitness.il.utils.Anonymizer.genereteRandomString;
+import static be.labofitness.labo_fitness.il.utils.LaboFitnessUtil.getCurrentMethodName;
 
 /**
  * Implementation of the {@link UserService} interface.
@@ -105,6 +109,24 @@ public class UserServiceImpl implements UserService {
 
     // endregion
 
+    //region CHANGE PASSWORD
+
+    @Override @Transactional
+    public ChangePasswordResponse changePassword(ChangePasswordRequest request) {
+        User user = securityService.getAuthentication(User.class);
+
+        if(!passwordEncoder.matches(request.oldPassword(),user.getPassword())){
+
+            throw new NotMatchingException("wrong password");
+        }
+        user.setPassword(passwordEncoder.encode(request.newPassword()));
+        userRepository.save(user);
+
+        return ChangePasswordResponse.fromEntity(user, getCurrentMethodName());
+    }
+
+    //endregion
+
     // region REPORT
 
     /**
@@ -119,11 +141,9 @@ public class UserServiceImpl implements UserService {
         User complainant = securityService.getAuthentication(User.class);
 
         User reportedUser =  userRepository.findByEmail(request.reportedUserEmail())
-                .orElseThrow(() -> new DoesntExistException(
-                        "Email doesn't exist: " + request.reportedUserEmail()));
+                .orElseThrow(() -> new DoesntExistException( "Email doesn't exist: " + request.reportedUserEmail() ));
 
         reportService.makeReportWithParams(complainant, reportedUser, request.report());
-
 
         return new ReportResponse("Vous avez bien reporté l'utilisateur " +
                 reportedUser.getName() + " " + reportedUser.getLastname() +
@@ -137,12 +157,11 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public Set<GetReportResponse> getValidReport() {
-        User user = securityService.getAuthentication(User.class);
-        return userRepository.getReportMessageByIsValidate(user.getId(),true).stream()
+        return userRepository.getReportMessageByIsValidate(
+                securityService.getAuthentication(User.class).getId(),true).stream()
                 .map(GetReportResponse::new)
                 .collect(Collectors.toSet());
     }
-
 
     // endregion
 
@@ -177,9 +196,7 @@ public class UserServiceImpl implements UserService {
      * @return a list of all {@link User}
      */
     @Override
-    public List<User> getAll() {
-        return userRepository.findAll();
-    }
+    public List<User> getAll() { return userRepository.findAll(); }
 
     /**
      * Creates a new {@link User}.
@@ -188,9 +205,7 @@ public class UserServiceImpl implements UserService {
      * @return the created {@link User}
      */
     @Override
-    public User create(User entity) {
-        return null;
-    }
+    public User create(User entity) { return null; }
 
     /**
      * Updates an existing {@link User}.
@@ -199,9 +214,7 @@ public class UserServiceImpl implements UserService {
      * @return the updated {@link User}
      */
     @Override
-    public User update(User entity) {
-        return null;
-    }
+    public User update(User entity) { return null; }
 
     @Override
     public User updateAccountStatus(User user, boolean status) {
@@ -249,9 +262,7 @@ public class UserServiceImpl implements UserService {
      * @return the deleted {@link User}, or null if not found
      */
     @Override
-    public User delete(Long id) {
-        return null;
-    }
+    public User delete(Long id) { return null; }
 
     // endregion
 

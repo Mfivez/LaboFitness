@@ -2,7 +2,6 @@ package be.labofitness.labo_fitness.bll.service.impl;
 import be.labofitness.labo_fitness.bll.exception.Exist.AlreadyExistException;
 import be.labofitness.labo_fitness.bll.exception.Unauthorize.UnauthorizedException;
 import be.labofitness.labo_fitness.bll.exception.inscriptionClosed.EventCloseException;
-import be.labofitness.labo_fitness.bll.exception.notMatching.NotMatchingException;
 import be.labofitness.labo_fitness.bll.model.client.CompetitionRegister.CompetitionRegisterRequest;
 import be.labofitness.labo_fitness.bll.model.client.CompetitionRegister.CompetitionRegisterResponse;
 import be.labofitness.labo_fitness.bll.model.client.TrainingSessionSubscription.TrainingSubscriptionRequest;
@@ -10,20 +9,10 @@ import be.labofitness.labo_fitness.bll.model.client.TrainingSessionSubscription.
 import be.labofitness.labo_fitness.bll.model.client.makeAppointment.*;
 import be.labofitness.labo_fitness.bll.model.client.manageAccount.ClientManageAccountRequest;
 import be.labofitness.labo_fitness.bll.model.client.manageAccount.ClientManageAccountResponse;
-import be.labofitness.labo_fitness.bll.model.client.manageAccount.changePassword.ClientChangePasswordRequest;
-import be.labofitness.labo_fitness.bll.model.client.manageAccount.changePassword.ClientChangePasswordResponse;
 import be.labofitness.labo_fitness.bll.model.planning.ClientPlanningRequest;
 import be.labofitness.labo_fitness.bll.model.planning.PlanningResponse;
 import be.labofitness.labo_fitness.bll.model.register.ClientRegisterRequest;
 import be.labofitness.labo_fitness.bll.model.register.RegisterResponse;
-import be.labofitness.labo_fitness.bll.model.user.getCoach.GetCoachesByNameRequest;
-import be.labofitness.labo_fitness.bll.model.user.getCoach.GetCoachesByRemoteRequest;
-import be.labofitness.labo_fitness.bll.model.user.getCoach.GetCoachesBySpecializationRequest;
-import be.labofitness.labo_fitness.bll.model.user.getCoach.GetCoachesResponse;
-import be.labofitness.labo_fitness.bll.model.user.getPhysiotherapist.GetPhysioByNameRequest;
-import be.labofitness.labo_fitness.bll.model.user.getPhysiotherapist.GetPhysioBySpecializationRequest;
-import be.labofitness.labo_fitness.bll.model.user.getPhysiotherapist.GetPhysioResponse;
-import be.labofitness.labo_fitness.bll.model.user.getTrainingSession.*;
 import be.labofitness.labo_fitness.bll.service.service.*;
 import be.labofitness.labo_fitness.bll.service.service.security.SecurityService;
 import be.labofitness.labo_fitness.dal.repository.ClientRepository;
@@ -39,8 +28,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
-import static be.labofitness.labo_fitness.il.utils.LaboFitnessUtil.getCurrentMethodName;
+import java.util.stream.IntStream;
 
 /**
  * Implementation of the {@link ClientService} interface.
@@ -61,7 +51,6 @@ public class ClientServiceImpl  implements ClientService {
     private final PhysiotherapistService physiotherapistService;
     private final AppointmentService appointmentService;
 
-
     // region MANAGE ACCOUNT
 
     /**
@@ -71,8 +60,7 @@ public class ClientServiceImpl  implements ClientService {
      * @return the account management response
      * @throws AlreadyExistException if the email already exists
      */
-    @Override
-    @Transactional
+    @Override @Transactional
     public ClientManageAccountResponse manageAccount(ClientManageAccountRequest request) {
         String message  = "getCurrentMethodeName()";
         Client client = securityService.getAuthentication(Client.class);
@@ -88,29 +76,6 @@ public class ClientServiceImpl  implements ClientService {
         clientRepository.save(client);
 
         return ClientManageAccountResponse.fromEntity(client,message);
-    }
-
-
-    /**
-     * Update the password of an {@link Client} account
-     * @param request of the {@link ClientChangePasswordRequest} to update
-     * @return response {@link ClientChangePasswordResponse} with a message
-     */
-    @Override
-    @Transactional
-    public ClientChangePasswordResponse changePassword(ClientChangePasswordRequest request) {
-
-
-        Client client = securityService.getAuthentication(Client.class);
-
-        if(!passwordEncoder.matches(request.oldPassword(), clientRepository.findPasswordByClientId(client.getId()))){
-
-            throw new NotMatchingException("Wrong password");
-        }
-        client.setPassword(passwordEncoder.encode(request.newPassword()));
-        clientRepository.save(client);
-
-        return ClientChangePasswordResponse.fromEntity(client, getCurrentMethodName());
     }
 
     //endregion
@@ -144,208 +109,6 @@ public class ClientServiceImpl  implements ClientService {
         clientRepository.save(client);
 
         return new RegisterResponse("Account created with success");
-    }
-
-    //endregion
-
-    // region PERSONAL TRAINING SESSIONS
-
-    /**
-     * Retrieves personal {@link TrainingSession} of a {@link Client}.
-     *
-     * @return list of personal {@link TrainingSession}
-     */
-    @Override
-    public List<GetTrainingSessionResponse> findPersonalClientTrainingSession() {
-        Client client = securityService.getAuthentication(Client.class);
-        List<TrainingSession> trainingSessions = clientRepository.findPersonalTrainingSessions(client.getId());
-        return trainingSessionToClientGetTrainingSessionResponse(trainingSessions);
-    }
-
-    /**
-     * Retrieves personal {@link TrainingSession} of a {@link Client} by recommended level.
-     *
-     * @param request the request to filter by recommended level
-     * @return list of personal {@link TrainingSession}
-     */
-    @Override
-    public List<GetTrainingSessionResponse> findPersonalClientTrainingSessionByRecommendedLvl(GetTrainingSessionByRecommendedLvlRequest request) {
-        Client client = securityService.getAuthentication(Client.class);
-        List<TrainingSession> trainingSessions = clientRepository.findPersonalTrainingSessionsByRecommendedLevel(client.getId(), request.recommendedLevel());
-        return trainingSessionToClientGetTrainingSessionResponse(trainingSessions);
-    }
-
-    /**
-     * Retrieves personal {@link TrainingSession} of a {@link Client} by duration.
-     *
-     * @param request the request to filter by recommended level
-     * @return list of personal {@link TrainingSession}
-     */
-    @Override
-    public List<GetTrainingSessionResponse> findPersonalClientTrainingSessionByDuration(GetTrainingSessionsByDurationRequest request) {
-        Client client = securityService.getAuthentication(Client.class);
-        List<TrainingSession> trainingSessions = clientRepository.findPersonalTrainingSessionsByDuration(client.getId(), request.duration());
-        return trainingSessionToClientGetTrainingSessionResponse(trainingSessions);
-    }
-
-    /**
-     * Retrieves personal {@link TrainingSession} of a {@link Client} by name.
-     *
-     * @param request the request to filter by recommended level
-     * @return list of personal {@link TrainingSession}
-     */
-    @Override
-    public List<GetTrainingSessionResponse> findPersonalClientTrainingSessionByName(GetTrainingSessionsByNameRequest request) {
-        Client client = securityService.getAuthentication(Client.class);
-        List<TrainingSession> trainingSessions = clientRepository.findPersonalTrainingSessionsByName(client.getId(), request.name());
-        return trainingSessionToClientGetTrainingSessionResponse(trainingSessions);
-    }
-
-    /**
-     * Retrieves personal {@link TrainingSession} of a {@link Client} by {@link Coach} name.
-     *
-     * @param request the request to filter by recommended level
-     * @return list of personal {@link TrainingSession}
-     */
-    @Override
-    public List<GetTrainingSessionResponse> findPersonalClientTrainingSessionByCoachName(GetTrainingSessionsByCoachNameRequest request) {
-        Client client = securityService.getAuthentication(Client.class);
-        List<TrainingSession> trainingSessions = clientRepository.findPersonalTrainingSessionsByCoachName(client.getId(), request.coach_name());
-        return trainingSessionToClientGetTrainingSessionResponse(trainingSessions);
-    }
-
-    /**
-     * Converts a list of {@link TrainingSession} entities to a list of {@link GetTrainingSessionResponse}.
-     *
-     * @param trainings the list of {@link TrainingSession} to convert
-     * @return the list of {@link TrainingSession} responses
-     */
-    public List<GetTrainingSessionResponse>  trainingSessionToClientGetTrainingSessionResponse(List<TrainingSession> trainings) {
-        return trainings.stream()
-                .map(GetTrainingSessionResponse::fromEntity)
-                .collect(Collectors.toList());
-    }
-
-    // endregion
-
-    // region GET PERSONAL PHYSIOTHERAPIST
-
-    /**
-     * Retrieves all personal {@link Physiotherapist} of the authenticated {@link Client}.
-     *
-     * @return the list of personal {@link Physiotherapist}
-     */
-    @Override
-    public List<GetPhysioResponse> getAllPersonalPhysio() {
-        Client client = securityService.getAuthentication(Client.class);
-        List<Physiotherapist> physio = clientRepository.findAllPersonalPhysio(client.getId());
-        return physioToUserGetCoachesResponse(physio);
-    }
-
-    /**
-     * Retrieves personal {@link Physiotherapist} of the authenticated {@link Client} by specialization.
-     *
-     * @param request the request containing the specialization filter
-     * @return the list of personal {@link Physiotherapist} matching the specialization
-     */
-    @Override
-    public List<GetPhysioResponse> getPersonalPhysioBySpecialization(GetPhysioBySpecializationRequest request) {
-        Client client = securityService.getAuthentication(Client.class);
-        List<Physiotherapist> physio = clientRepository.findPersonalPhysioBySpecialization(client.getId(), request.specialization());
-        return physioToUserGetCoachesResponse(physio);
-    }
-
-    /**
-     * Retrieves personal {@link Physiotherapist} of the authenticated {@link Client} by name.
-     *
-     * @param request the request containing the name filter
-     * @return the list of personal {@link Physiotherapist} matching the name
-     */
-    @Override
-    public List<GetPhysioResponse> getPersonalPhysioByName(GetPhysioByNameRequest request) {
-        Client client = securityService.getAuthentication(Client.class);
-        List<Physiotherapist> physio = clientRepository.findPersonalPhysioByName(client.getId(), request.name());
-        return physioToUserGetCoachesResponse(physio);
-    }
-
-    /**
-     * Converts a list of {@link Physiotherapist} entities to a list of {@link GetPhysioResponse}.
-     *
-     * @param physio the list of {@link Physiotherapist} to convert
-     * @return the list of {@link Physiotherapist} responses
-     */
-    public List<GetPhysioResponse>  physioToUserGetCoachesResponse(List<Physiotherapist> physio) {
-        return physio.stream()
-                .map(GetPhysioResponse::fromEntity)
-                .collect(Collectors.toList());
-    }
-
-    //endregion
-
-    // region GET COACHES
-
-    /**
-     * Retrieves all personal {@link Coach} of the authenticated {@link Client}.
-     *
-     * @return the list of personal {@link Coach}
-     */
-    @Override
-    public List<GetCoachesResponse> getAllPersonalCoaches() {
-        Client client = securityService.getAuthentication(Client.class);
-        List<Coach> coaches = clientRepository.findAllPersonalCoaches(client.getId());
-        return coachesToUserGetCoachesResponse(coaches);
-    }
-
-    /**
-     * Retrieves all personal {@link Coach} of the authenticated {@link Client} by remote availability.
-     *
-     * @param request the request containing the remote availability filter
-     * @return the list of personal {@link Coach} matching the remote availability
-     */
-    @Override
-    public List<GetCoachesResponse> getAllPersonalCoachesByIsRemote(GetCoachesByRemoteRequest request) {
-        Client client = securityService.getAuthentication(Client.class);
-        List<Coach> coaches = clientRepository.findPersonalCoachesByIsRemote(client.getId(), request.is_remote());
-        return coachesToUserGetCoachesResponse(coaches);
-
-    }
-
-    /**
-     * Retrieves all personal {@link Coach} of the authenticated {@link Client} by specialization.
-     *
-     * @param request the request containing the specialization filter
-     * @return the list of personal {@link Coach} matching the specialization
-     */
-    @Override
-    public List<GetCoachesResponse> getAllPersonalCoachesBySpecialization(GetCoachesBySpecializationRequest request) {
-        Client client = securityService.getAuthentication(Client.class);
-        List<Coach> coaches = clientRepository.findPersonalCoachesBySpecialization(client.getId(), request.specialization());
-        return coachesToUserGetCoachesResponse(coaches);
-    }
-
-    /**
-     * Retrieves all personal {@link Coach} of the authenticated {@link Client} by name.
-     *
-     * @param request the request containing the name filter
-     * @return the list of personal {@link Coach} matching the name
-     */
-    @Override
-    public List<GetCoachesResponse> getAllPersonalCoachesByName(GetCoachesByNameRequest request) {
-        Client client = securityService.getAuthentication(Client.class);
-        List<Coach> coaches = clientRepository.findPersonalCoachesByName(client.getId(), request.name());
-        return coachesToUserGetCoachesResponse(coaches);
-    }
-
-    /**
-     * Converts a list of {@link Coach} entities to a list of {@link GetCoachesResponse}.
-     *
-     * @param coaches the list of {@link Coach} to convert
-     * @return the list of {@link Coach} responses
-     */
-    public List<GetCoachesResponse>  coachesToUserGetCoachesResponse(List<Coach> coaches) {
-        return coaches.stream()
-                .map(GetCoachesResponse::fromEntity)
-                .collect(Collectors.toList());
     }
 
     //endregion
@@ -427,125 +190,41 @@ public class ClientServiceImpl  implements ClientService {
      * @return the planning response
      */
     @Override
-    public PlanningResponse getPlanning(ClientPlanningRequest request) {
-        return new PlanningResponse(
-                getStartDates(request),
-                getEndDates(request),
-                getEventName(request)
-        );
+    public List<PlanningResponse> getPlanning(ClientPlanningRequest request) {
+        return IntStream.range(0, getEventDetails(request, Competition::getStartDate, TrainingSession::getStartDate, Appointment::getStartDate).size())
+                .mapToObj(i -> new PlanningResponse(
+                        getEventDetails(request, Competition::getStartDate, TrainingSession::getStartDate, Appointment::getStartDate).get(i),
+                        getEventDetails(request, Competition::getEndDate, TrainingSession::getEndDate, Appointment::getEndDate).get(i),
+                        getEventDetails(request, Competition::getName, TrainingSession::getName, Appointment::getName).get(i)))
+                .collect(Collectors.toList());
     }
 
-    /**
-     * Retrieves the start dates of events based on the {@link Client} planning request.
-     *
-     * @param request the {@link Client} planning request
-     * @return the list of start dates
-     */
-    private List<LocalDateTime> getStartDates(ClientPlanningRequest request) {
-        List<LocalDateTime> startDate = iniDate();
-        boolean[] booleans = getEndDatesBoolean(request.types(), request.sports(), request.coachMail(), request.physiotherapistMail());
-        boolean includeAll = booleans[0];
-        boolean includeOnlyComp = booleans[1];
-        boolean includeCoach = booleans[2];
-        boolean includePhysio = booleans[3];
+    private <T> List<T> getEventDetails(ClientPlanningRequest request, Function<Competition, T> compMapper, Function<TrainingSession, T> trainMapper, Function<Appointment, T> appMapper) {
+        List<T> details = new ArrayList<>();
+        boolean includeAll = request.types() == null || request.types().isEmpty();
+        boolean includeOnlyComp = request.sports() != null && !request.sports().isEmpty();
+        boolean includeCoach = request.coachMail() != null;
+        boolean includePhysio = request.physiotherapistMail() != null;
 
         if ((includeAll || request.types().contains("competition")) && !includePhysio) {
-            List<LocalDateTime> compStartDates = planningService.getAllClientCompetitions(request).stream()
-                    .map(Competition::getStartDate)
-                    .collect(Collectors.toList());
-            startDate.addAll(compStartDates);
+            List<T> compDetails = planningService.getAllClientCompetitions(request).stream()
+                    .map(compMapper).toList();
+            details.addAll(compDetails);
         }
 
         if (!includeOnlyComp && (includeAll || request.types().contains("appointment")) && !includeCoach) {
-            List<LocalDateTime> appStartDates = planningService.getAllClientAppointments(request).stream()
-                    .map(Appointment::getStartDate)
-                    .collect(Collectors.toList());
-            startDate.addAll(appStartDates);
+            List<T> appDetails = planningService.getAllClientAppointments(request).stream()
+                    .map(appMapper).toList();
+            details.addAll(appDetails);
         }
 
         if (!includeOnlyComp && (includeAll || request.types().contains("training")) && !includePhysio) {
-            List<LocalDateTime> trainingStartDates = planningService.getAllClientTrainings(request).stream()
-                    .map(TrainingSession::getStartDate)
-                    .collect(Collectors.toList());
-            startDate.addAll(trainingStartDates);
+            List<T> trainDetails = planningService.getAllClientTrainings(request).stream()
+                    .map(trainMapper).toList();
+            details.addAll(trainDetails);
         }
 
-        return startDate;
-    }
-
-    /**
-     * Retrieves the end dates of events based on the {@link Client} planning request.
-     *
-     * @param request the {@link Client} planning request
-     * @return the list of end dates
-     */
-    private List<LocalDateTime> getEndDates(ClientPlanningRequest request) {
-        List<LocalDateTime> endDate = iniDate();
-        boolean[] booleans = getEndDatesBoolean(request.types(), request.sports(), request.coachMail(), request.physiotherapistMail());
-        boolean includeAll = booleans[0];
-        boolean includeOnlyComp = booleans[1];
-        boolean includeCoach = booleans[2];
-        boolean includePhysio = booleans[3];
-
-        if ( !includeOnlyComp && (includeAll || request.types().contains("appointment")) && !includeCoach) {
-            List<LocalDateTime> appointmentEndDate = planningService.getAllClientAppointments(request).stream()
-                    .map(Appointment::getEndDate)
-                    .collect(Collectors.toList());
-            endDate.addAll(appointmentEndDate);
-        }
-
-        if ((includeAll || request.types().contains("competition")) && !includePhysio) {
-            List<LocalDateTime> compEndDates = planningService.getAllClientCompetitions(request).stream()
-                    .map(Competition::getEndDate)
-                    .collect(Collectors.toList());
-            endDate.addAll(compEndDates);
-        }
-
-        if (!includeOnlyComp && (includeAll || request.types().contains("training")) && !includePhysio) {
-            List<LocalDateTime> trainingEndDates = planningService.getAllClientTrainings(request).stream()
-                    .map(TrainingSession::getEndDate)
-                    .collect(Collectors.toList());
-            endDate.addAll(trainingEndDates);
-        }
-
-        return endDate;
-    }
-
-    /**
-     * Retrieves the names of events based on the {@link Client} planning request.
-     *
-     * @param request the {@link Client} planning request
-     * @return the list of event names
-     */
-    private List<String> getEventName(ClientPlanningRequest request) {
-        List<String> names = new ArrayList<>();
-        boolean[] booleans = getEndDatesBoolean(request.types(), request.sports(), request.coachMail(), request.physiotherapistMail());
-        boolean includeAll = booleans[0];
-        boolean includeOnlyComp = booleans[1];
-        boolean includeCoach = booleans[2];
-        boolean includePhysio = booleans[3];
-
-        if (!includeOnlyComp && (includeAll || request.types().contains("appointment")) && !includeCoach) {
-            List<String> appointmentNames = planningService.getAllClientAppointments(request).stream()
-                    .map(Appointment::getName)
-                    .collect(Collectors.toList());
-            names.addAll(appointmentNames);
-        }
-
-        if ((includeAll || request.types().contains("competition")) && !includePhysio) {
-            List<String> compNames = planningService.getAllClientCompetitions(request).stream()
-                    .map(Competition::getName)
-                    .collect(Collectors.toList());
-            names.addAll(compNames);
-        }
-
-        if (!includeOnlyComp && (includeAll || request.types().contains("training")) && !includePhysio) {
-            List<String> trainingNames = planningService.getAllClientTrainings(request).stream()
-                    .map(TrainingSession::getName)
-                    .collect(Collectors.toList());
-            names.addAll(trainingNames);
-        }
-        return names;
+        return details;
     }
 
     // endregion
@@ -653,21 +332,7 @@ public class ClientServiceImpl  implements ClientService {
      * @return the {@link Client} with the given ID
      */
     @Override
-    public Client getOne(Long id) {
-        return null;
-    }
-
-    /**
-     * Retrieves an {@link Client} by its mail.
-     *
-     * @param mail the ID of the {@link Client} to retrieve
-     * @return the {@link Client} with the given mail
-     */
-    @Override
-    public Client getOneByEmail(String mail)  {
-        return clientRepository.findByEmail(mail)
-                .orElseThrow( () -> new IllegalArgumentException("Client doesn't exist"));
-    }
+    public Client getOne(Long id) {return null;}
 
     /**
      * Retrieves all {@link Client}.
@@ -675,9 +340,7 @@ public class ClientServiceImpl  implements ClientService {
      * @return a list of all {@link Client}
      */
     @Override
-    public List<Client> getAll() {
-        return clientRepository.findAll();
-    }
+    public List<Client> getAll() {return clientRepository.findAll();}
 
     /**
      * Creates a new {@link Client}.
@@ -686,9 +349,7 @@ public class ClientServiceImpl  implements ClientService {
      * @return the created {@link Client}
      */
     @Override
-    public Client create(Client entity) {
-        return null;
-    }
+    public Client create(Client entity) {return null;}
 
     /**
      * Updates an existing {@link Client}.
@@ -697,9 +358,7 @@ public class ClientServiceImpl  implements ClientService {
      * @return the updated {@link Client}
      */
     @Override
-    public Client update(Client entity) {
-        return null;
-    }
+    public Client update(Client entity) {return null;}
 
     /**
      * Deletes an {@link Client} by its ID.
@@ -708,46 +367,7 @@ public class ClientServiceImpl  implements ClientService {
      * @return the deleted {@link Client}, or null if not found
      */
     @Override
-    public Client delete(Long id) {
-        return null;
-    }
-
-    // endregion
-
-    // region UTILS
-
-    /**
-     * Initializes and returns a new list of {@link LocalDateTime}.
-     *
-     * @return an empty list of {@link LocalDateTime}
-     */
-    private List<LocalDateTime> iniDate() {
-        return new ArrayList<>();
-    }
-
-    /**
-     * Determines {@code boolean} values based on the presence of various parameters.
-     *
-     * @param types a list of types to check
-     * @param sports a list of sports to check
-     * @param coachMail the email of the coach
-     * @param physiotherapistMail the email of the physiotherapist
-     * @return a boolean array where:
-     *         <ul>
-     *           <li>{@code booleans}[0] is true if {@code types} is null or empty (include all)</li>
-     *           <li>{@code booleans}[1] is true if {@code sports} is not null and not empty (include {@link Competition} only)</li>
-     *           <li>{@code booleans}[2] is true if {@code coachMail} is not null (include {@link Coach)</li>
-     *           <li>{@code booleans}[3] is true if {@code physiotherapistMail} is not null (include {@link Physiotherapist)</li>
-     *         </ul>
-     */
-    private boolean[] getEndDatesBoolean(List<String>  types, List<String> sports, String coachMail, String physiotherapistMail) {
-        boolean[] booleans = new boolean[4];
-        booleans[0] = types == null || types.isEmpty(); // INCLUDE ALL
-        booleans[1] = sports != null && !sports.isEmpty(); // INCLUDE COMPETITION ONLY
-        booleans[2] = coachMail != null; // INCLUDE COACH
-        booleans[3] = physiotherapistMail != null; // INCLUDE PHYSIO
-        return booleans;
-    }
+    public Client delete(Long id) {return null;}
 
     // endregion
 

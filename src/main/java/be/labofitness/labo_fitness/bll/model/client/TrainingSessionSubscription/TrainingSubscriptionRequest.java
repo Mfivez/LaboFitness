@@ -1,6 +1,5 @@
 package be.labofitness.labo_fitness.bll.model.client.TrainingSessionSubscription;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 /**
@@ -21,7 +20,6 @@ import jakarta.validation.constraints.NotNull;
 public record TrainingSubscriptionRequest(
 
         @NotNull(message = "error.trainingSession.id.null")
-        @NotBlank(message = "error.trainingSession.id.blank")
         @Min(value = 1)
         Long id
 

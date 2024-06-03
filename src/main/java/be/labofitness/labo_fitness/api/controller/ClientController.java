@@ -1,32 +1,13 @@
 package be.labofitness.labo_fitness.api.controller;
 import be.labofitness.labo_fitness.bll.model.client.CompetitionRegister.CompetitionRegisterRequest;
-import be.labofitness.labo_fitness.bll.model.client.TrainingSessionSubscription.TrainingSubscriptionRequest;
-import be.labofitness.labo_fitness.bll.model.client.makeAppointment.AcceptAppointmentPlanningRequest;
-import be.labofitness.labo_fitness.bll.model.client.makeAppointment.CancelAppointmentRequest;
-import be.labofitness.labo_fitness.bll.model.client.makeAppointment.MakeRequestForAppointmentRequest;
-import be.labofitness.labo_fitness.bll.model.client.manageAccount.ClientManageAccountRequest;
-import be.labofitness.labo_fitness.bll.model.planning.ClientPlanningRequest;
-import be.labofitness.labo_fitness.bll.model.client.manageAccount.changePassword.ClientChangePasswordRequest;
-import be.labofitness.labo_fitness.bll.model.client.manageAccount.changePassword.ClientChangePasswordResponse;
-import be.labofitness.labo_fitness.bll.model.user.getCoach.GetCoachesByNameRequest;
-import be.labofitness.labo_fitness.bll.model.user.getCoach.GetCoachesByRemoteRequest;
-import be.labofitness.labo_fitness.bll.model.user.getCoach.GetCoachesBySpecializationRequest;
-import be.labofitness.labo_fitness.bll.model.user.getPhysiotherapist.GetPhysioByNameRequest;
-import be.labofitness.labo_fitness.bll.model.user.getPhysiotherapist.GetPhysioBySpecializationRequest;
-import be.labofitness.labo_fitness.bll.model.user.getTrainingSession.GetTrainingSessionByRecommendedLvlRequest;
-import be.labofitness.labo_fitness.bll.model.user.getTrainingSession.GetTrainingSessionsByCoachNameRequest;
-import be.labofitness.labo_fitness.bll.model.user.getTrainingSession.GetTrainingSessionsByDurationRequest;
-import be.labofitness.labo_fitness.bll.model.user.getTrainingSession.GetTrainingSessionsByNameRequest;
 import be.labofitness.labo_fitness.bll.model.client.CompetitionRegister.CompetitionRegisterResponse;
+import be.labofitness.labo_fitness.bll.model.client.TrainingSessionSubscription.TrainingSubscriptionRequest;
 import be.labofitness.labo_fitness.bll.model.client.TrainingSessionSubscription.TrainingSubscriptionResponse;
-import be.labofitness.labo_fitness.bll.model.client.makeAppointment.AcceptAppointmentPlanningResponse;
-import be.labofitness.labo_fitness.bll.model.client.makeAppointment.CancelAppointmentResponse;
-import be.labofitness.labo_fitness.bll.model.client.makeAppointment.MakeRequestForAppointmentResponse;
+import be.labofitness.labo_fitness.bll.model.client.makeAppointment.*;
+import be.labofitness.labo_fitness.bll.model.client.manageAccount.ClientManageAccountRequest;
 import be.labofitness.labo_fitness.bll.model.client.manageAccount.ClientManageAccountResponse;
+import be.labofitness.labo_fitness.bll.model.planning.ClientPlanningRequest;
 import be.labofitness.labo_fitness.bll.model.planning.PlanningResponse;
-import be.labofitness.labo_fitness.bll.model.user.getCoach.GetCoachesResponse;
-import be.labofitness.labo_fitness.bll.model.user.getPhysiotherapist.GetPhysioResponse;
-import be.labofitness.labo_fitness.bll.model.user.getTrainingSession.GetTrainingSessionResponse;
 import be.labofitness.labo_fitness.bll.service.service.ClientService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -71,210 +52,7 @@ public class ClientController {
         return ResponseEntity.ok(clientService.manageAccount(request));
     }
 
-    /**
-     * Endpoint for changing a client's password.
-     *
-     * <p>This endpoint is accessible to authenticated users with the {@code CLIENT authority}. It handles account management requests
-     * and returns a {@link ClientChangePasswordResponse} containing the details of the managed account.</p>
-     *
-     * @param request the {@link ClientChangePasswordRequest} containing account management details
-     * @return a {@link ResponseEntity} containing the {@link ClientChangePasswordResponse}
-     */
-    @PutMapping("/manage-account/password")
-    @PreAuthorize("hasAuthority('CLIENT')")
-    public ResponseEntity<ClientChangePasswordResponse> changePassword(@Valid @RequestBody ClientChangePasswordRequest request){
-        return ResponseEntity.ok(clientService.changePassword(request));
-    }
-
     //endregion
-    
-    // region GET PERSONAL TRAINING SESSION
-
-    /**
-     * Endpoint for retrieving all personal training sessions.
-     *
-     * <p>This endpoint is accessible to authenticated users with the {@code CLIENT authority}. It returns a list of personal training sessions.</p>
-     *
-     * @return a {@link ResponseEntity} containing a list of {@link GetTrainingSessionResponse}
-     */
-    @PreAuthorize("hasAuthority('CLIENT')")
-    @GetMapping("/personal-training-sessions")
-    public ResponseEntity<List<GetTrainingSessionResponse>> getAllPersonalTrainingSessions() {
-        return ResponseEntity.ok(clientService.findPersonalClientTrainingSession());
-    }
-
-    /**
-     * Endpoint for retrieving personal training sessions by recommended level.
-     *
-     * <p>This endpoint is accessible to authenticated users with the {@code CLIENT authority}.</p>
-     * <p>It returns a list of training sessions filtered by the recommended level.</p>
-     *
-     * @param request the {@link GetTrainingSessionByRecommendedLvlRequest} containing the recommended level details
-     * @return a {@link ResponseEntity} containing a list of {@link GetTrainingSessionResponse}
-     */
-    @PreAuthorize("hasAuthority('CLIENT')")
-    @GetMapping("/personal-training-sessions-by-lvl")
-    public ResponseEntity<List<GetTrainingSessionResponse>> getPersonalTrainingSessionsByRecommendedLvl(@Valid @ModelAttribute GetTrainingSessionByRecommendedLvlRequest request) {
-        return ResponseEntity.ok(clientService.findPersonalClientTrainingSessionByRecommendedLvl(request));
-    }
-
-    /**
-     * Endpoint for retrieving personal training sessions by duration.
-     *
-     * <p>This endpoint is accessible to authenticated users with the {@code CLIENT authority}.</p>
-     * <p>It returns a list of training sessions filtered by duration.</p>
-     *
-     * @param request the {@link GetTrainingSessionsByDurationRequest} containing the duration details
-     * @return a {@link ResponseEntity} containing a list of {@link GetTrainingSessionResponse}
-     */
-    @PreAuthorize("hasAuthority('CLIENT')")
-    @GetMapping("/personal-training-sessions-by-duration")
-    public ResponseEntity<List<GetTrainingSessionResponse>> getPersonalTrainingSessionsByDuration(@Valid @ModelAttribute GetTrainingSessionsByDurationRequest request) {
-        return ResponseEntity.ok(clientService.findPersonalClientTrainingSessionByDuration(request));
-    }
-
-    /**
-     * Endpoint for retrieving personal training sessions by name.
-     *
-     * <p>This endpoint is accessible to authenticated users with the {@code CLIENT authority}.</p>
-     * <p>It returns a list of training sessions filtered by name.</p>
-     *
-     * @param request the {@link GetTrainingSessionsByNameRequest} containing the name details
-     * @return a {@link ResponseEntity} containing a list of {@link GetTrainingSessionResponse}
-     */
-    @PreAuthorize("hasAuthority('CLIENT')")
-    @GetMapping("/personal-training-sessions-by-name")
-    public ResponseEntity<List<GetTrainingSessionResponse>> getPersonalTrainingSessionsByName(@Valid @ModelAttribute GetTrainingSessionsByNameRequest request) {
-        return ResponseEntity.ok(clientService.findPersonalClientTrainingSessionByName(request));
-    }
-
-    /**
-     * Endpoint for retrieving personal training sessions by coach name.
-     *
-     * <p>This endpoint is accessible to authenticated users with the {@code CLIENT authority}.</p>
-     * <p>It returns a list of training sessions filtered by coach name.</p>
-     *
-     * @param request the {@link GetTrainingSessionsByCoachNameRequest} containing the coach name details
-     * @return a {@link ResponseEntity} containing a list of {@link GetTrainingSessionResponse}
-     */
-    @PreAuthorize("hasAuthority('CLIENT')")
-    @GetMapping("/personal-training-sessions-by-coach-name")
-    public ResponseEntity<List<GetTrainingSessionResponse>> getPersonalTrainingSessionsByCoachName(@Valid @ModelAttribute GetTrainingSessionsByCoachNameRequest request) {
-        return ResponseEntity.ok(clientService.findPersonalClientTrainingSessionByCoachName(request));
-    }
-
-    //endregion
-
-    //region GET PERSONAL COACHES
-
-    /**
-     * Endpoint for retrieving all personal coaches.
-     *
-     * <p>This endpoint is accessible to authenticated users with the {@code CLIENT authority}.</p>
-     * <p>It returns a list of personal coaches.</p>
-     *
-     * @return a {@link ResponseEntity} containing a list of {@link GetCoachesResponse}
-     */
-    @PreAuthorize("hasAuthority('CLIENT')")
-    @GetMapping("/personal-coaches")
-    public ResponseEntity<List<GetCoachesResponse>> getAllPersonalCoaches() {
-        return ResponseEntity.ok(clientService.getAllPersonalCoaches());
-    }
-
-    /**
-     * Endpoint for retrieving all personal coaches by remote availability.
-     *
-     * <p>This endpoint is accessible to authenticated users with the {@code CLIENT authority}.</p>
-     * <p>It returns a list of personal coaches filtered by remote availability.</p>
-     *
-     * @param request the {@link GetCoachesByRemoteRequest} containing the remote availability details
-     * @return a {@link ResponseEntity} containing a list of {@link GetCoachesResponse}
-     */
-    @PreAuthorize("hasAuthority('CLIENT')")
-    @GetMapping("/personal-coaches-by-remote")
-    public ResponseEntity<List<GetCoachesResponse>> getAllPersonalCoachesByIsRemote(@Valid @ModelAttribute GetCoachesByRemoteRequest request) {
-        return ResponseEntity.ok(clientService.getAllPersonalCoachesByIsRemote(request));
-    }
-
-    /**
-     * Endpoint for retrieving all personal coaches by name.
-     *
-     * <p>This endpoint is accessible to authenticated users with the {@code CLIENT authority}.</p>
-     * <p>It returns a list of personal coaches filtered by name.</p>
-     *
-     * @param request the {@link GetCoachesByNameRequest} containing the name details
-     * @return a {@link ResponseEntity} containing a list of {@link GetCoachesResponse}
-     */
-    @PreAuthorize("hasAuthority('CLIENT')")
-    @GetMapping("/personal-coaches-by-name")
-    public ResponseEntity<List<GetCoachesResponse>> getAllPersonalCoachesByName(@Valid @ModelAttribute GetCoachesByNameRequest request) {
-        return ResponseEntity.ok(clientService.getAllPersonalCoachesByName(request));
-    }
-
-    /**
-     * Endpoint for retrieving all personal coaches by specialization.
-     *
-     * <p>This endpoint is accessible to authenticated users with the {@code CLIENT authority}.</p>
-     * <p>It returns a list of personal coaches filtered by specialization.</p>
-     *
-     * @param request the {@link GetCoachesBySpecializationRequest} containing the specialization details
-     * @return a {@link ResponseEntity} containing a list of {@link GetCoachesResponse}
-     */
-    @PreAuthorize("hasAuthority('CLIENT')")
-    @GetMapping("/personal-coaches-by-spec")
-    public ResponseEntity<List<GetCoachesResponse>> getAllPersonalCoachesBySpecialization(@Valid @ModelAttribute GetCoachesBySpecializationRequest request) {
-        return ResponseEntity.ok(clientService.getAllPersonalCoachesBySpecialization(request));
-    }
-
-    // endregion
-
-    //region GET PERSONAL PHYSIOTHERAPIST
-
-    /**
-     * Endpoint for retrieving all personal physiotherapists.
-     *
-     * <p>This endpoint is accessible to authenticated users with the {@code CLIENT authority}.</p>
-     * <p> It returns a list of personal physiotherapists.</p>
-     *
-     * @return a {@link ResponseEntity} containing a list of {@link GetPhysioResponse}
-     */
-    @PreAuthorize("hasAuthority('CLIENT')")
-    @GetMapping("/personal-physio")
-    public ResponseEntity<List<GetPhysioResponse>> getAllPersonalPhysio() {
-        return ResponseEntity.ok(clientService.getAllPersonalPhysio());
-    }
-
-    /**
-     * Endpoint for retrieving all personal physiotherapists by name.
-     *
-     * <p>This endpoint is accessible to authenticated users with the {@code CLIENT authority}.</p>
-     * <p> It returns a list of personal physiotherapists filtered by name.</p>
-     *
-     * @param request the {@link GetPhysioByNameRequest} containing the name details
-     * @return a {@link ResponseEntity} containing a list of {@link GetPhysioResponse}
-     */
-    @PreAuthorize("hasAuthority('CLIENT')")
-    @GetMapping("/personal-physio-by-name")
-    public ResponseEntity<List<GetPhysioResponse>> getAllPersonalPhysioByName(@Valid @ModelAttribute GetPhysioByNameRequest request) {
-        return ResponseEntity.ok(clientService.getPersonalPhysioByName(request));
-    }
-
-    /**
-     * Endpoint for retrieving all personal physiotherapists by specialization.
-     *
-     * <p>This endpoint is accessible to authenticated users with the {@code CLIENT authority}.</p>
-     * <p> It returns a list of personal physiotherapists filtered by specialization.</p>
-     *
-     * @param request the {@link GetPhysioBySpecializationRequest} containing the specialization details
-     * @return a {@link ResponseEntity} containing a list of {@link GetPhysioResponse}
-     */
-    @PreAuthorize("hasAuthority('CLIENT')")
-    @GetMapping("/personal-physio-by-spec")
-    public ResponseEntity<List<GetPhysioResponse>> getAllPersonalPhysioBySpecialization(@Valid @ModelAttribute GetPhysioBySpecializationRequest request) {
-        return ResponseEntity.ok(clientService.getPersonalPhysioBySpecialization(request));
-    }
-
-    // endregion
 
     // region COMPETITION REGISTER
 
@@ -327,7 +105,7 @@ public class ClientController {
      */
     @PreAuthorize("hasAuthority('CLIENT')")
     @GetMapping("/Planning")
-    public ResponseEntity<PlanningResponse> getPlanningWithSpecifications(@Valid @ModelAttribute ClientPlanningRequest request) {
+    public ResponseEntity<List<PlanningResponse>> getPlanningWithSpecifications(@Valid @ModelAttribute ClientPlanningRequest request) {
         return ResponseEntity.ok(clientService.getPlanning(request));
     }
 

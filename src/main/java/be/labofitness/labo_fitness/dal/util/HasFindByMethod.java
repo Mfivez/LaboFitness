@@ -4,4 +4,5 @@ import java.util.Optional;
 public interface HasFindByMethod<T> {
 
     Optional<T> findByEmail(String mail);
+
 }

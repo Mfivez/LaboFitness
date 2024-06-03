@@ -5,6 +5,8 @@ import be.labofitness.labo_fitness.bll.model.moderator.report.ReportResponse;
 import be.labofitness.labo_fitness.bll.model.moderator.report.ModeratorReportUpdateIsApprovedStateResponse;
 import be.labofitness.labo_fitness.domain.entity.Report;
 
+import java.util.List;
+
 /**
  * Service interface for managing {@code moderator access}.
  */
@@ -18,7 +20,7 @@ public interface ModeratorService {
      * @param request the {@link Report} request for moderation
      * @return the {@link Report} response containing information about the {@link Report}
      */
-    ReportResponse moderatorGetReport(ReportRequest request);
+    List<ReportResponse> moderatorGetReport(ReportRequest request);
 
     /**
      * Updates the approval state of {@link Report} based on the provided request.

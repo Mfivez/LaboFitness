@@ -1,5 +1,4 @@
 package be.labofitness.labo_fitness.bll.exception.Exist;
-
 import be.labofitness.labo_fitness.bll.exception.LaboFitnessException;
 
 /**

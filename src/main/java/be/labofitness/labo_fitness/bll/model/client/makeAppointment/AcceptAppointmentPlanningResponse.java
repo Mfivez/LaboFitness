@@ -18,4 +18,11 @@ package be.labofitness.labo_fitness.bll.model.client.makeAppointment;
 public record AcceptAppointmentPlanningResponse(
         String response
 ) {
+
+    public static AcceptAppointmentPlanningResponse fromEntity(String response){
+        return new AcceptAppointmentPlanningResponse(
+                response
+        );
+    }
+
 }
